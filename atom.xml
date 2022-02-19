@@ -6,7 +6,7 @@
   <link href="https://zhekunren.github.io/atom.xml" rel="self"/>
   
   <link href="https://zhekunren.github.io/"/>
-  <updated>2022-02-19T15:00:27.892Z</updated>
+  <updated>2022-02-18T10:41:22.891Z</updated>
   <id>https://zhekunren.github.io/</id>
   
   <author>
@@ -17,23 +17,488 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://zhekunren.github.io/archives/4a17b156.html"/>
-    <id>https://zhekunren.github.io/archives/4a17b156.html</id>
-    <published>2022-02-19T13:42:45.252Z</published>
-    <updated>2022-02-19T15:00:27.892Z</updated>
+    <title></title>
+    <link href="https://zhekunren.github.io/archives/480d45c2.html"/>
+    <id>https://zhekunren.github.io/archives/480d45c2.html</id>
+    <published>2022-02-19T17:05:07.494Z</published>
+    <updated>2022-02-18T10:41:22.891Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;📢Notice&lt;/strong&gt;&lt;br&gt;① 小站刚建好，欢迎访问🐾&lt;/br&gt;② 评论采用Disqus，需要tz🧗&lt;/br&gt;③ 内容不定期更新，加密表示正在搬运ing~&lt;/br&gt;④ 默认部署在&lt;a</summary>
         
       
     
     
     
+    
+  </entry>
+  
+  <entry>
+    <title>添加站长统计</title>
+    <link href="https://zhekunren.github.io/archives/428d3437.html"/>
+    <id>https://zhekunren.github.io/archives/428d3437.html</id>
+    <published>2022-02-15T14:00:00.000Z</published>
+    <updated>2022-02-15T14:00:00.000Z</updated>
+    
+    
+    <summary type="html">为KRATOS:REBIRTH主题的Hexo博客添加cnzz站长统计</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用在线工具（不定期更新）</title>
+    <link href="https://zhekunren.github.io/archives/c4a4928.html"/>
+    <id>https://zhekunren.github.io/archives/c4a4928.html</id>
+    <published>2022-02-14T13:39:00.000Z</published>
+    <updated>2022-02-14T13:39:00.000Z</updated>
+    
+    
+    <summary type="html">日常用到的一些在线工具.....（不定期更新）</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="实用工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>影音美图畅享（不定期更新）</title>
+    <link href="https://zhekunren.github.io/archives/fb0c4ff4.html"/>
+    <id>https://zhekunren.github.io/archives/fb0c4ff4.html</id>
+    <published>2022-02-14T11:20:00.000Z</published>
+    <updated>2022-02-14T11:20:00.000Z</updated>
+    
+    
+    <summary type="html">记录和收集平时常用的看剧听歌神器，还有获取壁纸美图素材的网站.....（不定期更新）</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://zhekunren.github.io/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="影音美图" scheme="https://zhekunren.github.io/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/"/>
+    
+    
+    <category term="movies" scheme="https://zhekunren.github.io/tags/movies/"/>
+    
+    <category term="muisc" scheme="https://zhekunren.github.io/tags/muisc/"/>
+    
+    <category term="life" scheme="https://zhekunren.github.io/tags/life/"/>
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>追过的剧和电影（不定期更新）</title>
+    <link href="https://zhekunren.github.io/archives/9986db6e.html"/>
+    <id>https://zhekunren.github.io/archives/9986db6e.html</id>
+    <published>2022-02-14T09:14:00.000Z</published>
+    <updated>2022-02-14T09:14:00.000Z</updated>
+    
+    
+    <summary type="html">欧美日韩剧、国产电视剧、电影、纪录片...（不定期更新）</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://zhekunren.github.io/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="影音美图" scheme="https://zhekunren.github.io/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/"/>
+    
+    
+    <category term="movies" scheme="https://zhekunren.github.io/tags/movies/"/>
+    
+    <category term="life" scheme="https://zhekunren.github.io/tags/life/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo Blog Writing Tips</title>
+    <link href="https://zhekunren.github.io/archives/2f4694b.html"/>
+    <id>https://zhekunren.github.io/archives/2f4694b.html</id>
+    <published>2022-02-14T03:15:00.000Z</published>
+    <updated>2022-02-18T09:30:00.000Z</updated>
+    
+    
+    <summary type="html">This post mainly introduces the label components and writing tips commonly used in kratos-rebirth theme blogs.</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+    <category term="blog-tips" scheme="https://zhekunren.github.io/tags/blog-tips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Encrypt Post test</title>
+    <link href="https://zhekunren.github.io/archives/375b76b6.html"/>
+    <id>https://zhekunren.github.io/archives/375b76b6.html</id>
+    <published>2022-02-14T02:55:00.000Z</published>
+    <updated>2022-02-14T02:55:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam justo turpis, tincidunt ac convallis id.</title>
+    <link href="https://zhekunren.github.io/archives/40245f02.html"/>
+    <id>https://zhekunren.github.io/archives/40245f02.html</id>
+    <published>2022-02-14T02:50:00.000Z</published>
+    <updated>2022-02-14T02:50:00.000Z</updated>
+    
+    
+    <summary type="html">This post has a long title. Make sure the title displayed right.</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>www.google.com</title>
+    <link href="https://zhekunren.github.io/archives/6297e43c.html"/>
+    <id>https://zhekunren.github.io/archives/6297e43c.html</id>
+    <published>2022-02-14T02:45:00.000Z</published>
+    <updated>2022-02-14T02:45:00.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;This is a link post without a title. The title should be the link with or without protocol. Clicking on the link should open &lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="https://zhekunren.github.io/archives/7716b51f.html"/>
+    <id>https://zhekunren.github.io/archives/7716b51f.html</id>
+    <published>2022-02-14T02:40:00.000Z</published>
+    <updated>2022-02-14T02:40:00.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;No Title Post test – This post doesn’t have a title. Make sure it’s</summary>
+        
+      
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Markdown Style test</title>
+    <link href="https://zhekunren.github.io/archives/89757140.html"/>
+    <id>https://zhekunren.github.io/archives/89757140.html</id>
+    <published>2022-02-14T02:35:00.000Z</published>
+    <updated>2022-02-14T02:35:00.000Z</updated>
+    
+    
+    <summary type="html">This post is used for testing markdown style. </summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+    <category term="blog-tips" scheme="https://zhekunren.github.io/tags/blog-tips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Code Highlight Style test</title>
+    <link href="https://zhekunren.github.io/archives/9db656e5.html"/>
+    <id>https://zhekunren.github.io/archives/9db656e5.html</id>
+    <published>2022-02-14T02:30:00.000Z</published>
+    <updated>2022-02-14T02:30:00.000Z</updated>
+    
+    
+    <summary type="html">Make sure all the code blocks highlighted correctly. All the code samples are come from the demo of https://highlightjs.org.</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+    <category term="blog-test" scheme="https://zhekunren.github.io/tags/blog-test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之11-信号量</title>
+    <link href="https://zhekunren.github.io/archives/329da6e4.html"/>
+    <id>https://zhekunren.github.io/archives/329da6e4.html</id>
+    <published>2022-02-12T10:42:00.000Z</published>
+    <updated>2022-02-12T10:42:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之10-队列</title>
+    <link href="https://zhekunren.github.io/archives/ba24e303.html"/>
+    <id>https://zhekunren.github.io/archives/ba24e303.html</id>
+    <published>2022-02-12T10:37:00.000Z</published>
+    <updated>2022-02-12T10:37:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="数据结构" scheme="https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之09-时间管理</title>
+    <link href="https://zhekunren.github.io/archives/af7ea7bd.html"/>
+    <id>https://zhekunren.github.io/archives/af7ea7bd.html</id>
+    <published>2022-02-12T10:29:00.000Z</published>
+    <updated>2022-02-12T10:29:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之08-FreeRTOS其他任务API函数</title>
+    <link href="https://zhekunren.github.io/archives/7abe9be9.html"/>
+    <id>https://zhekunren.github.io/archives/7abe9be9.html</id>
+    <published>2022-02-12T07:21:00.000Z</published>
+    <updated>2022-02-12T07:21:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之07-任务切换分析</title>
+    <link href="https://zhekunren.github.io/archives/a9f4629d.html"/>
+    <id>https://zhekunren.github.io/archives/a9f4629d.html</id>
+    <published>2022-02-11T06:10:00.000Z</published>
+    <updated>2022-02-11T06:10:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>u盘内的歌曲文件排序软件</title>
+    <link href="https://zhekunren.github.io/archives/5c656d31.html"/>
+    <id>https://zhekunren.github.io/archives/5c656d31.html</id>
+    <published>2022-02-09T12:30:12.000Z</published>
+    <updated>2022-02-09T12:30:12.000Z</updated>
+    
+    
+    <summary type="html">这篇文章介绍了两个u盘内的歌曲文件排序软件：shancunshiMP3、小优优。</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="安装破解" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/"/>
+    
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
+    
+    <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello Hexo</title>
+    <link href="https://zhekunren.github.io/archives/a1751c09.html"/>
+    <id>https://zhekunren.github.io/archives/a1751c09.html</id>
+    <published>2022-01-01T13:00:00.000Z</published>
+    <updated>2022-02-14T02:00:00.000Z</updated>
+    
+    
+    <summary type="html">This is the first post that comes with hexo!!</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="Hexo" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/"/>
+    
+    
+    <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>XMind ZEN 2020 V10.0 中文版“安装”</title>
+    <link href="https://zhekunren.github.io/archives/9f76cdf5.html"/>
+    <id>https://zhekunren.github.io/archives/9f76cdf5.html</id>
+    <published>2021-12-25T04:36:00.000Z</published>
+    <updated>2022-01-24T12:36:00.000Z</updated>
+    
+    
+    <summary type="html">This post is mainly for XMind ZEN 2020 V10.0 Chinese version installation crack.</summary>
+    
+    
+    
+    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="安装破解" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/"/>
+    
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
+    
+    <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
+    
+    <category term="XMind" scheme="https://zhekunren.github.io/tags/XMind/"/>
     
   </entry>
   

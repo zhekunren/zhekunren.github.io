@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
+  <title>【STM32】STM32CubeMX HAL库 DMA[1]初探 | zhekunのblog</title>
+  <meta name="author" content="zhekun" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="DMA, stm32, 嵌入式" />
+  
+  <meta name="description" content="0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓存区。具体实现请看代码： 2018 NXP national college student smart car competition 最近在stm32上编写DMA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【STM32】STM32CubeMX HAL库 DMA[1]初探">
+<meta property="og:url" content="https://zhekunren.github.io/archives/1d6f82e9.html">
+<meta property="og:site_name" content="zhekunのblog">
+<meta property="og:description" content="0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓存区。具体实现请看代码： 2018 NXP national college student smart car competition 最近在stm32上编写DMA">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhekunren.github.io/archives/1d6f82e9.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_1.jpg">
+<meta property="article:published_time" content="2021-11-30T15:25:33.000Z">
+<meta property="article:modified_time" content="2022-01-23T03:25:33.000Z">
+<meta property="article:author" content="zhekun">
+<meta property="article:tag" content="stm32">
+<meta property="article:tag" content="DMA">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhekunren.github.io/archives/1d6f82e9.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_1.jpg">
+<meta name="twitter:site" content="@null">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+      <meta name="google-site-verification" content="3MUjsxLLUvsNMRZFuKgKTuODWqF7iUJhcAaKhiMrfGc" />
+    
+    
+      <meta name="baidu-site-verification" content="code-xZCR5R9r7E" />
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner_1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg_1.webp');
+        }
+      }
+    
+  </style>
+  
+  <!-- Google adsense -->
+  
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8125084240960232" crossorigin="anonymous"></script>
+    
+  <meta name="generator" content="Hexo 6.0.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-file"></i>文库</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/archives/"><i class="fa fa-archive"></i>归档</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/categories/"><i class="fa fa-folder-open"></i>分类</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li><a href="/about"><i class="fa fa-user"></i>关于</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>更多</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://new.cnzz.com/v1/login.php?siteid=1280860084"><i class="fa fa-bar-chart"></i>访客</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://travellings.link"><i class="fa fa-subway"></i>开往</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">zhekunのblog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <!-- <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>zhekunのblog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div> --> 
+            <!-- 
+                删除banner图片，delete by zhekun，此外替换以下文件中的"320px"为"50px"，共8处。
+                themes\kratos-rebirth\source\css\kratosr.min.css,
+                themes\kratos-rebirth\source\maps\kratosr.min.css.map,
+                themes\kratos-rebirth\src\scss\kratosr.scss
+            -->
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">【STM32】STM32CubeMX HAL库 DMA[1]初探</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-11-30</li>
+                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~25.40K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1642908333000"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">0 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-DMA%E7%AE%80%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">1 DMA简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-DMA%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 DMA功能描述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-1-DMA%E8%AF%B7%E6%B1%82"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.1.1 DMA请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-2-%E9%80%9A%E9%81%93"><span class="toc-number">2.1.2.</span> <span class="toc-text">1.1.2 通道</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-3-%E4%BB%B2%E8%A3%81%E5%99%A8"><span class="toc-number">2.1.3.</span> <span class="toc-text">1.1.3 仲裁器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-DMA%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 DMA寄存器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-DMA%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B%E7%A8%8B%E5%BA%8F%EF%BC%88HAL%E5%BA%93%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">2 DMA应用实例程序（HAL库）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-DMA-%E5%AD%98%E5%82%A8%E5%99%A8%E5%88%B0%E5%AD%98%E5%82%A8%E5%99%A8%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93-MEM-TO-MEM"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 DMA 存储器到存储器数据传输(MEM_TO_MEM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 DMA 串口收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E3%80%81%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E3%80%81%E5%8F%8C%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">2.2.2 DMA 串口收发数据（接收数据定长、双缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%9A%E9%95%BF%E3%80%81%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.3.</span> <span class="toc-text">2.2.3 DMA 串口收发数据（接收数据不定长、单缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%9A%E9%95%BF%E3%80%81%E5%8F%8C%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.4.</span> <span class="toc-text">2.2.4 DMA 串口收发数据（接收数据不定长、双缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-5-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E3%80%81%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="toc-number">3.2.5.</span> <span class="toc-text">2.2.5 DMA 串口收发数据（程序测试、验证）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">相关参考</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h2 id="0-引言"><a href="#0-引言" class="headerlink" title="0 引言"></a>0 引言</h2><p>记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓存区。具体实现请看代码：<a target="_blank" rel="noopener" href="https://gitee.com/zhekunren/nxp-national-college-student-smart-car-competition"> 2018 NXP national college student smart car competition</a></p>
+<p>最近在stm32上编写DMA程序时也遇到了一些问题，下面将对它们进行整理和记录。</p>
+<p><strong>所选开发环境及硬件配置</strong></p>
+<ul>
+<li>德飞莱开发板。芯片为stm32f103zet6；LED2、LED3的引脚为PE5、PB5，低电平亮；WK_UP、KEY1、KEY2、KEY3的引脚为PA0、PE4、PE3、PE2，除WK_UP外其余按键按下为低电平；USART1 TX和RX引脚分别为PA9、PA10；外部晶振为8MHZ和32.768KHZ。</li>
+<li>软件：STM32CUBMX、KEIL、串口调试助手（sscom33.exe）</li>
+</ul>
+<h2 id="1-DMA简介"><a href="#1-DMA简介" class="headerlink" title="1 DMA简介"></a>1 DMA简介</h2><p>DMA详细介绍参考《<strong>STM32中文参考手册</strong>》<strong>第10章DMA控制器</strong>，这个文件描述的很最全面。</p>
+<p>直接存储器存取(DMA)用来提供在外设和存储器之间或者存储器和存储器之间的高速数据传输。无须CPU干预，数据可以通过DMA快速地移动，这就节省了CPU的资源来做其他操作。<br>STM32F10xxx的两个DMA控制器有12个通道(DMA1有7个通道， DMA2有5个通道)，每个通道专门用来管理来自<br>于一个或多个外设对存储器访问的请求。还有一个仲裁器来协调各个DMA请求的优先权。<br>STM32F10xxx的功能框图：<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/STM32F10xxx%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A1%86%E5%9B%BE.png"></p>
+<h3 id="1-1-DMA功能描述"><a href="#1-1-DMA功能描述" class="headerlink" title="1.1 DMA功能描述"></a>1.1 DMA功能描述</h3><h4 id="1-1-1-DMA请求"><a href="#1-1-1-DMA请求" class="headerlink" title="1.1.1 DMA请求"></a>1.1.1 DMA请求</h4><p>DMA1和DMA2的每个通道专门用来管理来自于一个或多个外设对存储器访问的请求。对于DMA1控制器，从外设产生的7个请求，通过逻辑或输入到DMA1控制器，这意味着同时只能有一个请求有效；对于DMA2控制器，同理。</p>
+<p>DMA1请求映像<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/DMA1%E8%AF%B7%E6%B1%82%E6%98%A0%E5%83%8F.png"><br>DMA1各个通道的请求一览<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/DMA1%E5%90%84%E4%B8%AA%E9%80%9A%E9%81%93%E7%9A%84%E8%AF%B7%E6%B1%82.png"><br>DMA2请求映像<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/DMA2%E8%AF%B7%E6%B1%82%E6%98%A0%E5%83%8F.png"><br>DMA2各个通道的请求一览<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/DMA2%E5%90%84%E4%B8%AA%E9%80%9A%E9%81%93%E7%9A%84%E8%AF%B7%E6%B1%82.png"></p>
+<h4 id="1-1-2-通道"><a href="#1-1-2-通道" class="headerlink" title="1.1.2 通道"></a>1.1.2 通道</h4><p>每个通道都可以在有固定地址的外设寄存器和存储器地址之间执行DMA传输。DMA传输的数据量是可编程的，最大达到65535。包含要传输的数据项数量的寄存器，在每次传输后递减。</p>
+<ul>
+<li><strong>指针增量</strong><br>通过设置DMA_CCRx寄存器中的PINC和MINC标志位，外设和存储器的指针在每次传输后可以有选择地完成自动增量。当设置为增量模式时，下一个要传输的地址将是前一个地址加上增量值，增量值取决与所选的数据宽度为1、 2或4。</li>
+<li><strong>循环模式</strong><br>循环模式用于处理循环缓冲区和连续的数据传输(如ADC的扫描模式)。在DMA_CCRx寄存器中的CIRC位用于开启这一功能。当启动了循环模式，数据传输的数目变为0时，将会自动地被恢复成配置通道时设置的初值， DMA操作将会继续进行。</li>
+<li><strong>存储器到存储器模式</strong><br>DMA通道的操作可以在没有外设请求的情况下进行，这种操作就是存储器到存储器模式。<u>存储器到存储器模式不能与循环模式同时使用。</u></li>
+<li><strong>中断</strong><br>每个DMA通道都可以在DMA传输过半、传输完成和传输错误时产生中断。</li>
+</ul>
+<h4 id="1-1-3-仲裁器"><a href="#1-1-3-仲裁器" class="headerlink" title="1.1.3 仲裁器"></a>1.1.3 仲裁器</h4><p>仲裁器根据通道请求的优先级来启动外设&#x2F;存储器的访问。<br>优先权管理分2个阶段：</p>
+<ul>
+<li>软件：每个通道的优先权可以在DMA_CCRx寄存器中设置，有4个等级：最高优先级、高优先级、中等优先级和低优先级。</li>
+<li>硬件：如果2个请求有相同的软件优先级，则较低编号的通道比较高编号的通道有较高的优先权。举个例子，通道2优先于通道4。</li>
+</ul>
+<p><strong>在大容量产品和互联型产品中， DMA1控制器拥有高于DMA2控制器的优先级</strong></p>
+<h3 id="1-2-DMA寄存器"><a href="#1-2-DMA寄存器" class="headerlink" title="1.2 DMA寄存器"></a>1.2 DMA寄存器</h3><p>这部分详细请看《<strong>STM32中文参考手册</strong>》<strong>10.4 DMA寄存器</strong>。</p>
+<h2 id="2-DMA应用实例程序（HAL库）"><a href="#2-DMA应用实例程序（HAL库）" class="headerlink" title="2 DMA应用实例程序（HAL库）"></a>2 DMA应用实例程序（HAL库）</h2><h3 id="2-1-DMA-存储器到存储器数据传输-MEM-TO-MEM"><a href="#2-1-DMA-存储器到存储器数据传输-MEM-TO-MEM" class="headerlink" title="2.1 DMA 存储器到存储器数据传输(MEM_TO_MEM)"></a>2.1 DMA 存储器到存储器数据传输(MEM_TO_MEM)</h3><p><strong>程序功能</strong><br>按下WK_UP按键后，通过DMA将aSRC_Const_Buffer中的数据传输到aDST_Buffer中，并通过LED来指示DMA传输成功与否。<br><strong>程序设计思路</strong><br>定义了两个数组，aSRC_Const_Buffer为DMA传输源存储器，存储在FLASH中；aDST_Buffer为DMA传输目标存储器，存储在SRAM。<br>程序启动时，LED2和LED3的电平状态相同。当WK_UP按键按下时，翻转LED2电平，然后启动DMA传输，等待DMA传输结束后，通过BufferCmp比较aDST_Buffer和aSRC_Const_Buffer数组，两者数据相同，DMA传输成功，翻转LED3电平，LED2和LED3的电平状态相同；否则，两者数据不相同，DMA传输失败，不进行LED3电平翻转，LED2和LED3的电平状态不同。故单次或多次按键按下后，通过观测LED2和LED3的状态是否相同就可以知道DMA传输成功没有。</p>
+<p><strong>具体配置</strong></p>
+<ul>
+<li>步骤1，配置时钟、下载方式。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM1.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM2.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM3.png"></li>
+<li>步骤2，配置LED、按键的GPIO，用于调试，配置信息如下图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM4.png"></li>
+<li>步骤3，点击左侧DMA，选择MemToMem，点击“add”，然后DMA初始化配置如下图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM5.png"></li>
+<li>步骤4，在Project Manager中设置工程名字、路径以及代码生成方式等。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM6.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/MEM_TO_MEM7.png"></li>
+</ul>
+<p>以上步骤在STM32CUBMX软件中完成，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;dma.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> aSRC_Const_Buffer[ ] = &#123;</span><br><span class="line">	<span class="number">0x01020304</span>, <span class="number">0x05060708</span>, <span class="number">0x090A0B0C</span>, <span class="number">0x0D0E0F10</span>,</span><br><span class="line">	<span class="number">0x11121314</span>, <span class="number">0x15161718</span>, <span class="number">0x191A1B1C</span>, <span class="number">0x1D1E1F20</span>,</span><br><span class="line">	<span class="number">0x21222324</span>, <span class="number">0x25262728</span>, <span class="number">0x292A2B2C</span>, <span class="number">0x2D2E2F30</span>,</span><br><span class="line">	<span class="number">0x31323334</span>, <span class="number">0x35363738</span>, <span class="number">0x393A3B3C</span>, <span class="number">0x3D3E3F40</span>,</span><br><span class="line">	<span class="number">0x41424344</span>, <span class="number">0x45464748</span>, <span class="number">0x494A4B4C</span>, <span class="number">0x4D4E4F50</span>,</span><br><span class="line">	<span class="number">0x51525354</span>, <span class="number">0x55565758</span>, <span class="number">0x595A5B5C</span>, <span class="number">0x5D5E5F60</span>,</span><br><span class="line">	<span class="number">0x61626364</span>, <span class="number">0x65666768</span>, <span class="number">0x696A6B6C</span>, <span class="number">0x6D6E6F70</span>,</span><br><span class="line">	<span class="number">0x71727374</span>, <span class="number">0x75767778</span>, <span class="number">0x797A7B7C</span>, <span class="number">0x7D7E7F80</span>&#125;;<span class="comment">//定义DMA传输源存储器，存储在FLASH中</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> COUNTOF(_BUFFER_) (sizeof(_BUFFER_)/sizeof(*(_BUFFER_)))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE COUNTOF(aSRC_Const_Buffer)</span></span><br><span class="line"></span><br><span class="line"><span class="type">uint32_t</span> aDST_Buffer[BUFFER_SIZE]=&#123;<span class="number">0</span>&#125;;<span class="comment">//定义DMA传输目标存储器，存储在SRAM</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">uint8_t</span> <span class="title">BufferCmp</span><span class="params">(<span class="type">const</span> <span class="type">uint32_t</span> *pBuffer,<span class="type">uint32_t</span> *pBuffer1, <span class="type">uint16_t</span> BufferLength)</span></span>;</span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+<p>main函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">	<span class="built_in">HAL_Init</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Configure the system clock */</span></span><br><span class="line">	<span class="built_in">SystemClock_Config</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">	<span class="built_in">MX_GPIO_Init</span>();</span><br><span class="line">	<span class="built_in">MX_DMA_Init</span>();</span><br><span class="line">	<span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Infinite loop */</span></span><br><span class="line">	<span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">WK_UP</span>() == <span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">LED2_Toggle</span>();</span><br><span class="line">			<span class="built_in">HAL_DMA_Start</span>(&amp;hdma_memtomem_dma1_channel1, (<span class="type">uint32_t</span>)aSRC_Const_Buffer, (<span class="type">uint32_t</span>)aDST_Buffer, BUFFER_SIZE);</span><br><span class="line">			<span class="keyword">while</span> (__HAL_DMA_GET_FLAG(&amp;hdma_memtomem_dma1_channel1, DMA_FLAG_TC1) == RESET);</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">BufferCmp</span>(aSRC_Const_Buffer, aDST_Buffer, BUFFER_SIZE) == <span class="number">1</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">LED3_Toggle</span>();</span><br><span class="line">			&#125;</span><br><span class="line">			__HAL_DMA_CLEAR_FLAG(&amp;hdma_memtomem_dma1_channel1, DMA_FLAG_TC1);</span><br><span class="line">			<span class="built_in">memset</span>(aDST_Buffer,<span class="number">0</span>,BUFFER_SIZE);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">HAL_Delay</span>(<span class="number">10</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 4 */</span></span><br><span class="line"><span class="function"><span class="type">uint8_t</span> <span class="title">BufferCmp</span><span class="params">(<span class="type">const</span> <span class="type">uint32_t</span> *pBuffer,<span class="type">uint32_t</span> *pBuffer1, <span class="type">uint16_t</span> BufferLength)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">assert</span>(pBuffer!=<span class="literal">NULL</span> || pBuffer1!=<span class="literal">NULL</span> || BufferLength&gt;<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">while</span> (BufferLength--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (*pBuffer != *pBuffer1)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		pBuffer++;</span><br><span class="line">		pBuffer1++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* USER CODE END 4 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h3 id="2-2-DMA-串口收发数据"><a href="#2-2-DMA-串口收发数据" class="headerlink" title="2.2 DMA 串口收发数据"></a>2.2 DMA 串口收发数据</h3><p><strong>定长与不定长</strong><br>串口接收数据分为定长数据和不定长数据。比如，某个传感器模块的数据包长度一般是固定的，这就是定长数据；而不定长的数据接收的情况也比较普遍。。。</p>
+<p><strong>双缓存区</strong><br>在数据接收中断间隔时间较短（即发送数据帧的速率很快）时，MCU来不及处理此次接收到的数据，又产生中断，这时不能直接开启DMA通道，否则数据会被覆盖。有2种方式解决：</p>
+<ul>
+<li>在重新开启接收DMA通道之前，将DMA接收缓存区里面的数据复制到另外一个数组中，然后再开启DMA，然后马上处理复制出来的数据；</li>
+<li>建立双缓存区，设置一个缓冲区标志（用来指示当前处在哪个缓冲区），每完成一次传输就通过重新配置缓存区地址，下次传输数据就会保存到新的缓存区中，可以通过自定义的缓存区标志来判断和切换，这样可以避免缓存区数据来不及处理就被覆盖的情况，也能为处理数据留出更多地时间（指到下次传输完成）。<strong>注意</strong>：多缓存区同理。</li>
+</ul>
+<h4 id="2-2-1-DMA-串口收发数据（接收数据定长、单缓存区）"><a href="#2-2-1-DMA-串口收发数据（接收数据定长、单缓存区）" class="headerlink" title="2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）"></a>2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</h4><p><strong>程序功能</strong><br>当使用串口调试助手（sscom33.exe）向MCU发送连续或不连续的定长数据帧时，MCU通过DMA接收完一帧时回传到串口调试助手（sscom33.exe），其中DMA接收时只采用一个缓存区。</p>
+<p><strong>程序设计思路</strong></p>
+<ul>
+<li><strong>核心思想：</strong> <u>使用DMA传输完成中断实现接收定长数据</u>。无论串口接收到的数据是否连续的，只需要保持DMA缓存的大小不变，<u>每次缓存满了就会产生DMA传输完成中断</u>，这样就能保住每次接收到的数据都是一样长度的。</li>
+<li>程序启动后，等待DMA传输完成标志DMA_FLAG_TCx置1，进入中断服务函数中，重启下一次DMA接收，同时通过RxEndFlag标志接收完成；外部程序通过判断RxEndFlag置位，则开始执行外部数据处理程序（此处为使用DMA串口将接收数据回传），处理完成，清除接收数组和RxEndFlag。</li>
+<li><strong>注意</strong>：测试时，使用串口调试助手（sscom33.exe）最小设置间隔1ms发送一次数据帧，而外部数据处理程序（DMA串口数据回传）时间较之更短，所以我在处理完成后清除接收数组的操作不会影响到下一次的数据接收；如果外部数据处理程序耗时，需要进行数据缓存复制或通过双缓存区来处理，否则可能出现数据来不及处理就被覆盖的情况，或者出现数据处理过程和第二次接收调试进行，第二次接收数据被处理程序修改等问题。后文将会讲解和实现双缓存区的处理方式。</li>
+</ul>
+<p><strong>具体配置</strong></p>
+<ul>
+<li>步骤1，配置时钟、下载方式。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA1.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA2.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA3.png"></li>
+<li>步骤2，配置LED、按键的GPIO，用于调试，配置信息如下图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA4.png"></li>
+<li>步骤3，配置串口USART1。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA5.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA6.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA7.png"><br>注意：如果不开启串口中断，则程序只能发送一次数据,程序不能判断DMA传输是否完成，USART一直处于busy状态</li>
+<li>步骤4，配置NVIC、DMA参数。<strong>注意：</strong><font color=red>串口DMA通道的中断优先级应该高于串口的中断优先级。</font><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA8.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA9.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA10.png"></li>
+<li>步骤5，在Project Manager中设置工程名字、路径以及代码生成方式等。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA11.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA12.png"></li>
+</ul>
+<p>以上步骤在STM32CUBMX软件中完成，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;dma.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <p>   DMA发送完成并不代表串口发送完成，只代表数据从内存传输到了串口发送寄存器，再从发送移位寄存器发送完成需要检查UART_FLAG_TC为SET状态 ，这样才能确保万无一失。<strong>注意：</strong><font color=red>判断发送完成使用代码<code>while(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_TC)!=SET);</code></font>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  <span class="built_in">HAL_Init</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  <span class="built_in">SystemClock_Config</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  <span class="built_in">MX_GPIO_Init</span>();</span><br><span class="line">  <span class="built_in">MX_DMA_Init</span>();</span><br><span class="line">  <span class="built_in">MX_USART1_UART_Init</span>();</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer,BUFFER_SIZE);<span class="comment">//打开DMA接收</span></span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		</span><br><span class="line">		 <span class="keyword">if</span>(RxEndFlag == <span class="number">1</span>)<span class="comment">//接收完成标志</span></span><br><span class="line">		 &#123;</span><br><span class="line">			 <span class="built_in">HAL_UART_Transmit_DMA</span>(&amp;huart1, (<span class="type">uint8_t</span> *)RxBuffer, RxLen);</span><br><span class="line">			 <span class="keyword">while</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_TC)!=SET);<span class="comment">//等待发送完成</span></span><br><span class="line">			 <span class="comment">//while(HAL_UART_GetState(&amp;huart1) == HAL_UART_STATE_BUSY_TX);//容易错，这种等待发送完成判断有问题</span></span><br><span class="line">			 <span class="built_in">memset</span>(RxBuffer,<span class="number">0</span>,RxLen);</span><br><span class="line">			 RxLen = <span class="number">0</span>;<span class="comment">//清除计数</span></span><br><span class="line">			 RxEndFlag = <span class="number">0</span>;<span class="comment">//清除接收结束标志位</span></span><br><span class="line">		 &#125;</span><br><span class="line">		</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen = <span class="number">0</span>;  <span class="comment">// 接收数据帧的长度</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag = <span class="number">0</span>; <span class="comment">// 接收数据帧的完成标志</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组</span></span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> COUNTOF(_BUFFER_) (sizeof(_BUFFER_)/sizeof(*(_BUFFER_)))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen;  </span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer[<span class="number">10</span>]; </span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE  COUNTOF(RxBuffer)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>stm32f1xx_it.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>stm32f1xx_it.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN DMA1_Channel5_IRQn 0 */</span></span><br><span class="line"><span class="keyword">if</span>(__HAL_DMA_GET_FLAG(&amp;hdma_usart1_rx,DMA_FLAG_TC5)!= RESET)<span class="comment">//DMA接收完成标志</span></span><br><span class="line">&#123;</span><br><span class="line">	__HAL_DMA_CLEAR_FLAG(&amp;hdma_usart1_rx,DMA_FLAG_TC5);<span class="comment">//清除中断标志 </span></span><br><span class="line">	<span class="built_in">HAL_UART_DMAStop</span>(&amp;huart1); <span class="comment">//停止DMA传输</span></span><br><span class="line">	RxLen =  BUFFER_SIZE;<span class="comment">//定长度</span></span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">	RxEndFlag = <span class="number">1</span>; <span class="comment">//通知外部处理函数</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">/* USER CODE END DMA1_Channel5_IRQn 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h4 id="2-2-2-DMA-串口收发数据（接收数据定长、双缓存区）"><a href="#2-2-2-DMA-串口收发数据（接收数据定长、双缓存区）" class="headerlink" title="2.2.2 DMA 串口收发数据（接收数据定长、双缓存区）"></a>2.2.2 DMA 串口收发数据（接收数据定长、双缓存区）</h4><p><strong>程序功能</strong><br>当使用串口调试助手（sscom33.exe）向MCU发送连续或不连续的定长数据帧时，MCU通过DMA接收完一帧时回传到串口调试助手（sscom33.exe），其中DMA接收时采用两个缓存区。</p>
+<p><strong>程序设计思路</strong></p>
+<ul>
+<li>同上一节，接收定长数据的核心思想是<u>使用DMA传输完成中断和定长的DMA缓存区</u>。</li>
+<li>程序启动后，定义两个数据接收缓存区，等待DMA传输完成标志DMA_FLAG_TCx置1，进入中断服务函数中，使用指针NowRxBuffer指向当前接收缓存区，然后切换另一个接收缓存区，重启下一次DMA接收，同时通过RxEndFlag标志接收完成；外部程序通过判断RxEndFlag置位，则开始执行外部数据处理程序（此处为使用DMA串口将接收数据回传），处理的数据为NowRxBuffer指向的缓存区数据，处理完成，清除接收数组和RxEndFlag。</li>
+<li><strong>注意</strong>：测试时，使用串口调试助手（sscom33.exe）最小设置间隔1ms发送一次数据帧，而外部数据处理程序（DMA串口数据回传）时间较之更短，所以我在处理完成后清除接收数组的操作不会影响到下一次的数据接收；如果外部数据处理程序耗时，使用双缓存区可以避免数据来不及处理就被覆盖，也能为处理数据留出更多地时间（指到下次传输完成）。</li>
+</ul>
+<p><strong>具体配置</strong><br>在STM32CUBMX软件中的步骤和<code> 2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</code>相同，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;dma.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  <span class="built_in">HAL_Init</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  <span class="built_in">SystemClock_Config</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  <span class="built_in">MX_GPIO_Init</span>();</span><br><span class="line">  <span class="built_in">MX_DMA_Init</span>();</span><br><span class="line">  <span class="built_in">MX_USART1_UART_Init</span>();</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer0,BUFFER_SIZE);<span class="comment">//打开DMA接收</span></span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		</span><br><span class="line">		 <span class="keyword">if</span>(RxEndFlag == <span class="number">1</span>)<span class="comment">//接收完成标志</span></span><br><span class="line">		 &#123;</span><br><span class="line">				<span class="built_in">HAL_UART_Transmit_DMA</span>(&amp;huart1, (<span class="type">uint8_t</span> *)NowRxBuffer, RxLen);</span><br><span class="line">				<span class="keyword">while</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_TC)!=SET);<span class="comment">//等待发送完成</span></span><br><span class="line">			  <span class="comment">//while(HAL_UART_GetState(&amp;huart1) == HAL_UART_STATE_BUSY_TX);//方式一，这种判断发送完成有问题</span></span><br><span class="line">				<span class="built_in">memset</span>(NowRxBuffer,<span class="number">0</span>,RxLen);</span><br><span class="line">				RxLen = <span class="number">0</span>;<span class="comment">//清除计数</span></span><br><span class="line">				RxEndFlag = <span class="number">0</span>;<span class="comment">//清除接收结束标志位</span></span><br><span class="line">		 &#125;</span><br><span class="line">		 </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen = <span class="number">0</span>;  <span class="comment">// 接收数据帧的长度</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag = <span class="number">0</span>; <span class="comment">// 接收数据帧的完成标志</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer[BUFFER_SIZE]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer0[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组0</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer1[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;; <span class="comment">// 接收数据帧的缓存数组1</span></span><br><span class="line"><span class="type">uint8_t</span> WitchBuffer=<span class="number">0</span>;</span><br><span class="line"><span class="type">uint8_t</span> *NowRxBuffer=<span class="literal">NULL</span>;</span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> COUNTOF(_BUFFER_) (sizeof(_BUFFER_)/sizeof(*(_BUFFER_)))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen;  </span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer0[<span class="number">10</span>];  </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer1[<span class="number">10</span>]; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> WitchBuffer;  </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> *NowRxBuffer;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE  COUNTOF(RxBuffer0) <span class="comment">//自动更新数组大小</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>stm32f1xx_it.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>stm32f1xx_it.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN DMA1_Channel5_IRQn 0 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(__HAL_DMA_GET_FLAG(&amp;hdma_usart1_rx,DMA_FLAG_TC5)!= RESET)<span class="comment">//DMA接收完成标志</span></span><br><span class="line">&#123;</span><br><span class="line">	__HAL_DMA_CLEAR_FLAG(&amp;hdma_usart1_rx,DMA_FLAG_TC5);<span class="comment">//清除中断标志 </span></span><br><span class="line">	<span class="built_in">HAL_UART_DMAStop</span>(&amp;huart1); <span class="comment">//停止DMA传输</span></span><br><span class="line">	RxLen =  BUFFER_SIZE; <span class="comment">//定长度</span></span><br><span class="line">	<span class="keyword">if</span>(WitchBuffer==<span class="number">0</span>)<span class="comment">//双缓冲区切换</span></span><br><span class="line">	&#123;</span><br><span class="line">		 NowRxBuffer=RxBuffer0;</span><br><span class="line">		 <span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer1,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">		 WitchBuffer=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		NowRxBuffer=RxBuffer1;</span><br><span class="line">		<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer0,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">		WitchBuffer=<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	RxEndFlag = <span class="number">1</span>;	<span class="comment">//通知外部处理函数</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">/* USER CODE END DMA1_Channel5_IRQn 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h4 id="2-2-3-DMA-串口收发数据（接收数据不定长、单缓存区）"><a href="#2-2-3-DMA-串口收发数据（接收数据不定长、单缓存区）" class="headerlink" title="2.2.3 DMA 串口收发数据（接收数据不定长、单缓存区）"></a>2.2.3 DMA 串口收发数据（接收数据不定长、单缓存区）</h4><p><strong>程序功能</strong><br>当使用串口调试助手（sscom33.exe）向MCU发送不定长数据帧时，MCU通过DMA接收完一帧时回传到串口调试助手（sscom33.exe），其中DMA接收时只采用一个缓存区。</p>
+<p><strong>程序设计思路</strong></p>
+<ul>
+<li><p><strong>核心思想：</strong> </p>
+<ul>
+<li><p><u>使用串口空闲中断实现接收不定长数据</u>。对于不定长数据帧，每帧数据间的间隔时间可以理解为空闲时间，可以利用串口空闲中断来判断一次数据传输是否完成。需要注意的是，在STM32F10xxx中清除IDLE中断标志位的方法为调用函数&#96;__HAL_UART_CLEAR_IDLEFLAG&#96;&#96;，即：先读SR寄存器，再先读SR寄存器。详细请看《<strong>STM32中文参考手册</strong>》**25.6.1 状态寄存器(USART_SR)**。<br>  <img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%9A%E9%95%BF%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA1.png"></p>
+</li>
+<li><p>虽然是不定长数据接收，但是也需要知道所接收数据帧的最大长度，只有这样才能正确定义数据接收缓存区的大小。此外，需要获取每次接收数据的长度，可以通过函数<code>__HAL_DMA_GET_COUNTER</code>或直接读取<code>DMA_CNDTRx</code>寄存器来获得DMA当前接收空间剩余字节，然后已经接收的数据个数等于接收空间总大小减去接收空间剩余字节。</p>
+</li>
+</ul>
+</li>
+<li><p>程序启动后，等待串口空闲中断（UART_FLAG_IDLE置位），进入中断服务函数中，获取当前接收数据大小，重启下一次DMA接收，同时通过RxEndFlag标志接收完成；外部程序通过判断RxEndFlag置位，则开始执行外部数据处理程序（此处为使用DMA串口将接收数据回传），处理完成，清除接收数组和RxEndFlag。</p>
+</li>
+<li><p><strong>注意</strong>：测试时，使用串口调试助手（sscom33.exe）最小设置间隔1ms发送一次数据帧，数据帧大小可以不同，而外部数据处理程序（DMA串口数据回传）时间较之更短，所以我在处理完成后清除接收数组的操作不会影响到下一次的数据接收；如果外部数据处理程序耗时，需要进行数据缓存复制或通过双缓存区来处理，否则可能出现数据来不及处理就被覆盖的情况，或者出现数据处理过程和第二次接收调试进行，第二次接收数据被处理程序修改等问题。后文将会讲解和实现双缓存区的处理方式。</p>
+</li>
+</ul>
+<p><strong>具体配置</strong><br>在STM32CUBMX软件中的步骤和<code> 2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</code>相同，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;dma.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  <span class="built_in">HAL_Init</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  <span class="built_in">SystemClock_Config</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  <span class="built_in">MX_GPIO_Init</span>();</span><br><span class="line">  <span class="built_in">MX_DMA_Init</span>();</span><br><span class="line">  <span class="built_in">MX_USART1_UART_Init</span>();</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer,BUFFER_SIZE);<span class="comment">//打开DMA接收</span></span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		</span><br><span class="line">		 <span class="keyword">if</span>(RxEndFlag == <span class="number">1</span>)<span class="comment">//接收完成标志</span></span><br><span class="line">		 &#123;</span><br><span class="line">			 <span class="built_in">HAL_UART_Transmit_DMA</span>(&amp;huart1, (<span class="type">uint8_t</span> *)RxBuffer, RxLen);</span><br><span class="line">			 <span class="keyword">while</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_TC)!=SET);<span class="comment">//等待发送完成</span></span><br><span class="line">			 <span class="comment">//while(HAL_UART_GetState(&amp;huart1) == HAL_UART_STATE_BUSY_TX);//容易错，这种等待发送完成判断有问题</span></span><br><span class="line">			 <span class="built_in">memset</span>(RxBuffer,<span class="number">0</span>,RxLen);</span><br><span class="line">			 RxLen = <span class="number">0</span>;<span class="comment">//清除计数</span></span><br><span class="line">			 RxEndFlag = <span class="number">0</span>;<span class="comment">//清除接收结束标志位</span></span><br><span class="line">		 &#125;</span><br><span class="line">		</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen = <span class="number">0</span>;  <span class="comment">// 接收数据帧的长度</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag = <span class="number">0</span>; <span class="comment">// 接收数据帧的完成标志</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组</span></span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN USART1_MspInit 1 */</span></span><br><span class="line"></span><br><span class="line">__HAL_UART_ENABLE_IT(&amp;huart1, UART_IT_IDLE); <span class="comment">//使能IDLE中断</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END USART1_MspInit 1 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> COUNTOF(_BUFFER_) (sizeof(_BUFFER_)/sizeof(*(_BUFFER_)))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen;  </span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer[<span class="number">10</span>]; </span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE  COUNTOF(RxBuffer)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>stm32f1xx_it.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>stm32f1xx_it.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN USART1_IRQn 0 */</span></span><br><span class="line"><span class="type">uint32_t</span> temp;</span><br><span class="line"><span class="keyword">if</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_IDLE) != RESET)<span class="comment">//idle标志被置位</span></span><br><span class="line">&#123;</span><br><span class="line">	__HAL_UART_CLEAR_IDLEFLAG(&amp;huart1);<span class="comment">//清除标志位，这句和下面两句等效</span></span><br><span class="line">	<span class="comment">//temp = huart1.Instance-&gt;SR;  //清除状态寄存器SR,读取SR寄存器可以实现清除SR寄存器的功能</span></span><br><span class="line">	<span class="comment">//temp = huart1.Instance-&gt;DR; //读取数据寄存器中的数据</span></span><br><span class="line">	<span class="built_in">HAL_UART_DMAStop</span>(&amp;huart1); <span class="comment">//停止DMA传输</span></span><br><span class="line">	temp  =  __HAL_DMA_GET_COUNTER(&amp;hdma_usart1_rx);<span class="comment">//获取DMA中未传输的数据个数,这句和下面一句等效 </span></span><br><span class="line">  <span class="comment">//temp  = hdma_usart1_rx.Instance-&gt;NDTR;//读取NDTR寄存器，获取DMA中未传输的数据个数</span></span><br><span class="line">	RxLen =  BUFFER_SIZE - temp; <span class="comment">//总计数减去未传输的数据个数，得到已经接收的数据个数</span></span><br><span class="line">	</span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">	</span><br><span class="line">	RxEndFlag = <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* USER CODE END USART1_IRQn 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h4 id="2-2-4-DMA-串口收发数据（接收数据不定长、双缓存区）"><a href="#2-2-4-DMA-串口收发数据（接收数据不定长、双缓存区）" class="headerlink" title="2.2.4 DMA 串口收发数据（接收数据不定长、双缓存区）"></a>2.2.4 DMA 串口收发数据（接收数据不定长、双缓存区）</h4><p><strong>程序功能</strong><br>当使用串口调试助手（sscom33.exe）向MCU发送不定长数据帧时，MCU通过DMA接收完一帧时回传到串口调试助手（sscom33.exe），其中DMA接收时采用两个缓存区。</p>
+<p><strong>程序设计思路</strong></p>
+<ul>
+<li><strong>核心思想：</strong> 同上一节，接收不定长数据的核心思想是<u>使用DMA和串口空闲中断</u>。此外，通过函数<code>__HAL_DMA_GET_COUNTER</code>或直接读取<code>DMA_CNDTRx</code>寄存器来获得DMA当前接收空间剩余字节，然后已经接收的数据个数等于接收空间总大小减去接收空间剩余字节。</li>
+<li>程序启动后，等待串口空闲中断（UART_FLAG_IDLE置位），进入中断服务函数中，获取当前接收数据大小，使用指针NowRxBuffer指向当前接收缓存区，然后切换另一个接收缓存区，重启下一次DMA接收，同时通过RxEndFlag标志接收完成；外部程序通过判断RxEndFlag置位，则开始执行外部数据处理程序（此处为使用DMA串口将接收数据回传），处理的数据为NowRxBuffer指向的缓存区数据，处理完成，清除接收数组和RxEndFlag。</li>
+<li><strong>注意</strong>：测试时，使用串口调试助手（sscom33.exe）最小设置间隔1ms发送一次数据帧，数据帧大小可以不同，而外部数据处理程序（DMA串口数据回传）时间较之更短，所以我在处理完成后清除接收数组的操作不会影响到下一次的数据接收；如果外部数据处理程序耗时，使用双缓存区可以避免数据来不及处理就被覆盖，也能为处理数据留出更多地时间（指到下次传输完成）。</li>
+</ul>
+<p><strong>具体配置</strong><br>在STM32CUBMX软件中的步骤和<code> 2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</code>相同，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;dma.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  <span class="built_in">HAL_Init</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  <span class="built_in">SystemClock_Config</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  <span class="built_in">MX_GPIO_Init</span>();</span><br><span class="line">  <span class="built_in">MX_DMA_Init</span>();</span><br><span class="line">  <span class="built_in">MX_USART1_UART_Init</span>();</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">	<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer0,BUFFER_SIZE);<span class="comment">//打开DMA接收</span></span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		</span><br><span class="line">		 <span class="keyword">if</span>(RxEndFlag == <span class="number">1</span>)<span class="comment">//接收完成标志</span></span><br><span class="line">		 &#123;</span><br><span class="line">				<span class="built_in">HAL_UART_Transmit_DMA</span>(&amp;huart1, (<span class="type">uint8_t</span> *)NowRxBuffer, RxLen);</span><br><span class="line">				<span class="keyword">while</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_TC)!=SET);<span class="comment">//等待发送完成</span></span><br><span class="line">			  <span class="comment">//while(HAL_UART_GetState(&amp;huart1) == HAL_UART_STATE_BUSY_TX);//方式一，这种判断发送完成有问题</span></span><br><span class="line">				<span class="built_in">memset</span>(NowRxBuffer,<span class="number">0</span>,RxLen);</span><br><span class="line">				RxLen = <span class="number">0</span>;<span class="comment">//清除计数</span></span><br><span class="line">				RxEndFlag = <span class="number">0</span>;<span class="comment">//清除接收结束标志位</span></span><br><span class="line">		 &#125;</span><br><span class="line">		 </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen = <span class="number">0</span>;  <span class="comment">// 接收数据帧的长度</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag = <span class="number">0</span>; <span class="comment">// 接收数据帧的完成标志</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer[BUFFER_SIZE]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer0[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;;  <span class="comment">// 接收数据帧的缓存数组0</span></span><br><span class="line"><span class="type">uint8_t</span> RxBuffer1[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;; <span class="comment">// 接收数据帧的缓存数组1</span></span><br><span class="line"><span class="type">uint8_t</span> WitchBuffer=<span class="number">0</span>;</span><br><span class="line"><span class="type">uint8_t</span> *NowRxBuffer=<span class="literal">NULL</span>;</span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN USART1_MspInit 1 */</span></span><br><span class="line"></span><br><span class="line">__HAL_UART_ENABLE_IT(&amp;huart1, UART_IT_IDLE); <span class="comment">//使能IDLE中断</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END USART1_MspInit 1 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> COUNTOF(_BUFFER_) (sizeof(_BUFFER_)/sizeof(*(_BUFFER_)))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxLen;  </span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">uint8_t</span> RxEndFlag; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer0[<span class="number">10</span>];  </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> RxBuffer1[<span class="number">10</span>]; </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> WitchBuffer;  </span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> *NowRxBuffer;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFFER_SIZE  COUNTOF(RxBuffer0) <span class="comment">//自动更新数组大小</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>stm32f1xx_it.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>stm32f1xx_it.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN USART1_IRQn 0 */</span></span><br><span class="line"><span class="type">uint32_t</span> temp=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(__HAL_UART_GET_FLAG(&amp;huart1,UART_FLAG_IDLE) != RESET)<span class="comment">//idle标志被置位</span></span><br><span class="line">&#123;</span><br><span class="line">	__HAL_UART_CLEAR_IDLEFLAG(&amp;huart1);<span class="comment">//清除标志位，这句和下面两句等效</span></span><br><span class="line">	<span class="comment">//temp = huart1.Instance-&gt;SR;  //清除状态寄存器SR,读取SR寄存器可以实现清除SR寄存器的功能</span></span><br><span class="line">	<span class="comment">//temp = huart1.Instance-&gt;DR; //读取数据寄存器中的数据</span></span><br><span class="line">	</span><br><span class="line">	<span class="built_in">HAL_UART_DMAStop</span>(&amp;huart1); <span class="comment">//停止DMA传输</span></span><br><span class="line">	</span><br><span class="line">	temp  =  __HAL_DMA_GET_COUNTER(&amp;hdma_usart1_rx);<span class="comment">//获取DMA中未传输的数据个数,这句和下面一句等效 </span></span><br><span class="line">  <span class="comment">//temp  = hdma_usart1_rx.Instance-&gt;NDTR;//读取NDTR寄存器，获取DMA中未传输的数据个数</span></span><br><span class="line">	</span><br><span class="line">	RxLen =  BUFFER_SIZE - temp; <span class="comment">//总计数减去未传输的数据个数，得到已经接收的数据个数</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(WitchBuffer==<span class="number">0</span>)<span class="comment">//双缓冲区切换</span></span><br><span class="line">	&#123;</span><br><span class="line">		 NowRxBuffer=RxBuffer0;</span><br><span class="line">		 <span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer1,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">		 WitchBuffer=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		NowRxBuffer=RxBuffer1;</span><br><span class="line">		<span class="built_in">HAL_UART_Receive_DMA</span>(&amp;huart1,RxBuffer0,BUFFER_SIZE);<span class="comment">//重新打开DMA接收</span></span><br><span class="line">		WitchBuffer=<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	RxEndFlag = <span class="number">1</span>;	<span class="comment">//通知外部处理函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* USER CODE END USART1_IRQn 0 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h4 id="2-2-5-DMA-串口收发数据（程序测试、验证）"><a href="#2-2-5-DMA-串口收发数据（程序测试、验证）" class="headerlink" title="2.2.5 DMA 串口收发数据（程序测试、验证）"></a>2.2.5 DMA 串口收发数据（程序测试、验证）</h4><p>下面以<code> 2.2.4 DMA 串口收发数据（接收数据不定长、双缓存区）</code>程序测试、验证为例，其他程序测试类似，串口调试助手采用sscom33.exe。<br>MCU下载程序，连接串口，设置发送参数和数据，选择定时发送模式，定时发送时间为1ms。下面两图为数据帧长度分别为5和10时的测试结果图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%811.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%812.png"><br>此外，将程序中的波特率修改为256000也没问题。。。</p>
+<p><strong>文中所有的程序工程请见</strong>：<br>。。。。。。。。。。</p>
+<h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/as480133937/article/details/104827639?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522163811065316780265486926%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=163811065316780265486926&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-104827639.pc_search_result_cache&utm_term=stm32cubmx+dma&spm=1018.2226.3001.4187">【STM32】HAL库 STM32CubeMX教程十一—DMA (串口DMA发送接收)</a><br>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/as480133937/article/details/105013368">STM32 HAL CubeMX 串口IDLE接收空闲中断+DMA</a><br>3、<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44524484/article/details/106029682">STM32 | 串口DMA很难？其实就是如此简单！（超详细、附代码）</a></p>
+<p>That’s all.Check it.</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                    <a class="donate" href="javascript:;"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://zhekunren.github.io/archives/1d6f82e9.html",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://zhekunren.github.io/archives/1d6f82e9.html";
+            const title         = "「【STM32】STM32CubeMX HAL库 DMA[1]初探」";
+            const excerpt       = `0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/DMA/" rel="tag">DMA</a>, <a class="tag-none-link" href="/tags/stm32/" rel="tag">stm32</a>, <a class="tag-none-link" href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-01-23</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" RTX_RTOS之02-CMSIS_RTOS2_Reference自译中文版" href="/archives/9c7b2d17.html">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" FreeRTOS之01-简介及Cortex-M3上的移植" href="/archives/4ec73d2.html">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="disqus_thread" class="post-comments lazy-load"></div>
+
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://zhekunren.github.io/archives/1d6f82e9.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'archives/1d6f82e9.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    var load_comm = () => {
+        if (typeof DISQUS === 'undefined') {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://zhekunblog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        } else {
+            DISQUS.reset({
+                reload: true,
+                config: function () {  
+                    this.page.url = 'https://zhekunren.github.io/archives/1d6f82e9.html';  // Replace PAGE_URL with your page's canonical URL variable
+                    this.page.identifier = 'archives/1d6f82e9.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                }
+            });
+        }
+    };
+    
+</script>
+<script async id="dsq-count-scr" src="//zhekunblog.disqus.com/count.js"></script>
+
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <!-- <div class="photo-background"></div> --> <!-- 删除头像处banner图片，将这行代码替换成下一行 delete by zhekun-->
+    <div style="height: 75px;"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/avatar2.jpg" />
+        </div>
+    </div>
+    <!-- <div class="textwidget">
+        <p class="text-center">与其向往，不如出发</p> 
+    </div> -->
+    <!-- 重定义about界面，将这行代码替换成下一行 delete by zhekun-->
+    <div><p style="margin-top:10px;margin-bottom:0;text-align:center;font-weight:400;font-size:25px;line-height:1.5;">zhekunのblog</p><p style="margin-top:0;margin-bottom:0;text-align:center;font-size:15px;line-height:1.5;">与其向往，不如出发</p><p style="margin-top:0;text-align:center;font-size:15px;line-height:1.5;"><i class="fa fa-map-marker"></i><span>中国●四川</span></p></div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                52
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                20
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E5%BC%95%E8%A8%80"><span class="toc-text">0 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-DMA%E7%AE%80%E4%BB%8B"><span class="toc-text">1 DMA简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-DMA%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="toc-text">1.1 DMA功能描述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-1-DMA%E8%AF%B7%E6%B1%82"><span class="toc-text">1.1.1 DMA请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-2-%E9%80%9A%E9%81%93"><span class="toc-text">1.1.2 通道</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-3-%E4%BB%B2%E8%A3%81%E5%99%A8"><span class="toc-text">1.1.3 仲裁器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-DMA%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-text">1.2 DMA寄存器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-DMA%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B%E7%A8%8B%E5%BA%8F%EF%BC%88HAL%E5%BA%93%EF%BC%89"><span class="toc-text">2 DMA应用实例程序（HAL库）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-DMA-%E5%AD%98%E5%82%A8%E5%99%A8%E5%88%B0%E5%AD%98%E5%82%A8%E5%99%A8%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93-MEM-TO-MEM"><span class="toc-text">2.1 DMA 存储器到存储器数据传输(MEM_TO_MEM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE"><span class="toc-text">2.2 DMA 串口收发数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E3%80%81%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-text">2.2.1 DMA 串口收发数据（接收数据定长、单缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E5%AE%9A%E9%95%BF%E3%80%81%E5%8F%8C%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-text">2.2.2 DMA 串口收发数据（接收数据定长、双缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%9A%E9%95%BF%E3%80%81%E5%8D%95%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-text">2.2.3 DMA 串口收发数据（接收数据不定长、单缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%9A%E9%95%BF%E3%80%81%E5%8F%8C%E7%BC%93%E5%AD%98%E5%8C%BA%EF%BC%89"><span class="toc-text">2.2.4 DMA 串口收发数据（接收数据不定长、双缓存区）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-5-DMA-%E4%B8%B2%E5%8F%A3%E6%94%B6%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E3%80%81%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="toc-text">2.2.5 DMA 串口收发数据（程序测试、验证）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-text">相关参考</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/">EOS-RTOS</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/FreeRTOS/">FreeRTOS</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/RTX/">RTX</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/">求职笔记</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/">生活日常</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/">影音美图</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/">软件工具</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/">Hexo</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/">安装破解</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a><span class="category-list-count">1</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/C-Cpp/" style="font-size: 0.62em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.64em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.62em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.73em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/RTOS/" style="font-size: 0.76em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.64em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.69em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.62em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.71em;">hexo</a> <a href="/tags/install/" style="font-size: 0.64em;">install</a> <a href="/tags/life/" style="font-size: 0.62em;">life</a> <a href="/tags/movies/" style="font-size: 0.62em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a> <a href="/tags/notes/" style="font-size: 0.8em;">notes</a> <a href="/tags/stm32/" style="font-size: 0.78em;">stm32</a> <a href="/tags/tools/" style="font-size: 0.67em;">tools</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/428d3437.html"><i class="fa  fa-book"></i> 添加站长统计</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/c4a4928.html"><i class="fa  fa-book"></i> 常用在线工具（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/fb0c4ff4.html"><i class="fa  fa-book"></i> 影音美图畅享（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/9986db6e.html"><i class="fa  fa-book"></i> 追过的剧和电影（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/2f4694b.html"><i class="fa  fa-book"></i> Hexo Blog Writing Tips</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a title="mail" href="mailto:mailto:zhekunren@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a title="github" target="_blank" rel="nofollow" href="https://github.com/zhekunren"><i class="fa fa-github"></i></a></li>
+                        <li><a title="gitee" target="_blank" rel="nofollow" href="https://gitee.com/zhekunren"><i class="fa fa-github-alt"></i></a></li>
+                        <li><a title="rss" target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 zhekunのblog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <!-- <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by zhekun.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div> -->
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="7230595307"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+    <script defer src="https://unpkg.com/layui-src@2.5.5/dist/layui.all.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+<script type="text/javascript">document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1280860084'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280860084' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

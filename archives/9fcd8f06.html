@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
+  <title>【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区 | zhekunのblog</title>
+  <meta name="author" content="zhekun" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="DMA, FIFO, stm32, 嵌入式, 数据结构" />
+  
+  <meta name="description" content="1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。 顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区">
+<meta property="og:url" content="https://zhekunren.github.io/archives/9fcd8f06.html">
+<meta property="og:site_name" content="zhekunのblog">
+<meta property="og:description" content="1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。 顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhekunren.github.io/archives/9fcd8f06.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_4.jpg">
+<meta property="article:published_time" content="2021-12-09T08:37:51.000Z">
+<meta property="article:modified_time" content="2022-01-23T04:25:33.000Z">
+<meta property="article:author" content="zhekun">
+<meta property="article:tag" content="stm32">
+<meta property="article:tag" content="DMA">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="FIFO">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhekunren.github.io/archives/9fcd8f06.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_4.jpg">
+<meta name="twitter:site" content="@null">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+      <meta name="google-site-verification" content="3MUjsxLLUvsNMRZFuKgKTuODWqF7iUJhcAaKhiMrfGc" />
+    
+    
+      <meta name="baidu-site-verification" content="code-xZCR5R9r7E" />
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner_1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg_1.webp');
+        }
+      }
+    
+  </style>
+  
+  <!-- Google adsense -->
+  
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8125084240960232" crossorigin="anonymous"></script>
+    
+  <meta name="generator" content="Hexo 6.0.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-file"></i>文库</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/archives/"><i class="fa fa-archive"></i>归档</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/categories/"><i class="fa fa-folder-open"></i>分类</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                                    
+                                        <li><a href="/about"><i class="fa fa-user"></i>关于</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>更多</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://new.cnzz.com/v1/login.php?siteid=1280860084"><i class="fa fa-bar-chart"></i>访客</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://travellings.link"><i class="fa fa-subway"></i>开往</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">zhekunのblog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <!-- <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>zhekunのblog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div> --> 
+            <!-- 
+                删除banner图片，delete by zhekun，此外替换以下文件中的"320px"为"50px"，共8处。
+                themes\kratos-rebirth\source\css\kratosr.min.css,
+                themes\kratos-rebirth\source\maps\kratosr.min.css.map,
+                themes\kratos-rebirth\src\scss\kratosr.scss
+            -->
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-12-09</li>
+                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~27.26K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                本文最后编辑于 <time datetime="1642911933000"></time> 前，其中的内容可能需要更新。
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-KFIFO"><span class="toc-number">2.</span> <span class="toc-text">2 KFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-KFIFO%E7%A7%BB%E6%A4%8D"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 KFIFO移植</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-KFIFO%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3%E5%8F%8A%E8%A1%A5%E5%85%85"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 KFIFO代码的一些理解及补充</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%95%B4%E6%95%B0%E7%9A%84%E7%8E%AF%E5%9B%9E%E7%89%B9%E6%80%A7"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 整数的环回特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-min%E5%AE%8F%E6%88%96%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E7%9A%84%E8%AE%A8%E8%AE%BA"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2.2 min宏或内联函数的讨论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-%E5%BC%80%E5%85%B3%E5%85%A8%E5%B1%80%E4%B8%AD%E6%96%AD%E3%80%81BUG-ON%E5%AE%8F"><span class="toc-number">2.2.3.</span> <span class="toc-text">2.2.3 开关全局中断、BUG_ON宏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-kfifo%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.2.4.</span> <span class="toc-text">2.2.4 kfifo源码分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%95"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 移植stm32测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-LWRB"><span class="toc-number">3.</span> <span class="toc-text">3 LWRB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%A7%BB%E6%A4%8Dstm32%E5%8F%8A%E6%B5%8B%E8%AF%95"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 移植stm32及测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">相关参考</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>队列的基础知识和介绍参考<a href="/archives/48b41a64.html">求职笔记之数据结构与算法04_栈和队列</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiejiemcu/article/details/80563422">STM32进阶之串口环形缓冲区实现</a>。</p>
+<p>顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指针指向环形缓冲区中可读的数据，尾指针指向环形缓冲区中可写的缓冲空间。</p>
+<p>环形FIFO缓冲区本质是“生产者消费者”模型，生产者以某一速度存入数据，消费者以某一速度取出数据，为了保证两者的同步，需要使用环形缓冲区。比如在stm32串口接收数据的速度大于数据的处理速度，来不及处理的数据会被覆盖，造成数据丢包现象，此时可以引入环形缓冲区缓存未来得及处理的数据。此外，当需要接收数据量较大时，不能存储所有数据，也可以采用环形缓冲区。</p>
+<p>注意：生产者和消费者的速度不用时刻一致，但总体的平均速度必须相等；如果消费（数据处理）效率过低，导致生产（数据接收）过剩，从而覆盖未读出的数据，导致出错，此时需增加环形缓冲区内存大小或者优化代码效率；在多线程访问时，需要采用互斥机制保证数据安全。</p>
+<h2 id="2-KFIFO"><a href="#2-KFIFO" class="headerlink" title="2 KFIFO"></a>2 KFIFO</h2><p>Linux中的kfifo “其形也，翩若惊鸿，婉若游龙”，简洁、优雅、高效。“它山之石可以攻玉”，Linux内核源码中有很多鬼斧神工的代码和框架，值得我们仔细琢磨，好好分析，进而写出“精、巧”的程序。</p>
+<h3 id="2-1-KFIFO移植"><a href="#2-1-KFIFO移植" class="headerlink" title="2.1 KFIFO移植"></a>2.1 KFIFO移植</h3><p>本文kfifo.c和kfifo.h复制于linux-2.6.24.y内核，对应路径分别为<a target="_blank" rel="noopener" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/kfifo.h?h=linux-2.6.24.y">root&#x2F;include&#x2F;linux&#x2F;kfifo.h</a>、<a target="_blank" rel="noopener" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/kernel/kfifo.c?h=linux-2.6.24.y">root&#x2F;kernel&#x2F;kfifo.c</a>，经过了以下几个修改：<br>① 删除或注释掉无关的或不必要的代码，如对内核头文件的引用，smp_rmb()函数等；<br>② 重新实现了某些宏或函数，比如函数min，宏is_power_of_2(n)，BUG_ON(x)等。此外，将函数spin_lock_irqsave和spin_unlock_irqrestore进行改写lock_irqsave和unlock_irqrestore，实现STM32的开中断、关中断，用以保护FIFO的读写索引。</p>
+<p>移植后的kfifo.c和kfifo.h如下，代码的分析请看注释和后面的补充。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>kfifo.c和kfifo.h</span></div>
+    <div class="xContent"><div class="inner">
+        <p>kfifo.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _LINUX_KFIFO_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _LINUX_KFIFO_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code need to change. CODE BEGIN*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stm32f1xx_hal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __USE__CLZ              1  <span class="comment">//是否采用 STM32 硬件提供的计算前导零指令 CLZ</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configPRIO_BITS         2 <span class="comment">// 此宏用来设置 MCU 使用几位优先级（抢占优先级）</span></span></span><br><span class="line">																	<span class="comment">// 比如FreeRTOS中优先级选组4，4 bits for pre-emption priority，0 bits for subpriority，此时设置为4</span></span><br><span class="line">																	<span class="comment">// 在本程序中，因为配置为2 bits for pre-emption priority，2 bits for subpriority，故设置为2</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 1   <span class="comment">// 此宏用来设置系统可管理的最大优先级，也就是高于此优先级的不能被管理（屏蔽）。</span></span></span><br><span class="line">																												 <span class="comment">// 根据手册可知，无论把BASEPRI设置为多少，都无法屏蔽主优先级为0的中断。</span></span><br><span class="line">																												 <span class="comment">// 根据自己需求设置，此处设置为1</span></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code need to change. CODE END*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code don&#x27;t need to change. CODE BEGIN*/</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">min</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x,<span class="type">unsigned</span> <span class="type">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> __min1=x,__min2 = y;</span><br><span class="line">	<span class="keyword">return</span> __min1 &lt; __min2 ? __min1: __min2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> is_power_of_2(n)         (n != 0 &amp;&amp; ((n &amp; (n - 1)) == 0)) <span class="comment">//为2的次幂,值为1</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STR(x)  VAL(x)  </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VAL(x)  #x </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> kBUG_ON(char)  printf(<span class="string">&quot;BUG_ON Error:%s\r\n&quot;</span>,char)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUG_ON(x) ((x)? 0 :kBUG_ON(__FILE__ <span class="string">&quot;:&quot;</span> STR(__LINE__) <span class="string">&quot; &quot;</span> #x<span class="string">&quot;\n&quot;</span> ))</span></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code don&#x27;t need to change. CODE END*/</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">kfifo</span> &#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> *buffer;	<span class="comment">/* the buffer holding the data */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> size;	<span class="comment">/* the size of the allocated buffer */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> in;	<span class="comment">/* data is added at offset (in % size) */</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> out;	<span class="comment">/* data is extracted from off. (out % size) */</span></span><br><span class="line"><span class="comment">//	spinlock_t *lock;	/* protects concurrent modifications */ //lock主要保证任何时刻读写互斥访问，stm32只有一个核心，所以不需要</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">struct</span> <span class="title class_">kfifo</span> *<span class="built_in">kfifo_init</span>(<span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> size);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">struct</span> <span class="title class_">kfifo</span> *<span class="built_in">kfifo_alloc</span>(<span class="type">unsigned</span> <span class="type">int</span> size);</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">kfifo_free</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span>;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">unsigned</span> <span class="type">int</span> __kfifo_put(<span class="keyword">struct</span> kfifo *fifo,</span><br><span class="line">				<span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len);</span><br><span class="line"><span class="keyword">extern</span> <span class="type">unsigned</span> <span class="type">int</span> __kfifo_get(<span class="keyword">struct</span> kfifo *fifo,</span><br><span class="line">				<span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * __kfifo_reset - removes the entire FIFO contents, no locking version</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be emptied.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> __kfifo_reset(<span class="keyword">struct</span> kfifo *fifo)</span><br><span class="line">&#123;</span><br><span class="line">	fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * __kfifo_len - returns the number of bytes available in the FIFO, no locking version</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> __kfifo_len(<span class="keyword">struct</span> kfifo *fifo)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> fifo-&gt;in - fifo-&gt;out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code don&#x27;t need to change. CODE BEGIN*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portFORCE_INLINE    __forceinline</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* !!!! configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to zero !!!!*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY &lt;&lt; (8 - configPRIO_BITS) )</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portDISABLE_INTERRUPTS()				vPortRaiseBASEPRI()</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portENABLE_INTERRUPTS()					vPortSetBASEPRI( 0 )</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> portFORCE_INLINE <span class="type">void</span> <span class="title">vPortSetBASEPRI</span><span class="params">( <span class="type">uint32_t</span> ulBASEPRI )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* Barrier instructions are not used as this function is only used to</span></span><br><span class="line"><span class="comment">		lower the BASEPRI value. */</span></span><br><span class="line">		msr basepri, ulBASEPRI</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> portFORCE_INLINE <span class="type">void</span> <span class="title">vPortRaiseBASEPRI</span><span class="params">( <span class="type">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="type">uint32_t</span> ulNewBASEPRI = configMAX_SYSCALL_INTERRUPT_PRIORITY;</span><br><span class="line"></span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* Set BASEPRI to the max syscall priority to effect a critical</span></span><br><span class="line"><span class="comment">		section. */</span></span><br><span class="line">		msr basepri, ulNewBASEPRI</span><br><span class="line">		dsb</span><br><span class="line">		isb</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> lock_irqsave()           portDISABLE_INTERRUPTS()</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> unlock_irqrestore()      portENABLE_INTERRUPTS()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Code is added by eric,reference from FreeRTOS kernel source code.This code don&#x27;t need to change. CODE END*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_reset - removes the entire FIFO contents</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be emptied.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title">kfifo_reset</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">lock_irqsave</span>();</span><br><span class="line"></span><br><span class="line">	__kfifo_reset(fifo);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">unlock_irqrestore</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_put - puts some data into the FIFO</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> * @buffer: the data to be added.</span></span><br><span class="line"><span class="comment"> * @len: the length of the data to be added.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function copies at most @len bytes from the @buffer into</span></span><br><span class="line"><span class="comment"> * the FIFO depending on the free space, and returns the number of</span></span><br><span class="line"><span class="comment"> * bytes copied.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">kfifo_put</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo,</span></span></span><br><span class="line"><span class="params"><span class="function">				     <span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">lock_irqsave</span>();</span><br><span class="line"></span><br><span class="line">	ret = __kfifo_put(fifo, buffer, len);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">unlock_irqrestore</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_get - gets some data from the FIFO</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> * @buffer: where the data must be copied.</span></span><br><span class="line"><span class="comment"> * @len: the size of the destination buffer.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function copies at most @len bytes from the FIFO into the</span></span><br><span class="line"><span class="comment"> * @buffer and returns the number of copied bytes.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">kfifo_get</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo,</span></span></span><br><span class="line"><span class="params"><span class="function">				     <span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">lock_irqsave</span>();</span><br><span class="line"></span><br><span class="line">	ret = __kfifo_get(fifo, buffer, len);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * optimization: if the FIFO is empty, set the indices to 0</span></span><br><span class="line"><span class="comment">	 * so we don&#x27;t wrap the next time</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">if</span> (fifo-&gt;in == fifo-&gt;out)</span><br><span class="line">		fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">unlock_irqrestore</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_len - returns the number of bytes available in the FIFO</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">kfifo_len</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">lock_irqsave</span>();</span><br><span class="line"></span><br><span class="line">	ret = __kfifo_len(fifo);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">unlock_irqrestore</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>kfifo.c</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kfifo.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** linux-2.6.24.y **/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __USE__CLZ</span></span><br><span class="line">	<span class="comment">// https://stackoverflow.com/questions/4398711/round-to-the-nearest-power-of-two</span></span><br><span class="line">	<span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">roundup_pow_of_two</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> v)</span> </span>&#123;</span><br><span class="line">			v--;</span><br><span class="line">			v |= v &gt;&gt; <span class="number">1</span>;</span><br><span class="line">			v |= v &gt;&gt; <span class="number">2</span>;</span><br><span class="line">			v |= v &gt;&gt; <span class="number">4</span>;</span><br><span class="line">			v |= v &gt;&gt; <span class="number">8</span>;</span><br><span class="line">			v |= v &gt;&gt; <span class="number">16</span>;</span><br><span class="line">			v++;</span><br><span class="line">			<span class="keyword">return</span> v;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// https://blog.csdn.net/dreamispossible/article/details/91162847</span></span><br><span class="line">	<span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">rounddown_pow_of_two</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">		n|=n&gt;&gt;<span class="number">1</span>; n|=n&gt;&gt;<span class="number">2</span>; n|=n&gt;&gt;<span class="number">4</span>; n|=n&gt;&gt;<span class="number">8</span>; n|=n&gt;&gt;<span class="number">16</span>;</span><br><span class="line">		<span class="keyword">return</span> (n+<span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	<span class="comment">// http://blog.csdn.net/zhzht19861011/article/details/51418383</span></span><br><span class="line">	<span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">roundup_pow_of_two</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> date_roundup_pow_of_two )</span></span></span><br><span class="line"><span class="function">	</span>&#123;            </span><br><span class="line">			<span class="comment">/* 这里采用 STM32 硬件提供的计算前导零指令 CLZ</span></span><br><span class="line"><span class="comment">			 * 举个例子，假如变量date_roundup_pow_of_two 0x09</span></span><br><span class="line"><span class="comment">			 *（二进制为：0000 0000 0000 0000 0000 0000 0000 1001）, 即bit3和bit0为1</span></span><br><span class="line"><span class="comment">			 * 则__clz( (date_roundup_pow_of_two)的值为28,即最高位1 前面有28个0,32-28 =3 代表最高位1 的 位置</span></span><br><span class="line"><span class="comment">			 * 31UL 表示 无符号 int 数字 31，否则默认为 有符号 int 数字 31</span></span><br><span class="line"><span class="comment">			 */</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> ( <span class="number">1UL</span> &lt;&lt; ( <span class="number">32UL</span> - ( <span class="type">unsigned</span> <span class="type">int</span> ) __clz( (date_roundup_pow_of_two) ) ) );</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_init - allocates a new FIFO using a preallocated buffer</span></span><br><span class="line"><span class="comment"> * @buffer: the preallocated buffer to be used.</span></span><br><span class="line"><span class="comment"> * @size: the size of the internal buffer, this have to be a power of 2.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Do NOT pass the kfifo to kfifo_free() after use! Simply free the</span></span><br><span class="line"><span class="comment"> * &amp;struct kfifo with free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">kfifo</span> *<span class="built_in">kfifo_init</span>(<span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> size)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">kfifo</span> *fifo;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* size must be a power of 2 */</span></span><br><span class="line">	<span class="built_in">BUG_ON</span>(<span class="built_in">is_power_of_2</span>(size));</span><br><span class="line"></span><br><span class="line">	fifo=(<span class="keyword">struct</span> kfifo *) <span class="built_in">malloc</span>(<span class="built_in">sizeof</span> (<span class="keyword">struct</span> kfifo));</span><br><span class="line">	<span class="keyword">if</span>(!fifo)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	</span><br><span class="line">	fifo-&gt;buffer = buffer;</span><br><span class="line">	fifo-&gt;size = size;</span><br><span class="line">	fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> fifo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_alloc - allocates a new FIFO and its internal buffer</span></span><br><span class="line"><span class="comment"> * @size: the size of the internal buffer to be allocated.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The size will be rounded-up to a power of 2.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">kfifo</span> *<span class="built_in">kfifo_alloc</span>(<span class="type">unsigned</span> <span class="type">int</span> size)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> *buffer;</span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">kfifo</span> *ret;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * round up to the next power of 2, since our &#x27;let the indices</span></span><br><span class="line"><span class="comment">	 * wrap&#x27; tachnique works only in this case.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">is_power_of_2</span>(size)) &#123;</span><br><span class="line">		<span class="built_in">BUG_ON</span>(!(size &gt; <span class="number">0x80000000</span>));</span><br><span class="line">		size = <span class="built_in">roundup_pow_of_two</span>(size);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	buffer = (<span class="type">unsigned</span> <span class="type">char</span>*) <span class="built_in">malloc</span>(size);</span><br><span class="line">	<span class="keyword">if</span> (!buffer)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>; </span><br><span class="line">	</span><br><span class="line">	ret=(<span class="keyword">struct</span> kfifo *) <span class="built_in">malloc</span>(<span class="built_in">sizeof</span> (<span class="keyword">struct</span> kfifo));</span><br><span class="line"></span><br><span class="line">	ret = <span class="built_in">kfifo_init</span>(buffer, size);</span><br><span class="line">	<span class="keyword">if</span> (!ret)</span><br><span class="line">		<span class="built_in">free</span>(buffer);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kfifo_free - frees the FIFO</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be freed.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">kfifo_free</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">free</span>(fifo-&gt;buffer);</span><br><span class="line">	<span class="built_in">free</span>(fifo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * __kfifo_put - puts some data into the FIFO, no locking version</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> * @buffer: the data to be added.</span></span><br><span class="line"><span class="comment"> * @len: the length of the data to be added.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function copies at most @len bytes from the @buffer into</span></span><br><span class="line"><span class="comment"> * the FIFO depending on the free space, and returns the number of</span></span><br><span class="line"><span class="comment"> * bytes copied.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Note that with only one concurrent reader and one concurrent</span></span><br><span class="line"><span class="comment"> * writer, you don&#x27;t need extra locking to use these functions.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __kfifo_put(<span class="keyword">struct</span> kfifo *fifo,</span><br><span class="line">			 <span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> l;</span><br><span class="line"></span><br><span class="line">	len = <span class="built_in">min</span>(len, fifo-&gt;size - fifo-&gt;in + fifo-&gt;out);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Ensure that we sample the fifo-&gt;out index -before- we</span></span><br><span class="line"><span class="comment">	 * start putting bytes into the kfifo.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	smp_mb();</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* first put the data starting from fifo-&gt;in to buffer end */</span></span><br><span class="line">	l = <span class="built_in">min</span>(len, fifo-&gt;size - (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)));</span><br><span class="line">	<span class="built_in">memcpy</span>(fifo-&gt;buffer + (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)), buffer, l);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* then put the rest (if any) at the beginning of the buffer */</span></span><br><span class="line">	<span class="built_in">memcpy</span>(fifo-&gt;buffer, buffer + l, len - l);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Ensure that we add the bytes to the kfifo -before-</span></span><br><span class="line"><span class="comment">	 * we update the fifo-&gt;in index.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	smp_wmb();</span></span><br><span class="line"></span><br><span class="line">	fifo-&gt;in += len;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * __kfifo_get - gets some data from the FIFO, no locking version</span></span><br><span class="line"><span class="comment"> * @fifo: the fifo to be used.</span></span><br><span class="line"><span class="comment"> * @buffer: where the data must be copied.</span></span><br><span class="line"><span class="comment"> * @len: the size of the destination buffer.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function copies at most @len bytes from the FIFO into the</span></span><br><span class="line"><span class="comment"> * @buffer and returns the number of copied bytes.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Note that with only one concurrent reader and one concurrent</span></span><br><span class="line"><span class="comment"> * writer, you don&#x27;t need extra locking to use these functions.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __kfifo_get(<span class="keyword">struct</span> kfifo *fifo,</span><br><span class="line">			 <span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> l;</span><br><span class="line"></span><br><span class="line">	len = <span class="built_in">min</span>(len, fifo-&gt;in - fifo-&gt;out);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Ensure that we sample the fifo-&gt;in index -before- we</span></span><br><span class="line"><span class="comment">	 * start removing bytes from the kfifo.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	smp_rmb();</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* first get the data from fifo-&gt;out until the end of the buffer */</span></span><br><span class="line">	l = <span class="built_in">min</span>(len, fifo-&gt;size - (fifo-&gt;out &amp; (fifo-&gt;size - <span class="number">1</span>)));</span><br><span class="line">	<span class="built_in">memcpy</span>(buffer, fifo-&gt;buffer + (fifo-&gt;out &amp; (fifo-&gt;size - <span class="number">1</span>)), l);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* then get the rest (if any) from the beginning of the buffer */</span></span><br><span class="line">	<span class="built_in">memcpy</span>(buffer + l, fifo-&gt;buffer, len - l);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Ensure that we remove the bytes from the kfifo -before-</span></span><br><span class="line"><span class="comment">	 * we update the fifo-&gt;out index.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	smp_mb();</span></span><br><span class="line"></span><br><span class="line">	fifo-&gt;out += len;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>API接口函数测试：</p>
+<ul>
+<li><p>创建。创建 一个 128字节的 fifo buff</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">kfifo</span> *test_kifo_buffer=<span class="literal">NULL</span>;<span class="comment">//创建一个 KFIFO 的结构体 指针</span></span><br><span class="line"><span class="type">uint8_t</span> test_fifo_write_buff[<span class="number">20</span>]=<span class="string">&quot;He is sbGGBER!!!!!!&quot;</span>;<span class="comment">//这个字符串加上`\0`刚好存满</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> 1    </span></span><br><span class="line">	<span class="comment">//方式1：allocates a new FIFO using a preallocated buffer</span></span><br><span class="line">	<span class="type">uint8_t</span> test_f[<span class="number">128</span>];</span><br><span class="line">	test_kifo_buffer=<span class="built_in">kfifo_init</span>(test_f,<span class="built_in">sizeof</span>(test_f));</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	<span class="comment">//方式2：allocates a new FIFO and its internal buffer</span></span><br><span class="line">	test_kifo_buffer=<span class="built_in">kfifo_alloc</span>(<span class="number">100</span>); <span class="comment">//如果分配100，为了方便计算，实际会分配128字节的空间。</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>				</span></span><br><span class="line">	<span class="keyword">if</span>( !test_kifo_buffer )</span><br><span class="line">					<span class="built_in">printf</span>(<span class="string">&quot;KFIFO 结构体 test_kifo_buffer 没有创建成功！\r\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>存取操作。</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> 1</span></span><br><span class="line">	<span class="comment">// 方式1：no locking version</span></span><br><span class="line">	write_counter=__kfifo_put(test_kifo_buffer, test_fifo_write_buff, <span class="number">20</span> );</span><br><span class="line">	<span class="keyword">if</span>(write_counter!=<span class="number">20</span>)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\r\n发送10个字节写入到KFIFO结构体test_kifo_buffer失败,写入个数是:%d.\r\n&quot;</span>,write_counter);</span><br><span class="line">	read_counter=__kfifo_get(test_kifo_buffer, test_fifo_read_buff,<span class="number">14</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	<span class="comment">// 方式2：locking version</span></span><br><span class="line">	write_counter=<span class="built_in">kfifo_put</span>(test_kifo_buffer, test_fifo_write_buff, <span class="number">20</span> );</span><br><span class="line">	<span class="keyword">if</span>(write_counter!=<span class="number">20</span>)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;\r\n发送10个字节写入到KFIFO结构体test_kifo_buffer失败,写入个数是:%d.\r\n&quot;</span>,write_counter);</span><br><span class="line">	read_counter=<span class="built_in">kfifo_get</span>(test_kifo_buffer, test_fifo_read_buff,<span class="number">14</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;从test_kifo_buffer缓冲区读取的数据是 %s ,读出的个数是 %d .\r\n&quot;</span>,test_fifo_read_buff,read_counter);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;test_kifo_buffer-&gt;size:%d,test_kifo_buffer-&gt;out:%d,test_kifo_buffer-&gt;in:%d.\r\n&quot;</span>,test_kifo_buffer-&gt;size,test_kifo_buffer-&gt;out,test_kifo_buffer-&gt;in);</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<h3 id="2-2-KFIFO代码的一些理解及补充"><a href="#2-2-KFIFO代码的一些理解及补充" class="headerlink" title="2.2 KFIFO代码的一些理解及补充"></a>2.2 KFIFO代码的一些理解及补充</h3><h4 id="2-2-1-整数的环回特性"><a href="#2-2-1-整数的环回特性" class="headerlink" title="2.2.1 整数的环回特性"></a>2.2.1 整数的环回特性</h4><p>这部分内容参考自<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31073871/article/details/90705364">【利用整数的环回特性打造高效计时器、补码反码、负数的内存布局】</a>。其实，看到在标题中的“整数环回”，我的脑海中第一时间浮现的时这张图，来自于中文版《C++ Primer Plus（第六版）》，这幅图也是对这一特性很直观的解释。<br> <img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-整数的环回特性.jpg" width = "500" height = "750" alt="图片名称" align=center /><br>对于上图，假设有类型int16_t的变量sam和uint16_t类型的变量sue都设置为32767&#x3D;0x7fff，然后都加1，即0x7fff+0x1&#x3D;0x8000，sam为-32768，sue为32768；将sam和sue都设置为0，然后都减1，即0x0000-0x1&#x3D;0xffff，sam为-1（补码的补码为原码，0xffff的补码为0x8001），sue为65535。</p>
+<p>负数在计算机中以补码的形式存储，补码是在其原码的基础上， 符号位不变， 其余各位取反后+1，即在反码的基础上+1（补码的计算过程看<a href="/archives/b80a3edc.html">求职笔记–嵌入式知识点01_C&amp;Cpp（1）–C语言知识笔记</a> <code>2.22 整数、小数与二进制间转换</code>），且满足补码的补码为原码。</p>
+<p>根据上面分析，假设有uint16_t类型的变量sue，则有<br>① <code>-sue=(~sue)+1</code><br>② <code>sue+(-sue)=0=0x10000=65536</code><br>③ <code>sue+(~sue)=0-1=0x10000-1=0xffff=65535</code></p>
+<p>下面做进一步讨论。假设有两个uint16_t的变量A、B，需要证明有向区间长度运算<code>uint16_t len=B-A</code>在任何时候都成立。<br>① 当B&gt;&#x3D;A时，len&#x3D;B-A，即如下图中，A的位置处于A1&#x3D;16384，B的位置在B1&#x3D;24576时，len&#x3D;B-A&#x3D;B1-A1&#x3D;8192，成立;<br>② 当A、B变化使得B&lt;A时（图中为了清晰表达，A1保持值为16384不变，B从B1变为B2&#x3D;8192），由图可知此时的有向区间长度&#x3D;<u>A1</u>O’+O<u>B2</u>&#x3D;AO’+OB&#x3D;65536-A+B&#x3D;65536-(A-B)&#x3D;0-(A-B)&#x3D;B-A，得证。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%8E%AF%E5%9B%9E-%E8%AE%A8%E8%AE%BA.png"></p>
+<h4 id="2-2-2-min宏或内联函数的讨论"><a href="#2-2-2-min宏或内联函数的讨论" class="headerlink" title="2.2.2 min宏或内联函数的讨论"></a>2.2.2 min宏或内联函数的讨论</h4><p>这部分内容参考自<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31073871/article/details/90677378">【求最小值的宏：#define min(x,y) x ＞ y? y: x 中的陷阱，慎用】</a>和<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sunyubo/archive/2010/04/09/2282179.html">【min宏定义探究】</a>。</p>
+<p>下面是比较常见求最小值的宏，大多数条件下正常，在某些特殊条件或者应用场景下会发生bug，所以使用时要考虑清楚它的应用场景。<br>①  <code>#define min(x,y)          x &gt; y? y: x</code><br>②  <code>#define min(x,y)         (x) &gt; (y)? (y): (x)</code><br>③  <code>#define min(x,y)         ((x) &gt; (y)? (y): (x))</code></p>
+<p>问题1：<code>define</code>只是做简单的字符替换，使用时为了安全需要在适当的地方添加括号。比如，对于①，<code>int a = min(1 , 2+3);</code>等效于<code>int a=1&gt;2+3?2+3:1;</code>，编译会报错；对于②，<code>int a=2*min(1,3);</code>等效于<code>int a=2*(1)&gt;(3)?(3):(1);</code>，明显偏离了我们的意愿；③时对①和②的改进。</p>
+<p>问题2：①、②和③都存在这浪费CPU的情况。以③为例，<code>int a=min(b++, c++);</code>等效于<code>int  =((b++) &lt; (c++) ?(c++):(b++));</code>，变量b、c都自加了2次，偏离了我们的意愿。</p>
+<p><u><strong>问题3</strong></u> ：对于③，考虑下面代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">uint16_t</span> a = <span class="number">1</span>, b = <span class="number">2</span>, c = <span class="number">3</span>;</span><br><span class="line"><span class="type">uint16_t</span> t = <span class="built_in">min</span>(a, b - c);</span><br></pre></td></tr></table></figure>
+<p>上面不论是返回值，还是实参，都是uint16_t 类型。第一个形参a&#x3D;1，第二个形参y只要不为0，min(1, y)就应该返回1才是对的，实际返回t&#x3D;65535，因为这里y&#x3D;b-c&#x3D;-1&#x3D;65535。</p>
+<p>int的位数在不同的编译器中是不同的，但不会少于16位。 在16位编译器中，一个int是16位的，在32位的编译器中，一个int是32位的。下面以int为16位为前提背景，即此时<code>unsigned int</code>等价与<code>uint16_t</code>，分析fifo.c中的<code>unsigned int __kfifo_get(struct kfifo *fifo, unsigned char *buffer, unsigned int len)</code>函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __kfifo_get(<span class="keyword">struct</span> kfifo *fifo,</span><br><span class="line">			 <span class="type">unsigned</span> <span class="type">char</span> *buffer, <span class="type">unsigned</span> <span class="type">int</span> len)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> l;</span><br><span class="line"></span><br><span class="line">	len = <span class="built_in">min</span>(len, fifo-&gt;in - fifo-&gt;out);</span><br><span class="line">	..........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>考虑有一个环形FIFO缓冲区<code>char buff[256]</code>，写索引<code>uint16_t in</code>，读索引<code>uint16_t out</code>。考虑环回特性，fifo中已使用的空间大小总是等于in-out。例如in &#x3D; 8，out&#x3D;3时，已用空间&#x3D;8-3 &#x3D; 5；即使in发生了环回，这个等式依然成立，例如：in &#x3D; 1，out &#x3D; 65535时，已用空间为2，而uint16_t 的运算时：1 - 65535 &#x3D; 2。根据这一环回逻辑，已使用的空间大小in-out总是介于0~size之间。可见，当len&#x3D;1时，计算min(1, in - out)，只要(in - out)不是0，min的结果就应该返回1。<br>使用③ <code>#define min(x,y)         ((x) &gt; (y)? (y): (x))</code>时，相当于直接写入<code>1-65535</code>，此时计算1-65535结果并不为2，而是-65534，它比1小，所以返回-65534。又因为len类型为uint16_t，即返回的结果len&#x3D; -65534 &#x3D; 2（不是我们想要的）。</p>
+<p>改进方法1：对于上述kfifo.c中的min宏可以改进为<code>#define min(x,y)         ((unsigned int)(x) &gt; (unsigned int)(y)? (unsigned int)(y): (unsigned int)(x))</code>，这样可以避免环回特性存在的问题，但是当参数为表达式时，仍然会被计算两次，浪费了cpu。</p>
+<p>改进方法2：linux内核中定义的min宏如下，路径为<a target="_blank" rel="noopener" href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/kernel.h?h=linux-2.6.38.y">root&#x2F;include&#x2F;linux&#x2F;kernel.h</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * min()/max()/clamp() macros that also do</span></span><br><span class="line"><span class="comment"> * strict type-checking.. See the</span></span><br><span class="line"><span class="comment"> * &quot;unnecessary&quot; pointer comparison.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> min(x, y) (&#123;				\</span></span><br><span class="line"><span class="meta">	typeof(x) _min1 = (x);			\</span></span><br><span class="line"><span class="meta">	typeof(y) _min2 = (y);			\</span></span><br><span class="line"><span class="meta">	(void) (&amp;_min1 == &amp;_min2);		\</span></span><br><span class="line"><span class="meta">	_min1 &lt; _min2 ? _min1 : _min2; &#125;)</span></span><br></pre></td></tr></table></figure>
+<p>首先，将_min1和__min2来存参数x和y，这样避免了参数为表达式时计算两次的弊端。如果形参不是表达式而就是个单变量的话，除非你指定编译器使用O(0)优化，否则，编译器会优化为最高效的代码的（看编译出来的汇编代码），所以也不会降低效率。<br><code>(void) (&amp;_min1 == &amp;_min2);</code>这句话对于执行程序来说是一句废话，但是它可以检查x和y的参数类型是否一致（C语言并没有类型检查功能，所以这里巧妙地用取地址，对比指针的方式来产生警告）。当x和y的参数类型不同时，两个不一样的指针类型进行比较操作，编译器会提示：<code>warning: comparison of distinct pointer types lacks a cast</code>。此外，<code>(void)</code>的作用是强制执行本行代码，否则这行代码在编译器看来确实是一句废话，会被优化掉.<br>注意：typeof关键字只在GUN编译器支持，标准C89、C99都不支持。<br>改进方法3：最稳妥的方法使用内联函数。针对上述kfifo.c中的min宏可以改进为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">min</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x,<span class="type">unsigned</span> <span class="type">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> __min1=x, __min2 = y; <span class="comment">//注意这里没必要加改进方法2中的括号</span></span><br><span class="line">	<span class="keyword">return</span> __min1 &lt; __min2 ? __min1: __min2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-3-开关全局中断、BUG-ON宏"><a href="#2-2-3-开关全局中断、BUG-ON宏" class="headerlink" title="2.2.3 开关全局中断、BUG_ON宏"></a>2.2.3 开关全局中断、BUG_ON宏</h4><p>开关全局中断的内容代码移植于FreeRTOS内核代码，具体内容请看<a href="/archives/689b7307.html">FreeRTOS之03-中断配置与临界段</a><code>1.1.4 用于中断屏蔽的特殊寄存器（PRIMASK、FAULTMASK 和 BASEPRI）</code>和<code>1.3 FreeRTOS 开关中断</code>。</p>
+<p>BUG_ON宏实现代码和之前在<a href="/archives/d614117c.html">FreeRTOS之02-编程规范及系统配置</a>一文中<code>configASSERT</code>相同，详细代码分析请自行跳转。</p>
+<h4 id="2-2-4-kfifo源码分析"><a href="#2-2-4-kfifo源码分析" class="headerlink" title="2.2.4 kfifo源码分析"></a>2.2.4 kfifo源码分析</h4><p>这部分参考下面文章：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chen19870707/article/details/39899743">眉目传情之匠心独运的kfifo</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/linyt/article/details/53355355">巧夺天工的kfifo(修订版）</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Bruno_Mars/article/details/100061793">Linux kfifo 源码分析</a></p>
+<h3 id="2-3-移植stm32测试"><a href="#2-3-移植stm32测试" class="headerlink" title="2.3 移植stm32测试"></a>2.3 移植stm32测试</h3><p><strong>所选开发环境及硬件配置</strong></p>
+<ul>
+<li>德飞莱开发板。芯片为stm32f103zet6；LED2、LED3的引脚为PE5、PB5，低电平亮；WK_UP、KEY1、KEY2、KEY3的引脚为PA0、PE4、PE3、PE2，除WK_UP外其余按键按下为低电平；USART1 TX和RX引脚分别为PA9、PA10；外部晶振为8MHZ和32.768KHZ。</li>
+<li>软件：STM32CUBMX、KEIL、串口调试助手（sscom33.exe）</li>
+</ul>
+<p><strong>具体配置</strong></p>
+<ul>
+<li>步骤1，配置时钟、下载方式。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%951.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%952.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%953.png"></li>
+<li>步骤2，配置LED、按键的GPIO，用于调试，配置信息如下图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%954.png"></li>
+<li>步骤3，配置串口USART1。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%955.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%956.png"></li>
+<li>步骤4，配置NVIC参数。<strong>注意：</strong><font color=red>优先级分组选2位抢占优先级、2位亚优先级，且UASRT1的抢占优先级为1、亚优先级为0。因为这里的配置需要和kfifo.h中的参数configPRIO_BITS和configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 对应，如果为其他设置，需要修改它们的值。</font><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%957.png"></li>
+<li>步骤5，在Project Manager中设置工程名字、路径以及代码生成方式等。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%958.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%959.png"></li>
+</ul>
+<p>以上步骤在STM32CUBMX软件中完成，而下面步骤主要在MDK5中进行。<strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间，可以通过确定代码所在位置。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;kfifo.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"><span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> len;</span><br><span class="line"><span class="type">uint8_t</span> read_data = <span class="number">0</span>;</span><br><span class="line"><span class="type">uint8_t</span> data_len = <span class="number">0</span>;</span><br><span class="line"> <span class="comment">/* USER CODE END Init */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">kifo_buffer=<span class="built_in">kfifo_alloc</span>(<span class="number">256</span>);</span><br><span class="line"><span class="keyword">if</span>( !kifo_buffer )</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;KFIFO 结构体 test_kifo_buffer 没有创建成功！\r\n&quot;</span>);</span><br><span class="line"><span class="built_in">HAL_UART_Receive_IT</span>(&amp;huart1, (<span class="type">uint8_t</span>*)&amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line"> <span class="comment">/* USER CODE END 2 */</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 3 */</span>	</span><br><span class="line"><span class="comment">//		//这种直接获取帧头会存在数据丢弃的情况，比如上一次获取时处理了数据帧的3F，剩余数据在下一次被获取出来时，通过丢弃数据的方式重新找新帧头，原来的那帧数据就会被丢失</span></span><br><span class="line">		<span class="keyword">while</span>((len = <span class="built_in">kfifo_get</span>(kifo_buffer, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* 捕获起始标志 */</span></span><br><span class="line">			<span class="keyword">if</span>(read_data == <span class="number">0x3F</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;your data: length=&quot;</span>); </span><br><span class="line">				<span class="comment">//读取数据字节数，最大支持0xFF</span></span><br><span class="line">				<span class="keyword">if</span>((len = <span class="built_in">kfifo_get</span>(kifo_buffer, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					data_len = read_data;</span><br><span class="line">					<span class="built_in">printf</span>(<span class="string">&quot;%03d,data=&quot;</span>,data_len); </span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//提取data_len个数据</span></span><br><span class="line">				<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; data_len; i++)</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">if</span>((len = <span class="built_in">kfifo_get</span>(kifo_buffer, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="built_in">printf</span>(<span class="string">&quot;[0x%02x] &quot;</span>, read_data); </span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="built_in">HAL_Delay</span>(<span class="number">200</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> recv_data;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">struct</span> <span class="title class_">kfifo</span> *kifo_buffer;</span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="type">uint8_t</span> recv_data  = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">kfifo</span> *kifo_buffer;</span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HAL_UART_RxCpltCallback</span><span class="params">(UART_HandleTypeDef *huart)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(huart -&gt;Instance == USART1)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">kfifo_put</span>(kifo_buffer, &amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line">		<span class="built_in">HAL_UART_Receive_IT</span>(&amp;huart1, (<span class="type">uint8_t</span>*)&amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> 1</span></span><br><span class="line">	<span class="meta">#<span class="keyword">pragma</span> import(__use_no_semihosting)  </span></span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">__FILE</span> </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="type">int</span> handle; </span><br><span class="line">	&#125;; </span><br><span class="line"></span><br><span class="line">	FILE __stdout;       </span><br><span class="line">	<span class="comment">//定义_sys_exit()以避免使用半主机模式    </span></span><br><span class="line">	<span class="type">void</span> _sys_exit(<span class="type">int</span> x) </span><br><span class="line">	&#123; </span><br><span class="line">		x = x; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">//重定义fputc函数 </span></span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">fputc</span><span class="params">(<span class="type">int</span> ch, FILE *f)</span></span></span><br><span class="line"><span class="function">	</span>&#123; 	</span><br><span class="line">		<span class="keyword">while</span>((USART1-&gt;SR&amp;<span class="number">0X40</span>)==<span class="number">0</span>);<span class="comment">//循环发送,直到发送完毕   </span></span><br><span class="line">		USART1-&gt;DR=(<span class="type">uint8_t</span>)ch;      </span><br><span class="line">		<span class="keyword">return</span> ch;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br><span class="line"><span class="comment">/* USER CODE END 1 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<p><strong>运行结果</strong><br>    MCU下载程序，连接串口，设置发送参数和数据，选择定时发送模式，定时10ms发送“3F 05 01 02 03 04 05”。下面两图分别为数据帧发送一次和多次测试的结果。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C1.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C2.png"><br><strong>注意</strong>：虽然上面简单测试时，62&#x2F;7&#x3D;373426&#x2F;42161&#x3D;8.857142857142857，没有测试出来丢帧的情况，但是时存在这个隐患的，因为<code>while((len = kfifo_get(kifo_buffer, (uint8_t*)&amp;read_data, sizeof(read_data))) &gt; 0)</code>这种直接获取帧头的方式，会丢弃帧头前的数据。</p>
+<p>对应工程文件：<code>dma/UART_KFIFO</code>，仓库地址为<code>xxx</code>（后面补充）。</p>
+<h2 id="3-LWRB"><a href="#3-LWRB" class="headerlink" title="3 LWRB"></a>3 LWRB</h2><p>LWRB是是一种轻量级FIFO环形缓冲区实现的开源库，遵循 MIT 开源许可协议。具有如下特点：</p>
+<ul>
+<li>用ANSI C99编写，与大小数据类型兼容size_t；</li>
+<li>独立于平台，无特定于架构的代码；</li>
+<li>先进先出（先进先出）缓冲器实现；</li>
+<li>无动态内存分配，数据为静态数组；</li>
+<li>使用优化的内存拷贝而不是循环从内存读&#x2F;写数据到内存；</li>
+<li>线程安全，当用作具有单写入和单个读取条目的管道时；</li>
+<li>当用作具有单读和单读条目的管道时，中断安全；</li>
+<li>适用于 DMA 在内存之间传输和与内存之间的传输，在缓冲区和应用程序内存之间具有零拷贝开销；</li>
+<li>支持数据透视、跳过读取和前进写入；</li>
+<li>实现对事件通知的支持。</li>
+</ul>
+<p>详情介绍和使用，请阅读官网文档：<a target="_blank" rel="noopener" href="https://docs.majerle.eu/projects/lwrb/en/latest/index.html">LwRB 最新开发文档</a></p>
+<h3 id="3-1-移植stm32及测试"><a href="#3-1-移植stm32及测试" class="headerlink" title="3.1 移植stm32及测试"></a>3.1 移植stm32及测试</h3><p><strong>所选开发环境及硬件配置</strong></p>
+<ul>
+<li>德飞莱开发板。芯片为stm32f103zet6；LED2、LED3的引脚为PE5、PB5，低电平亮；WK_UP、KEY1、KEY2、KEY3的引脚为PA0、PE4、PE3、PE2，除WK_UP外其余按键按下为低电平；USART1 TX和RX引脚分别为PA9、PA10；外部晶振为8MHZ和32.768KHZ。</li>
+<li>软件：STM32CUBMX、KEIL、串口调试助手（sscom33.exe）</li>
+</ul>
+<p><strong>具体配置</strong><br>在STM32CUBMX软件中完成的工作和本文<code>2.3</code>节相同，而下面步骤主要在MDK5中进行。<br>首先从<a target="_blank" rel="noopener" href="https://github.com/MaJerle/lwrb">lwrb Github</a>下载lwrb源码，将<code>lwrb/src/lwrb/lwrb.c</code>和<code>lwrb/src/include/lwrb/lwrb.h</code>文件添加工程，配置lwrb.h中<code>LWRB_VOLATILE</code>为<code>#define LWRB_VOLATILE      volatile </code>，OK ，编译以下会发现没有错没有警告，就可以实现自己想要功能了。</p>
+<p><strong>约定：</strong> 添加的所有个人代码均在<code>/* USER CODE xxx BEGIN xxx*/</code>和<code>/* USER CODE xxx END xxx*/</code>之间，可以通过确定代码所在位置。</p>
+<ul>
+<li><p>main.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;lwrb.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;usart.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;gpio.h&quot;</span></span></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>main.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>main.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"><span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> len;</span><br><span class="line"><span class="type">uint8_t</span> read_data = <span class="number">0</span>;</span><br><span class="line"><span class="type">uint8_t</span> data_len = <span class="number">0</span>;</span><br><span class="line"> <span class="comment">/* USER CODE END Init */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line"><span class="built_in">lwrb_init</span>(&amp;usart1_ringbuff, (<span class="type">uint8_t</span>*)usart1_buffdata, USART1_BUFFDATA_SIZE);  <span class="comment">//大小32。 xom每个10ms发送3F 05 01 02 03 04 05，， 20ms/10ms*7=14，取1.5~2倍后在取最近的2的幂次即32</span></span><br><span class="line"><span class="built_in">lwrb_is_ready</span>(&amp;usart1_ringbuff);</span><br><span class="line"><span class="built_in">HAL_UART_Receive_IT</span>(&amp;huart1, (<span class="type">uint8_t</span>*)&amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line"> <span class="comment">/* USER CODE END 2 */</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 3 */</span>	</span><br><span class="line">   <span class="comment">/* USER CODE BEGIN 3 */</span>	</span><br><span class="line">	<span class="comment">//这种直接获取帧头会存在数据丢弃的情况，比如上一次获取时处理了数据帧的3F，剩余数据在下一次被获取出来时，通过丢弃数据的方式重新找新帧头，原来的那帧数据就会被丢失</span></span><br><span class="line">	<span class="keyword">while</span>((len = <span class="built_in">lwrb_read</span>(&amp;usart1_ringbuff, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* 捕获起始标志 */</span></span><br><span class="line">		<span class="keyword">if</span>(read_data == <span class="number">0x3F</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;your data: length=&quot;</span>); </span><br><span class="line">			<span class="comment">//读取数据字节数，最大支持0xFF</span></span><br><span class="line">			<span class="keyword">if</span>((len = <span class="built_in">lwrb_read</span>(&amp;usart1_ringbuff, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				data_len = read_data;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%03d,data=&quot;</span>,data_len); </span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//提取data_len个数据</span></span><br><span class="line">			<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; data_len; i++)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span>((len = <span class="built_in">lwrb_read</span>(&amp;usart1_ringbuff, (<span class="type">uint8_t</span>*)&amp;read_data, <span class="built_in">sizeof</span>(read_data))) &gt; <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="built_in">printf</span>(<span class="string">&quot;[0x%02x] &quot;</span>, read_data); </span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">HAL_Delay</span>(<span class="number">200</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">/* USER CODE END 3 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> recv_data;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">lwrb_t</span>	usart1_ringbuff;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> USART1_BUFFDATA_SIZE	150</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">uint8_t</span> usart1_buffdata[USART1_BUFFDATA_SIZE]; <span class="comment">//开辟一块内存用于缓冲区</span></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>usart.c</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>usart.c</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"><span class="type">uint8_t</span> recv_data  = <span class="number">0</span>;</span><br><span class="line"><span class="type">lwrb_t</span>	usart1_ringbuff;</span><br><span class="line"><span class="type">uint8_t</span> usart1_buffdata[USART1_BUFFDATA_SIZE];</span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HAL_UART_RxCpltCallback</span><span class="params">(UART_HandleTypeDef *huart)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(huart -&gt;Instance == USART1)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">lwrb_write</span>(&amp;usart1_ringbuff, &amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line">		<span class="built_in">HAL_UART_Receive_IT</span>(&amp;huart1, (<span class="type">uint8_t</span>*)&amp;recv_data, <span class="built_in">sizeof</span>(recv_data));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> 1</span></span><br><span class="line">	<span class="meta">#<span class="keyword">pragma</span> import(__use_no_semihosting)  </span></span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">__FILE</span> </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="type">int</span> handle; </span><br><span class="line">	&#125;; </span><br><span class="line"></span><br><span class="line">	FILE __stdout;       </span><br><span class="line">	<span class="comment">//定义_sys_exit()以避免使用半主机模式    </span></span><br><span class="line">	<span class="type">void</span> _sys_exit(<span class="type">int</span> x) </span><br><span class="line">	&#123; </span><br><span class="line">		x = x; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">//重定义fputc函数 </span></span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">fputc</span><span class="params">(<span class="type">int</span> ch, FILE *f)</span></span></span><br><span class="line"><span class="function">	</span>&#123; 	</span><br><span class="line">		<span class="keyword">while</span>((USART1-&gt;SR&amp;<span class="number">0X40</span>)==<span class="number">0</span>);<span class="comment">//循环发送,直到发送完毕   </span></span><br><span class="line">		USART1-&gt;DR=(<span class="type">uint8_t</span>)ch;      </span><br><span class="line">		<span class="keyword">return</span> ch;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br><span class="line"><span class="comment">/* USER CODE END 1 */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</li>
+<li><p>gpio.h</p>
+  <div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>gpio.h</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Private defines */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2(n)		    (n?HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED2_Toggle() (HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_5)) <span class="comment">//LED0输出电平翻转</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3(n)		    (n?HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET):HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LED3_Toggle() (HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5)) <span class="comment">//LED1输出电平翻转</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY1()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_4) <span class="comment">//KEY1按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY2()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_3) <span class="comment">//KEY2按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KEY3()        HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_2) <span class="comment">//KEY3按键</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WK_UP()       HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) <span class="comment">//WKUP按键</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Private defines */</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div></li>
+</ul>
+<p><strong>运行结果</strong><br>这部分和本文<code>2.3</code>节相同。</p>
+<p>对应工程文件：<code>dma/UART_LWRB</code>，仓库地址为<code>xxx</code>（后面补充）。</p>
+<h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/liigo/article/details/100993236">无锁环形缓冲区队列 kfifo</a><br>2、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/suozhang/p/6373510.html">STM32 &amp; FreeRTOS &amp; KFIFO （巧夺天工）</a><br>3、<a target="_blank" rel="noopener" href="https://mculover666.blog.csdn.net/article/details/106445879?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link">ringbuff | 通用FIFO环形缓冲区实现库</a><br>4、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36075612/article/details/116144349?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase">STM32HAL 移植一款通用FIFO轻量级环形缓冲管理器开源库lwrb(裸机开发)</a></p>
+<p>That’s all.Check it.</p>
+
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                    <a class="donate" href="javascript:;"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://zhekunren.github.io/archives/9fcd8f06.html",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://zhekunren.github.io/archives/9fcd8f06.html";
+            const title         = "「【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区」";
+            const excerpt       = `1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。
+顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/DMA/" rel="tag">DMA</a>, <a class="tag-none-link" href="/tags/FIFO/" rel="tag">FIFO</a>, <a class="tag-none-link" href="/tags/stm32/" rel="tag">stm32</a>, <a class="tag-none-link" href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a>, <a class="tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-01-23</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" FreeRTOS之03-中断配置与临界段" href="/archives/689b7307.html">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【STM32】STM32CubeMX HAL库 DMA[3]串口DMA+FIFO" href="/archives/eaa49ad5.html">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="disqus_thread" class="post-comments lazy-load"></div>
+
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://zhekunren.github.io/archives/9fcd8f06.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'archives/9fcd8f06.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    var load_comm = () => {
+        if (typeof DISQUS === 'undefined') {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://zhekunblog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        } else {
+            DISQUS.reset({
+                reload: true,
+                config: function () {  
+                    this.page.url = 'https://zhekunren.github.io/archives/9fcd8f06.html';  // Replace PAGE_URL with your page's canonical URL variable
+                    this.page.identifier = 'archives/9fcd8f06.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                }
+            });
+        }
+    };
+    
+</script>
+<script async id="dsq-count-scr" src="//zhekunblog.disqus.com/count.js"></script>
+
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <!-- <div class="photo-background"></div> --> <!-- 删除头像处banner图片，将这行代码替换成下一行 delete by zhekun-->
+    <div style="height: 75px;"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/avatar2.jpg" />
+        </div>
+    </div>
+    <!-- <div class="textwidget">
+        <p class="text-center">与其向往，不如出发</p> 
+    </div> -->
+    <!-- 重定义about界面，将这行代码替换成下一行 delete by zhekun-->
+    <div><p style="margin-top:10px;margin-bottom:0;text-align:center;font-weight:400;font-size:25px;line-height:1.5;">zhekunのblog</p><p style="margin-top:0;margin-bottom:0;text-align:center;font-size:15px;line-height:1.5;">与其向往，不如出发</p><p style="margin-top:0;text-align:center;font-size:15px;line-height:1.5;"><i class="fa fa-map-marker"></i><span>中国●四川</span></p></div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                52
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                20
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-KFIFO"><span class="toc-text">2 KFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-KFIFO%E7%A7%BB%E6%A4%8D"><span class="toc-text">2.1 KFIFO移植</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-KFIFO%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3%E5%8F%8A%E8%A1%A5%E5%85%85"><span class="toc-text">2.2 KFIFO代码的一些理解及补充</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%95%B4%E6%95%B0%E7%9A%84%E7%8E%AF%E5%9B%9E%E7%89%B9%E6%80%A7"><span class="toc-text">2.2.1 整数的环回特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-min%E5%AE%8F%E6%88%96%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E7%9A%84%E8%AE%A8%E8%AE%BA"><span class="toc-text">2.2.2 min宏或内联函数的讨论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-%E5%BC%80%E5%85%B3%E5%85%A8%E5%B1%80%E4%B8%AD%E6%96%AD%E3%80%81BUG-ON%E5%AE%8F"><span class="toc-text">2.2.3 开关全局中断、BUG_ON宏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-kfifo%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">2.2.4 kfifo源码分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%95"><span class="toc-text">2.3 移植stm32测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-LWRB"><span class="toc-text">3 LWRB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%A7%BB%E6%A4%8Dstm32%E5%8F%8A%E6%B5%8B%E8%AF%95"><span class="toc-text">3.1 移植stm32及测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-text">相关参考</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/">EOS-RTOS</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/FreeRTOS/">FreeRTOS</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/RTX/">RTX</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/">求职笔记</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/">生活日常</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/">影音美图</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/">软件工具</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/">Hexo</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/">安装破解</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a><span class="category-list-count">1</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/C-Cpp/" style="font-size: 0.62em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.64em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.62em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.73em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/RTOS/" style="font-size: 0.76em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.64em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.69em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.62em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.71em;">hexo</a> <a href="/tags/install/" style="font-size: 0.64em;">install</a> <a href="/tags/life/" style="font-size: 0.62em;">life</a> <a href="/tags/movies/" style="font-size: 0.62em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a> <a href="/tags/notes/" style="font-size: 0.8em;">notes</a> <a href="/tags/stm32/" style="font-size: 0.78em;">stm32</a> <a href="/tags/tools/" style="font-size: 0.67em;">tools</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/428d3437.html"><i class="fa  fa-book"></i> 添加站长统计</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/c4a4928.html"><i class="fa  fa-book"></i> 常用在线工具（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/fb0c4ff4.html"><i class="fa  fa-book"></i> 影音美图畅享（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/9986db6e.html"><i class="fa  fa-book"></i> 追过的剧和电影（不定期更新）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/2f4694b.html"><i class="fa  fa-book"></i> Hexo Blog Writing Tips</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a title="mail" href="mailto:mailto:zhekunren@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a title="github" target="_blank" rel="nofollow" href="https://github.com/zhekunren"><i class="fa fa-github"></i></a></li>
+                        <li><a title="gitee" target="_blank" rel="nofollow" href="https://gitee.com/zhekunren"><i class="fa fa-github-alt"></i></a></li>
+                        <li><a title="rss" target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 zhekunのblog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <!-- <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by zhekun.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div> -->
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="7230595307"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+    <script defer src="https://unpkg.com/layui-src@2.5.5/dist/layui.all.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+<script type="text/javascript">document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1280860084'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280860084' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

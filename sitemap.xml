@@ -497,34 +497,6 @@
 
   
   <url>
-    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/notes/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/C-Cpp/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zhekunren.github.io/tags/stm32/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -539,7 +511,35 @@
   </url>
   
   <url>
+    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://zhekunren.github.io/tags/FIFO/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/C-Cpp/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/notes/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -639,14 +639,14 @@
 
   
   <url>
-    <loc>https://zhekunren.github.io/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://zhekunren.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/</loc>
+    <loc>https://zhekunren.github.io/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

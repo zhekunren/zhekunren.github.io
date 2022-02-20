@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
-  <title>添加站长统计 | zhekunのblog</title>
+  <title>Hexo blog custom record | zhekunのblog</title>
   <meta name="author" content="zhekun" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -13,20 +13,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="format-detection" content="telphone=no, email=no" />
   
-    <meta name="keywords" content="hexo" />
+    <meta name="keywords" content="blog-tips, hexo" />
   
-  <meta name="description" content="为KRATOS:REBIRTH主题的Hexo博客添加cnzz站长统计">
+  <meta name="description" content="KRATOS-REBIRTH主题的Hexo博客个性化配置记录">
 <meta property="og:type" content="article">
-<meta property="og:title" content="添加站长统计">
+<meta property="og:title" content="Hexo blog custom record">
 <meta property="og:url" content="https://zhekunren.github.io/archives/428d3437.html">
 <meta property="og:site_name" content="zhekunのblog">
-<meta property="og:description" content="为KRATOS:REBIRTH主题的Hexo博客添加cnzz站长统计">
+<meta property="og:description" content="KRATOS-REBIRTH主题的Hexo博客个性化配置记录">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhekunren.github.io/archives/428d3437.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0215_1.jfif">
 <meta property="article:published_time" content="2022-02-15T14:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-15T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-20T09:52:00.000Z">
 <meta property="article:author" content="zhekun">
 <meta property="article:tag" content="hexo">
+<meta property="article:tag" content="blog-tips">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/428d3437.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0215_1.jfif">
 <meta name="twitter:site" content="@null">
@@ -200,7 +201,7 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">添加站长统计</h1>
+                <h1 class="kratos-entry-title text-center">Hexo blog custom record</h1>
             
             
             <ul class="kratos-post-meta text-center">
@@ -210,7 +211,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~1.75K
+                        ~7.96K
                     
                     字
                 </li>
@@ -219,31 +220,164 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1644933600000"></time> 前，其中的内容可能需要更新。
+                本文最后编辑于 <time datetime="1645350720000"></time> 前，其中的内容可能需要更新。
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E7%AB%99%E7%82%B9%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">1 配置站点信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">2 获取代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BB%E9%A2%98%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9"><span class="toc-number">3.</span> <span class="toc-text">3 主题文件修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E6%9F%A5%E7%9C%8B%E7%AB%99%E7%82%B9%E6%95%B0%E6%8D%AE%E6%97%A0%E9%9C%80%E5%AF%86%E7%A0%81%EF%BC%88%E7%9C%8B%E4%B8%AA%E4%BA%BA%E9%9C%80%E6%B1%82%E5%90%A7%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4 设置查看站点数据无需密码（看个人需求吧）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-text">博客源码备份与恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E6%93%8D%E4%BD%9C"><span class="toc-text">备份操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">恢复操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E7%A8%B3%E5%AE%9A%E5%BF%AB%E9%80%9F%E3%80%81%E9%AB%98%E6%95%88%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A"><span class="toc-text">搭建稳定快速、高效免费的图床</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E6%B0%B8%E4%B9%85%E6%96%87%E7%AB%A0%E9%93%BE%E6%8E%A5"><span class="toc-text">生成唯一永久文章链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSS%E8%AE%A2%E9%98%85"><span class="toc-text">RSS订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86"><span class="toc-text">文章加密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E3%80%81google%E4%BB%A5%E5%8F%8Abing%E6%A3%80%E7%B4%A2"><span class="toc-text">添加百度、google以及bing检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A1"><span class="toc-text">添加站长统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0google%E5%B9%BF%E5%91%8A"><span class="toc-text">添加google广告*</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E4%BF%AE%E6%94%B9"><span class="toc-text">其他修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4banner%E5%9B%BE%E7%89%87%E4%BB%A5%E5%8F%8A%E5%A4%B4%E5%83%8F%E5%A4%84%E5%9B%BE%E7%89%87"><span class="toc-text">删除banner图片以及头像处图片*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E5%BA%95%E9%83%A8%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97"><span class="toc-text">去除底部一些文字*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%A4%B4%E5%83%8F%E5%A4%84about-description%E4%BB%A3%E7%A0%81"><span class="toc-text">修改头像处about_description代码*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9site-meta%E6%A0%B7%E5%BC%8F"><span class="toc-text">修改site-meta样式*</span></a></li></ol></li></ol>
                 </div>
             
             <hr />
-            <h2 id="1-配置站点信息"><a href="#1-配置站点信息" class="headerlink" title="1 配置站点信息"></a>1 配置站点信息</h2><p>登录<a target="_blank" rel="noopener" href="https://passport.umeng.com/login?appId=cnzz">友盟</a>后，选择右上角添加站点，然后配置好站点信息。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A11.PNG"></p>
-<h2 id="2-获取代码"><a href="#2-获取代码" class="headerlink" title="2 获取代码"></a>2 获取代码</h2><p>获取友盟提供的统计代码，友盟提供了很多的样式，随便复制一份。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A12.PNG"></p>
+            <blockquote>
+<p>标题后面加了”*”的，表示修改了作者源代码</p>
+</blockquote>
+<h2 id="博客源码备份与恢复"><a href="#博客源码备份与恢复" class="headerlink" title="博客源码备份与恢复"></a>博客源码备份与恢复</h2><h3 id="备份操作"><a href="#备份操作" class="headerlink" title="备份操作"></a>备份操作</h3><p>这里记录将博客源码备份到Gitee仓库。<br>1.新建一个Gitee仓库，并下载到本地，获得<code>.git</code>文件夹。<br>2.拷贝<code>.git</code>文件夹到博客源码的根目录下。需要特别注意，之前通过<code>git clone</code>的方式安装主题，主题目录文件夹下也有一个<code>.git</code>，需要删除。<br>3.hexo根目录下自动创建了<code>.gitignore</code>文件，用来在上传时候忽略一些文件，不用改变。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.<span class="built_in">log</span></span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.deploy*/</span><br><span class="line">_multiconfig.yml</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+<p>此外，主题目录文件夹<code>themes/kratos-rebirth</code>下，也有<code>.gitignore</code>文件，修改后如下。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># # NodeJS</span></span><br><span class="line"><span class="comment"># node_modules/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 配置文件</span></span><br><span class="line"><span class="comment"># _config.yml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 站点图像</span></span><br><span class="line"><span class="comment"># source/images/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 锁文件</span></span><br><span class="line"><span class="comment"># package-lock.json</span></span><br><span class="line"><span class="comment"># yarn.lock</span></span><br><span class="line"><span class="comment"># .yarn/</span></span><br><span class="line"><span class="comment"># .pnp.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># (自定义)备份文件夹</span></span><br><span class="line">_backup/</span><br><span class="line"></span><br><span class="line"><span class="comment"># # IDE相关配置目录</span></span><br><span class="line"><span class="comment"># .vscode/</span></span><br><span class="line"><span class="comment"># .idea/</span></span><br></pre></td></tr></table></figure>
+<p>上方注意一定要注释<code>_config.yml</code>和<code>source/images/</code>（我看了一下，占用内存不大，没必要放图库）。<br>其他的大都不存在，可以注释，也可不注释，up to u。</p>
+ 
+    </div></div>
+    </div>
+
+<p>4.在根目录下，使用如下命令将本地文件备份到Gitee上。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit  -m  <span class="string">&quot;backup&quot;</span>  </span><br><span class="line">git push -u origin master </span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<h3 id="恢复操作"><a href="#恢复操作" class="headerlink" title="恢复操作"></a>恢复操作</h3><p>假设本地Hexo博客所需要的git、nodejs、hexo等基础环境已经搭好。<br>1.克隆仓库到本地。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://gitee.com/zhekunren/hexo_kratos-rebirth_backup.git</span><br></pre></td></tr></table></figure>
+<p>2.在克隆到本地的文件夹中执行下面命令。注意：不需要执行<code>hexo init</code>指令。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli</span><br><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>3.本地预览。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<h2 id="搭建稳定快速、高效免费的图床"><a href="#搭建稳定快速、高效免费的图床" class="headerlink" title="搭建稳定快速、高效免费的图床"></a>搭建稳定快速、高效免费的图床</h2><p>参考链接：<a target="_blank" rel="noopener" href="https://sitoi.cn/posts/39161.html">GitHub + jsDelivr + PicGo + Imagine 打造稳定快速、高效免费图床</a></p>
+<p>1.新建一个 GitHub 仓库，将权限设置成 public<br>2.生成并获取 Token。<br>① 在Github页面，点击用户头像，选择 <code>Settings</code> -&gt; 点击 <code>Developer settings</code> -&gt; 点击 <code>Personal access tokens</code> -&gt; 点击 <code>Generate new token</code>。<br>② 填写 Token 描述（<code>Note</code>框，我的是<code>blog_image（用于图库）</code>），只勾选 <code>repo</code>，然后点击 <code>Generate token</code> 生成一个 Token。<br>③ 复制 Token 密钥，注意：这个 Token 只会显示一次。<br>3.配置 PicGo 并使用 jsdelivr 作为 CDN 加速。<br>前往下载 <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/picgo/releases">PicGo</a> ，安装好后开始配置图床。<br>① 设定仓库名：按照 <code>Github用户名 / 图床仓库名</code> 的格式填写,我的是<code>zhekunren/blog_image</code>；<br>② 设定分支名：<code>master</code> ;<br>③ 设定 Token：粘贴之前生成的 Token<br>④ 指定存储路径：填写想要储存的路径，如 <code>img/</code>，这样就会在仓库下创建一个名为 <code>img</code> 的文件夹，图片将会储存在此文件夹中。注意：末尾要加<code>/</code> ；<br>⑤ 设定自定义域名：作用是在图片上传后，PicGo 会按照<code>自定义域名 + 上传的图片名</code>的方式生成访问链接，放到粘贴板上，因为我们要使用 jsDelivr 加速访问，所以可以设置为 <code>https://cdn.jsdelivr.net/gh/ 用户名 / 图床仓库名</code>。我的填写是<code>https://cdn.jsdelivr.net/gh/zhekunren/blog_image</code></p>
+<blockquote>
+<p>jsDelivr 为开发者提供免费公共 CDN 加速服务</p>
+</blockquote>
+<p>4.一般，图片大小都是超过 200KB 的，所以网页加载的时候会特别慢，所以上传前会对图片进行压缩。<br>① <a target="_blank" rel="noopener" href="https://github.com/meowtec/Imagine/releases">Imagine</a>，需要注意的，Imagine 采用的是有损压缩<br>② 无损压缩网站，<a target="_blank" rel="noopener" href="https://tinypng.com/">tinypng</a></p>
+<h2 id="生成唯一永久文章链接"><a href="#生成唯一永久文章链接" class="headerlink" title="生成唯一永久文章链接"></a>生成唯一永久文章链接</h2><p>1.安装插件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
+<p>注意：如果此命令运行出错，提示缺少babel-eslint、mini-css-extract-plugin、webpack-cli等依赖时，使用npm命令安装即可，比如 <code>npm install eslint@4.x babel-eslint@8 --save-dev</code> 。<br>2.根目录站点配置文件_config.yml中进行如下配置。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <p>修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># URL</span><br><span class="line">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span><br><span class="line">url: https://zhekunren.github.io</span><br><span class="line">permalink: archives/:abbrlink.html</span><br></pre></td></tr></table></figure>
+
+<p>增加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## 永久链接</span><br><span class="line">abbrlink:</span><br><span class="line">  alg: crc32  # 算法：crc16(default) and crc32</span><br><span class="line">  rep: hex    # 进制：dec(default) and hex</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<h2 id="RSS订阅"><a href="#RSS订阅" class="headerlink" title="RSS订阅"></a>RSS订阅</h2><p>1.安装插件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed</span><br></pre></td></tr></table></figure>
+<p>2.根目录站点配置文件_config.yml中增加如下代码。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#RSS订阅</span><br><span class="line">feed:</span><br><span class="line">  type: atom #RSS的类型(atom/rss2)</span><br><span class="line">  path: atom.xml #文件路径,默认是atom.xml/rss2.xml</span><br><span class="line">  limit: 20 #展示文章的数量,使用0或则false代表展示全部</span><br><span class="line">  hub:</span><br><span class="line">  content: #在RSS文件中是否包含内容 ,有3个值 true/false默认不填为false</span><br><span class="line">  content_limit: 140 #指定内容的长度作为摘要,仅仅在上面content设置为false和没有自定义的描述出现</span><br><span class="line">  content_limit_delim: &#x27; &#x27; #上面截取描述的分隔符,截取内容是以指定的这个分隔符作为截取结束的标志.在达到规定的内容长度之前最后出现的这个分隔符之前的内容,，防止从中间截断.</span><br><span class="line">  order_by: -date</span><br><span class="line">  icon: #icon.png</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>3.验证。运行<code>hexo g</code>后，public文件夹中生成<code>atom.xml</code>，即成功。</p>
+<h2 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h2><p>1.安装插件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-blog-encrypt</span><br></pre></td></tr></table></figure>
+<p>2.根目录站点配置文件_config.yml中增加如下代码。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## 文章密码</span><br><span class="line">encrypt:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>3.post中的配置信息参考<a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt">hexo-blog-encrypt</a>，我常用的配置入下。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">password: &#x27;&#x27;</span><br><span class="line">abstract: &#x27;Here&#x27;&#x27;s something encrypted, password is required to continue reading.&#x27;</span><br><span class="line">message: &#x27;Hey, password is required here.&#x27;</span><br><span class="line">wrong_pass_message: &#x27;Oh, this is an invalid password. Check and try again, please.&#x27;</span><br><span class="line">wrong_hash_message: &#x27;Oh, these decrypted content cannot be verified, but you can still have a look.&#x27;</span><br><span class="line">theme: Blink</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<h2 id="添加百度、google以及bing检索"><a href="#添加百度、google以及bing检索" class="headerlink" title="添加百度、google以及bing检索"></a>添加百度、google以及bing检索</h2><p>这部分参考了链接<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tengj/p/5357879.html">hexo干货系列：（六）hexo提交搜索引擎（百度+谷歌）</a>、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/128033054">Hexo博客提交百度收录SEO</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41800884/article/details/103750683">hexo搭建博客系列(六)百度，必应，谷歌收录</a>。下面只是我记录的大概。<br>1.安装插件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br><span class="line">npm install hexo-generator-baidu-sitemap --save</span><br></pre></td></tr></table></figure>
+<p>2.根目录站点配置文件_config.yml中进行增加如下代码。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 自动生成sitemap</span><br><span class="line">sitemap:</span><br><span class="line">  path: sitemap.xml</span><br><span class="line">baidusitemap:</span><br><span class="line">  path: baidusitemap.xml</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>3.运行<code>hexo g</code>，public下面发现生成了<code>sitemap.xml</code>以及<code>baidusitemap.xml</code>就表示成功了。</p>
+<p>4.让谷歌收录我们的博客，比较简单，即向<a target="_blank" rel="noopener" href="https://www.google.com/webmasters/tools">Google站长工具</a>提交sitemap。<br>登录Google账号，添加了站点验证（即将验证代码填入主题目录下的_config.yml文件中的site_verify.google）通过后，选择站点，之后在抓取——站点地图中就能看到添加&#x2F;测试站点地图，1天左右就搜索到了。<br>5.让百度收录我们的博客。首先，登录<a target="_blank" rel="noopener" href="http://zhanzhang.baidu.com/">百度站长平台</a>，添加了站点验证（即将验证代码填入主题目录下的_config.yml文件中的site_verify.baidu）。<br>① 安装插件。<code>npm install hexo-baidu-url-submit --save</code> 、<code>npm install --save hexo-deployer-git</code><br>② 在根目录 _config.yml 文件里加入以下代码。此外，还需检查根目录 _config.yml 文件里<code>url:</code>是否修改成自己的域名。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 主动推送百度，被百度收录</span><br><span class="line">baidu_url_submit:</span><br><span class="line">  count: 50 # 提交最新的10个链接</span><br><span class="line">  host: https://zhekunren.github.io # 百度站长平台中注册的域名</span><br><span class="line">  token: xxxx # 秘钥，百度站长平台 &gt; 推送接口 &gt; 接口调用地址中token字段</span><br><span class="line">  path: baidu_urls.txt # 文本文档的地址， 新链接会保存在此文本文档里，不用改</span><br><span class="line"></span><br><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">- type: git</span><br><span class="line">  repo:      # git@github.com:Github用户名/github用户名.github.io.git ,也可使用https地址，如：https://github.com/Github用户名/Github用户名.github.io.git  </span><br><span class="line">    github: https://github.com/zhekunren/zhekunren.github.io.git</span><br><span class="line">    # gitee: https://gitee.com/zhekunren/zhekunren.git</span><br><span class="line">  branch: master</span><br><span class="line">- type: baidu_url_submitter # 新加百度收录推送</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
+<p>③ <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code>上传，类似下面显示就是成功了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;remain&quot;:2950,&quot;success&quot;:50&#125;      </span><br><span class="line">INFO  Deploy done: baidu_url_submitter</span><br></pre></td></tr></table></figure>
+
+<p>6.让bing收录我们的博客。首先，登录<a target="_blank" rel="noopener" href="https://www.bing.com/webmaster/home/mysites">必应站长平台</a>，因为前面已经完成了google收录，所以使用刚刚谷歌导入的方式，不需要手动验证~~nice</p>
+<h2 id="添加站长统计"><a href="#添加站长统计" class="headerlink" title="添加站长统计"></a>添加站长统计</h2><p>这部分参考了链接<a target="_blank" rel="noopener" href="https://www.imooc.com/article/271748">为Hexo添加CNZZ统计</a>、<a target="_blank" rel="noopener" href="https://huanz.top/2021/site-statistics">开启站长统计</a>。具体步骤如下：<br>1.配置站点信息<br>登录<a target="_blank" rel="noopener" href="https://passport.umeng.com/login?appId=cnzz">友盟</a>后，选择右上角添加站点，然后配置好站点信息。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A11.PNG"></p>
+<p>2.获取代码<br>获取友盟提供的统计代码，友盟提供了很多的样式，随便复制一份。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A12.PNG"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;document.write(unescape(&quot;%3Cspan id=&#x27;cnzz_stat_icon_1280860084&#x27;%3E%3C/span%3E%3Cscript src=&#x27;https://s4.cnzz.com/z_stat.php%3Fid%3D1280860084&#x27; type=&#x27;text/javascript&#x27;%3E%3C/script%3E&quot;));&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
 <p>需要将上述代码粘贴到您网站所有页面的</body>前，添加成功后立即开始统计。</p>
 <p><strong>如何将站长统计的文字 &#x2F; 图片隐藏?</strong><br>在统计代码 javascript 中的 ducument.write(unescape(“%3Cspan 和 id&#x3D;’cnzz_stat_icon’中间加上 style&#x3D;’display:none 即可，上述代码变为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;document.write(unescape(&quot;%3Cspan  style=&#x27;display:none;&#x27; id=&#x27;cnzz_stat_icon_1280860084&#x27;%3E%3C/span%3E%3Cscript src=&#x27;https://s4.cnzz.com/z_stat.php%3Fid%3D1280860084&#x27; type=&#x27;text/javascript&#x27;%3E%3C/script%3E&quot;));&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-主题文件修改"><a href="#3-主题文件修改" class="headerlink" title="3 主题文件修改"></a>3 主题文件修改</h2><p>1、在 <code>themes\Kratos-Rebirth\_config.yml</code> 中添加一个自定义项<code>site_analytics_cnzz</code>并将<code>site_analytics</code>保持为空，即：</p>
+<p>3.主题文件修改<br>① 在 <code>themes\Kratos-Rebirth\_config.yml</code> 中添加一个自定义项<code>site_analytics_cnzz</code>并将<code>site_analytics</code>保持为空，即：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">site_analytics_cnzz: 1280860084 # 输入 www.CNZZ.com 的站长统计 id 号，默认在网页中隐藏</span><br><span class="line">site_analytics:</span><br></pre></td></tr></table></figure>
-<p>2、 <code>themes\kratos-rebirth\layout\_partial\after-footer.ejs</code>文件中，在<code>&lt;%- theme.site_analytics %&gt;</code>下方添加统计代码，增加后的代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;%- theme.site_analytics %&gt;</span><br><span class="line">&lt;% if (theme.site_analytics_cnzz) &#123; %&gt;&lt;script type=&quot;text/javascript&quot;&gt;document.write(unescape(&quot;%3Cspan style=&#x27;display:none;&#x27; id=&#x27;cnzz_stat_icon_&lt;%- theme.site_analytics_cnzz %&gt;&#x27;%3E%3C/span%3E%3Cscript src=&#x27;https://v1.cnzz.com/z_stat.php%3Fid%3D&lt;%- theme.site_analytics_cnzz %&gt;&#x27; type=&#x27;text/javascript&#x27;%3E%3C/script%3E&quot;));&lt;/script&gt;&lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>② <code>themes\kratos-rebirth\layout\_partial\after-footer.ejs</code>文件中，在<code>&lt;%- theme.site_analytics %&gt;</code>下方添加统计代码，增加后的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...（略）</span><br><span class="line">&lt;%- theme.site_analytics %&gt;</span><br><span class="line">&lt;% if (theme.site_analytics_cnzz) &#123; %&gt;&lt;script type=&quot;text/javascript&quot;&gt;document.write(unescape(&quot;%3Cspan style=&#x27;display:none;&#x27; id=&#x27;cnzz_stat_icon_&lt;%- theme.site_analytics_cnzz %&gt;&#x27;%3E%3C/span%3E%3Cscript src=&#x27;https://v1.cnzz.com/z_stat.php%3Fid%3D&lt;%- theme.site_analytics_cnzz %&gt;&#x27; type=&#x27;text/javascript&#x27;%3E%3C/script%3E&quot;));&lt;/script&gt;&lt;% &#125; %&gt;</span><br><span class="line"></span><br><span class="line">...（略）</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-设置查看站点数据无需密码（看个人需求吧）"><a href="#4-设置查看站点数据无需密码（看个人需求吧）" class="headerlink" title="4 设置查看站点数据无需密码（看个人需求吧）"></a>4 设置查看站点数据无需密码（看个人需求吧）</h2><p><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A13.PNG"></p>
+<ol start="4">
+<li>设置查看站点数据无需密码（看个人需求吧）<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/SoftwareTools/Hexo/%E5%BC%80%E5%90%AF%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A13.PNG"></li>
+</ol>
 <p>访问链接： <a target="_blank" rel="noopener" href="https://new.cnzz.com/v1/login.php?siteid=1280860084">https://new.cnzz.com/v1/login.php?siteid=1280860084</a></p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>1、<a target="_blank" rel="noopener" href="https://www.imooc.com/article/271748">为Hexo添加CNZZ统计</a><br>2、<a target="_blank" rel="noopener" href="https://huanz.top/2021/site-statistics">开启站长统计</a></p>
-
+<h2 id="添加google广告"><a href="#添加google广告" class="headerlink" title="添加google广告*"></a>添加google广告*</h2><p>就是试试而已，也不差那点M~~<br>这部分参考了链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/stormdony/article/details/85608944">Hexo接入Google adsense广告</a>、<a target="_blank" rel="noopener" href="http://codewithzhangyi.com/2019/11/06/google-adsense/">Hexo接入谷歌广告 Google AdSense</a>。</p>
+<p>1.注册并登录<a target="_blank" rel="noopener" href="https://www.google.com/adsense/">Google Adsense</a><br>2.目前选用的是，自动广告，配置好后，获取代码插入<code>themes/kratos-rebirth/layout/_partial/head.ejs</code>文件的<code> &lt;/head&gt;</code>之前。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...（略）</span><br><span class="line">&lt;!-- Google adsense --&gt;</span><br><span class="line">&lt;% if (theme.google_adsense) &#123; %&gt;</span><br><span class="line">  &lt;script async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8125084240960232&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
+<p>此外，<code>themes/kratos-rebirth/_config.yml</code>文件中增加代码，<code>google_adsense: true ## Google adsense</code>。</p>
+<h2 id="其他修改"><a href="#其他修改" class="headerlink" title="其他修改"></a>其他修改</h2><h3 id="删除banner图片以及头像处图片"><a href="#删除banner图片以及头像处图片" class="headerlink" title="删除banner图片以及头像处图片*"></a>删除banner图片以及头像处图片*</h3><h3 id="去除底部一些文字"><a href="#去除底部一些文字" class="headerlink" title="去除底部一些文字*"></a>去除底部一些文字*</h3><h3 id="修改头像处about-description代码"><a href="#修改头像处about-description代码" class="headerlink" title="修改头像处about_description代码*"></a>修改头像处about_description代码*</h3><h3 id="修改site-meta样式"><a href="#修改site-meta样式" class="headerlink" title="修改site-meta样式*"></a>修改site-meta样式*</h3>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -311,8 +445,8 @@
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://zhekunren.github.io/archives/428d3437.html";
-            const title         = "「添加站长统计」";
-            const excerpt       = `为KRATOS:REBIRTH主题的Hexo博客添加cnzz站长统计`;
+            const title         = "「Hexo blog custom record」";
+            const excerpt       = `KRATOS-REBIRTH主题的Hexo博客个性化配置记录`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -331,10 +465,10 @@
             <div class="footer-tag clearfix">
                 <div class="pull-left">
                 <i class="fa fa-tags"></i>
-                    <a class="tag-none-link" href="/tags/hexo/" rel="tag">hexo</a>
+                    <a class="tag-none-link" href="/tags/blog-tips/" rel="tag">blog-tips</a>, <a class="tag-none-link" href="/tags/hexo/" rel="tag">hexo</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-02-15</span>
+                <span>最后编辑：2022-02-20</span>
                 </div>
             </div>
         </footer>
@@ -449,7 +583,7 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%85%8D%E7%BD%AE%E7%AB%99%E7%82%B9%E4%BF%A1%E6%81%AF"><span class="toc-text">1 配置站点信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81"><span class="toc-text">2 获取代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BB%E9%A2%98%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9"><span class="toc-text">3 主题文件修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E6%9F%A5%E7%9C%8B%E7%AB%99%E7%82%B9%E6%95%B0%E6%8D%AE%E6%97%A0%E9%9C%80%E5%AF%86%E7%A0%81%EF%BC%88%E7%9C%8B%E4%B8%AA%E4%BA%BA%E9%9C%80%E6%B1%82%E5%90%A7%EF%BC%89"><span class="toc-text">4 设置查看站点数据无需密码（看个人需求吧）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-text">博客源码备份与恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E6%93%8D%E4%BD%9C"><span class="toc-text">备份操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">恢复操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E7%A8%B3%E5%AE%9A%E5%BF%AB%E9%80%9F%E3%80%81%E9%AB%98%E6%95%88%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A"><span class="toc-text">搭建稳定快速、高效免费的图床</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%94%AF%E4%B8%80%E6%B0%B8%E4%B9%85%E6%96%87%E7%AB%A0%E9%93%BE%E6%8E%A5"><span class="toc-text">生成唯一永久文章链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RSS%E8%AE%A2%E9%98%85"><span class="toc-text">RSS订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86"><span class="toc-text">文章加密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E3%80%81google%E4%BB%A5%E5%8F%8Abing%E6%A3%80%E7%B4%A2"><span class="toc-text">添加百度、google以及bing检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%AB%99%E9%95%BF%E7%BB%9F%E8%AE%A1"><span class="toc-text">添加站长统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0google%E5%B9%BF%E5%91%8A"><span class="toc-text">添加google广告*</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E4%BF%AE%E6%94%B9"><span class="toc-text">其他修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4banner%E5%9B%BE%E7%89%87%E4%BB%A5%E5%8F%8A%E5%A4%B4%E5%83%8F%E5%A4%84%E5%9B%BE%E7%89%87"><span class="toc-text">删除banner图片以及头像处图片*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E5%BA%95%E9%83%A8%E4%B8%80%E4%BA%9B%E6%96%87%E5%AD%97"><span class="toc-text">去除底部一些文字*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%A4%B4%E5%83%8F%E5%A4%84about-description%E4%BB%A3%E7%A0%81"><span class="toc-text">修改头像处about_description代码*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9site-meta%E6%A0%B7%E5%BC%8F"><span class="toc-text">修改site-meta样式*</span></a></li></ol></li></ol>
     </div>
 </aside>
                 
@@ -465,7 +599,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/tags/C-Cpp/" style="font-size: 0.62em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.64em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.62em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.73em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/RTOS/" style="font-size: 0.76em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.64em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.69em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.62em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.71em;">hexo</a> <a href="/tags/install/" style="font-size: 0.64em;">install</a> <a href="/tags/life/" style="font-size: 0.62em;">life</a> <a href="/tags/movies/" style="font-size: 0.62em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a> <a href="/tags/notes/" style="font-size: 0.8em;">notes</a> <a href="/tags/stm32/" style="font-size: 0.78em;">stm32</a> <a href="/tags/tools/" style="font-size: 0.67em;">tools</a>
+        <a href="/tags/C-Cpp/" style="font-size: 0.62em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.64em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.62em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.73em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/RTOS/" style="font-size: 0.76em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.64em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.69em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.64em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.71em;">hexo</a> <a href="/tags/install/" style="font-size: 0.64em;">install</a> <a href="/tags/life/" style="font-size: 0.62em;">life</a> <a href="/tags/movies/" style="font-size: 0.62em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a> <a href="/tags/notes/" style="font-size: 0.8em;">notes</a> <a href="/tags/stm32/" style="font-size: 0.78em;">stm32</a> <a href="/tags/tools/" style="font-size: 0.67em;">tools</a>
       </div>
   </aside>
 
@@ -482,7 +616,7 @@
         
           
           
-            <a class="list-group-item" href="/archives/428d3437.html"><i class="fa  fa-book"></i> 添加站长统计</a>
+            <a class="list-group-item" href="/archives/428d3437.html"><i class="fa  fa-book"></i> Hexo blog custom record</a>
             
           
         

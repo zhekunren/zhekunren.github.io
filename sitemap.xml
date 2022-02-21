@@ -574,27 +574,6 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/hexo/</loc>
-    <lastmod>2022-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/blog-test/</loc>
-    <lastmod>2022-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/blog-tips/</loc>
-    <lastmod>2022-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zhekunren.github.io/tags/MathType/</loc>
     <lastmod>2022-02-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -610,6 +589,27 @@
   
   <url>
     <loc>https://zhekunren.github.io/tags/XMind/</loc>
+    <lastmod>2022-02-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/hexo/</loc>
+    <lastmod>2022-02-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/blog-test/</loc>
+    <lastmod>2022-02-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/blog-tips/</loc>
     <lastmod>2022-02-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

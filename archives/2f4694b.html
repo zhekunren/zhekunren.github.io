@@ -212,7 +212,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        1372
+                        1452
                     
                     字
                 </li>
@@ -221,7 +221,8 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1645176600000"></time> 前，其中的内容可能需要更新。
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1645176600000"></time> 前，其中的内容可能需要更新。</p></div>   
             </div>
             
                 <div class="kratos-post-inner-toc">
@@ -230,16 +231,18 @@
             
             <hr />
             <p>This post mainly introduces the label components and writing tips commonly used in kratos-rebirth theme blogs.</p>
-<h2 id="提示信息"><a href="#提示信息" class="headerlink" title="提示信息"></a>提示信息</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% alertbox success &quot;成功啦o(*￣▽￣*)ブ&quot; %&#125;</span><br><span class="line">&#123;% alertbox danger &quot;有危险Σ(っ °Д °;)っ&quot; %&#125;</span><br><span class="line">&#123;% alertbox info &quot;有消息(・∀・(・∀・(・∀・*)&quot; %&#125;</span><br><span class="line">&#123;% alertbox warning &quot;当心哦≧ ﹏ ≦&quot; %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="提示信息"><a href="#提示信息" class="headerlink" title="提示信息"></a>提示信息</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% alertbox primary &quot;喵呼呼o(=•ェ•=)m&quot; %&#125;</span><br><span class="line">&#123;% alertbox success &quot;成功啦o(*￣▽￣*)ブ&quot; %&#125;</span><br><span class="line">&#123;% alertbox danger &quot;有危险Σ(っ °Д °;)っ&quot; %&#125;</span><br><span class="line">&#123;% alertbox info &quot;有消息(・∀・(・∀・(・∀・)&quot; %&#125;</span><br><span class="line">&#123;% alertbox warning &quot;当心哦≧ ﹏ ≦&quot; %&#125;</span><br></pre></td></tr></table></figure>
 
-<div class="alert alert-success"><p>成功啦o(<em>￣▽￣</em>)ブ</p>
-</div>
-<div class="alert alert-danger"><p>有危险Σ(っ °Д °;)っ</p>
-</div>
-<div class="alert alert-info"><p>有消息(・∀・(・∀・(・∀・*)</p>
-</div>
-<div class="alert alert-warning"><p>当心哦≧ ﹏ ≦</p>
-</div>
+<div class="alert alert-primary"><div class="icon"><i class="fa fa-refresh"></i></div><div class="text"><p>喵呼呼o(&#x3D;•ェ•&#x3D;)m</p>
+</div></div>
+<div class="alert alert-success"><div class="icon"><i class="fa fa-check"></i></div><div class="text"><p>成功啦o(<em>￣▽￣</em>)ブ</p>
+</div></div>
+<div class="alert alert-danger"><div class="icon"><i class="fa fa-exclamation"></i></div><div class="text"><p>有危险Σ(っ °Д °;)っ</p>
+</div></div>
+<div class="alert alert-info"><div class="icon"><i class="fa fa-info"></i></div><div class="text"><p>有消息(・∀・(・∀・(・∀・)</p>
+</div></div>
+<div class="alert alert-warning"><div class="icon"><i class="fa fa-warning"></i></div><div class="text"><p>当心哦≧ ﹏ ≦</p>
+</div></div>
 
 <h2 id="折叠内容"><a href="#折叠内容" class="headerlink" title="折叠内容"></a>折叠内容</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% collapse 折叠框的标题 %&#125;</span><br><span class="line"></span><br><span class="line">被折叠的内容 1</span><br><span class="line">被折叠的内容 2</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&#123;% endcollapse %&#125;</span><br></pre></td></tr></table></figure>
 

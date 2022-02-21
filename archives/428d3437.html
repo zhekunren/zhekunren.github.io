@@ -211,7 +211,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~7.96K
+                        ~7.97K
                     
                     字
                 </li>
@@ -220,7 +220,8 @@
         </header>
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                本文最后编辑于 <time datetime="1645350720000"></time> 前，其中的内容可能需要更新。
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1645350720000"></time> 前，其中的内容可能需要更新。</p></div>   
             </div>
             
                 <div class="kratos-post-inner-toc">
@@ -377,7 +378,19 @@
 <p>1.注册并登录<a target="_blank" rel="noopener" href="https://www.google.com/adsense/">Google Adsense</a><br>2.目前选用的是，自动广告，配置好后，获取代码插入<code>themes/kratos-rebirth/layout/_partial/head.ejs</code>文件的<code> &lt;/head&gt;</code>之前。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...（略）</span><br><span class="line">&lt;!-- Google adsense --&gt;</span><br><span class="line">&lt;% if (theme.google_adsense) &#123; %&gt;</span><br><span class="line">  &lt;script async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8125084240960232&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">&lt;/head&gt;</span><br></pre></td></tr></table></figure>
 <p>此外，<code>themes/kratos-rebirth/_config.yml</code>文件中增加代码，<code>google_adsense: true ## Google adsense</code>。</p>
-<h2 id="其他修改"><a href="#其他修改" class="headerlink" title="其他修改"></a>其他修改</h2><h3 id="删除banner图片以及头像处图片"><a href="#删除banner图片以及头像处图片" class="headerlink" title="删除banner图片以及头像处图片*"></a>删除banner图片以及头像处图片*</h3><h3 id="去除底部一些文字"><a href="#去除底部一些文字" class="headerlink" title="去除底部一些文字*"></a>去除底部一些文字*</h3><h3 id="修改头像处about-description代码"><a href="#修改头像处about-description代码" class="headerlink" title="修改头像处about_description代码*"></a>修改头像处about_description代码*</h3><h3 id="修改site-meta样式"><a href="#修改site-meta样式" class="headerlink" title="修改site-meta样式*"></a>修改site-meta样式*</h3>
+<h2 id="其他修改"><a href="#其他修改" class="headerlink" title="其他修改"></a>其他修改</h2><h3 id="删除banner图片以及头像处图片"><a href="#删除banner图片以及头像处图片" class="headerlink" title="删除banner图片以及头像处图片*"></a>删除banner图片以及头像处图片*</h3><!-- 
+[删除banner图片以及头像处图片](https://gitee.com/zhekunren/hexo_kratos-rebirth_backup/commit/39d50896cde32e83d48ecbaa8ade57c7e82730a4) 。
+修改了 kratosr.min.css 等文件 
+-->
+
+<h3 id="去除底部一些文字"><a href="#去除底部一些文字" class="headerlink" title="去除底部一些文字*"></a>去除底部一些文字*</h3><!-- [去除底部一些文字](https://gitee.com/zhekunren/hexo_kratos-rebirth_backup/commit/39d50896cde32e83d48ecbaa8ade57c7e82730a4) -->
+
+<h3 id="修改头像处about-description代码"><a href="#修改头像处about-description代码" class="headerlink" title="修改头像处about_description代码*"></a>修改头像处about_description代码*</h3><!-- [修改头像处about_description代码](https://gitee.com/zhekunren/hexo_kratos-rebirth_backup/commit/ffe568f4ef3e8e7a4b745a124a8c41bc1ceebfbe) -->
+
+<h3 id="修改site-meta样式"><a href="#修改site-meta样式" class="headerlink" title="修改site-meta样式*"></a>修改site-meta样式*</h3><!-- 
+[修改site-meta样式](https://gitee.com/zhekunren/hexo_kratos-rebirth_backup/commit/0a2124e0b36c0f476e85a03fa5e43b590236beed) 。
+修改了 kratosr.min.css 等文件 
+-->
         </div>
         
             <div class="kratos-copyright text-center clearfix">

@@ -15,12 +15,12 @@
   
     <meta name="keywords" content="notes, 数据结构" />
   
-  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
+  <meta name="description" content="1 折半查找1.1 算法介绍折半查找，也称二分查找。算法使用前提是数据有序。假设我们要搜索x，搜索过程从数组的中间元素开始，如果中间元素正好是x，而查找成功；否则我们利用中间位置将数组分为前、后两个子数组。如果x小于中间位置的元素，则进一步查找前一个子数组，否则进一步查找后一个子数组。重复以上步骤，直到找到满足条件的元素，或直到子数组不存在为止，代表查找不成功。复杂度：O(log2N)。 1.2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="求职笔记--数据结构与算法01_查找算法">
 <meta property="og:url" content="https://zhekunren.github.io/archives/eba3d284.html">
 <meta property="og:site_name" content="zhekunのblog">
-<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
+<meta property="og:description" content="1 折半查找1.1 算法介绍折半查找，也称二分查找。算法使用前提是数据有序。假设我们要搜索x，搜索过程从数组的中间元素开始，如果中间元素正好是x，而查找成功；否则我们利用中间位置将数组分为前、后两个子数组。如果x小于中间位置的元素，则进一步查找前一个子数组，否则进一步查找后一个子数组。重复以上步骤，直到找到满足条件的元素，或直到子数组不存在为止，代表查找不成功。复杂度：O(log2N)。 1.2">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhekunren.github.io/archives/eba3d284.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_13.png">
 <meta property="article:published_time" content="2021-09-28T13:13:07.000Z">
@@ -200,7 +200,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        146
+                        ~2.29K
                     
                     字
                 </li>
@@ -213,19 +213,34 @@
                 <div class="text"><p>本文最后编辑于 <time datetime="1642915742000"></time> 前，其中的内容可能需要更新。</p></div>   
             </div>
             
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE"><span class="toc-text">1 折半查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1 算法介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-text">1.2 算法实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8"><span class="toc-text">1.3 算法应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-%E6%89%BE1%E5%88%B0n%E4%B8%AD%E7%BC%BA%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-text">1.3.1 找1到n中缺失的数字</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
             <hr />
-            <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="c6085996db96bdc4bc716042143645d273c8f219c158255a9d67880c5967bff9">10f821fe22b3eba62a2b53def8a0a0ed491634886b5da2eac82c9dc1ed6d525e</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-blink">
-      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="Hey, password is required here.">Hey, password is required here.</span>
-      </label>
+            <h2 id="1-折半查找"><a href="#1-折半查找" class="headerlink" title="1 折半查找"></a>1 折半查找</h2><h3 id="1-1-算法介绍"><a href="#1-1-算法介绍" class="headerlink" title="1.1 算法介绍"></a>1.1 算法介绍</h3><p>折半查找，也称二分查找。算法使用前提是<strong>数据有序</strong>。<br>假设我们要搜索x，搜索过程从数组的中间元素开始，如果中间元素正好是x，而查找成功；否则我们利用中间位置将数组分为前、后两个子数组。如果x小于中间位置的元素，则进一步查找前一个子数组，否则进一步查找后一个子数组。重复以上步骤，直到找到满足条件的元素，或直到子数组不存在为止，代表查找不成功。<br>复杂度：O(log2N)。</p>
+<h3 id="1-2-算法实现"><a href="#1-2-算法实现" class="headerlink" title="1.2 算法实现"></a>1.2 算法实现</h3><div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非递归实现</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">binarySearch</span><span class="params">(<span class="type">int</span> array[], <span class="type">int</span> length, <span class="type">int</span> target)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> left = <span class="number">0</span>, right = length - <span class="number">1</span>, mid = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (left &lt;= right)</span><br><span class="line">	&#123;</span><br><span class="line">		mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span> (array[mid] == target)</span><br><span class="line">			<span class="keyword">return</span> mid;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (array[mid] &lt; target)</span><br><span class="line">			left = mid + <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			right = mid - <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归实现</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">binarySearch_rec</span><span class="params">(<span class="type">int</span> array[], <span class="type">int</span> left, <span class="type">int</span> right, <span class="type">int</span> target)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> mid = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (left &lt;= right)</span><br><span class="line">	&#123;</span><br><span class="line">		mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span> (array[mid] == target)</span><br><span class="line">			<span class="keyword">return</span> mid;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (array[mid] &lt; target)</span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">binarySearch_rec</span>(array, mid + <span class="number">1</span>, right, target);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="built_in">binarySearch_rec</span>(array, left, mid - <span class="number">1</span>, target);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">10</span>] = &#123; <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> &#125;;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;非递归：%d\n&quot;</span>, <span class="built_in">binarySearch</span>(a, <span class="number">10</span>, <span class="number">7</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;非递归：%d\n&quot;</span>, <span class="built_in">binarySearch_rec</span>(a, <span class="number">0</span>, <span class="number">10</span> - <span class="number">1</span>, <span class="number">7</span>));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
     </div>
-  </div>
-</div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+
+<!-- ## 后期添加参考
+[查找算法之顺序查找，折半查找，二叉查找树](https://blog.csdn.net/qq_16933601/article/details/106500778)
+-->
+
+<h3 id="1-3-算法应用"><a href="#1-3-算法应用" class="headerlink" title="1.3 算法应用"></a>1.3 算法应用</h3><h4 id="1-3-1-找1到n中缺失的数字"><a href="#1-3-1-找1到n中缺失的数字" class="headerlink" title="1.3.1 找1到n中缺失的数字"></a>1.3.1 找1到n中缺失的数字</h4><p>长度为n-1的整形数组，数字的范围在1到n，找其中一个缺失的数字。<br>输入<br><code>[1,2,3,5]</code><br>输出<br><code>4</code></p>
+<p><strong>思路</strong><br>1.中间元素正好和他的下标相等，那么下一轮查找只需要查找右半边；<br>2.中间元素和他的下标不相等，并且它的前一个元素和下面相等，这意味着这个中间的数字正好是第一个值和下标不相等的元素，<br>  它的下标就是在数组中不存在的数字；<br>3.如果中间元素的值和下标不相等，并且它前面一个元素和它的下标不相等，这意味着下一轮查找我们只需要在左半边查找即可<br>二分查找有序数组中缺失的一个元素，时间复杂度尽可能低。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">bsearch</span><span class="params">(<span class="type">int</span> a[],<span class="type">int</span> left,<span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(left&lt;=right)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> mid=left+(right-left)/<span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span>(a[mid]==mid+<span class="number">2</span>)</span><br><span class="line">			right=mid<span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(a[mid]==mid+<span class="number">1</span>)</span><br><span class="line">			left=mid+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> left+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">findMis</span><span class="params">(<span class="type">int</span> a[],<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">bsearch</span>(a,<span class="number">0</span>,n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">500</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>((c=<span class="built_in">getchar</span>())!=<span class="string">&#x27;[&#x27;</span>);</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[i++]);</span><br><span class="line">    &#125;<span class="keyword">while</span>((c=<span class="built_in">getchar</span>())!=<span class="string">&#x27;]&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// printf(&quot;%d\n&quot;,i);</span></span><br><span class="line">    <span class="comment">// for(j=0;j&lt;i;j++)</span></span><br><span class="line">    <span class="comment">//     printf(&quot;%d &quot;,a[j]);</span></span><br><span class="line">    <span class="comment">// printf(&quot;\n\n&quot;);</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,<span class="built_in">findMis</span>(a, i+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+
         </div>
         
             <div class="kratos-copyright text-center clearfix">
@@ -294,7 +309,7 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://zhekunren.github.io/archives/eba3d284.html";
             const title         = "「求职笔记--数据结构与算法01_查找算法」";
-            const excerpt       = `Here's something encrypted, password is required to continue reading.`;
+            const excerpt       = `1 折半查找1.1 算法介绍折半查找，也称二分查找。算法使用前提是数据有序。假设我们要搜索x，搜索过程从数组的中间元素开始，如果中间元素正好是x，而查找成功；否则我们利用中间位置将数组分为前、后两个子数组。如果x小于中间位置的元素，则...`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -422,6 +437,18 @@
 </aside>
             
                     <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8A%98%E5%8D%8A%E6%9F%A5%E6%89%BE"><span class="toc-text">1 折半查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1 算法介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-text">1.2 算法实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8"><span class="toc-text">1.3 算法应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-%E6%89%BE1%E5%88%B0n%E4%B8%AD%E7%BC%BA%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-text">1.3.1 找1到n中缺失的数字</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
                 
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">

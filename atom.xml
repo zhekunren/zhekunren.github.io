@@ -6,7 +6,7 @@
   <link href="https://zhekunren.github.io/atom.xml" rel="self"/>
   
   <link href="https://zhekunren.github.io/"/>
-  <updated>2022-02-18T10:41:22.891Z</updated>
+  <updated>2022-03-02T02:30:00.000Z</updated>
   <id>https://zhekunren.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>求职笔记--专栏索引</title>
+    <link href="https://zhekunren.github.io/archives/e1e589cc.html"/>
+    <id>https://zhekunren.github.io/archives/e1e589cc.html</id>
+    <published>2022-03-02T02:30:00.000Z</published>
+    <updated>2022-03-02T02:30:00.000Z</updated>
+    
+    
+    <summary type="html"> </summary>
+    
+    
+    
+    <category term="求职笔记" scheme="https://zhekunren.github.io/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="嵌入式" scheme="https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/"/>
+    
+    <category term="notes" scheme="https://zhekunren.github.io/tags/notes/"/>
+    
+  </entry>
   
   <entry>
     <title></title>
@@ -476,31 +497,6 @@
     
     
     <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>XMind ZEN 2020 V10.0 中文版“安装”</title>
-    <link href="https://zhekunren.github.io/archives/9f76cdf5.html"/>
-    <id>https://zhekunren.github.io/archives/9f76cdf5.html</id>
-    <published>2021-12-25T04:36:00.000Z</published>
-    <updated>2022-01-24T12:36:00.000Z</updated>
-    
-    
-    <summary type="html">This post is mainly for XMind ZEN 2020 V10.0 Chinese version installation crack.</summary>
-    
-    
-    
-    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
-    
-    <category term="安装破解" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/"/>
-    
-    
-    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
-    
-    <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
-    
-    <category term="XMind" scheme="https://zhekunren.github.io/tags/XMind/"/>
     
   </entry>
   

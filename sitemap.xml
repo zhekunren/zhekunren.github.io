@@ -520,13 +520,6 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
-    <lastmod>2022-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zhekunren.github.io/tags/FIFO/</loc>
     <lastmod>2022-03-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -535,6 +528,13 @@
   
   <url>
     <loc>https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2022-03-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
     <lastmod>2022-03-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -583,27 +583,6 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/hexo/</loc>
-    <lastmod>2022-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/blog-test/</loc>
-    <lastmod>2022-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhekunren.github.io/tags/blog-tips/</loc>
-    <lastmod>2022-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zhekunren.github.io/tags/MathType/</loc>
     <lastmod>2022-03-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -619,6 +598,27 @@
   
   <url>
     <loc>https://zhekunren.github.io/tags/XMind/</loc>
+    <lastmod>2022-03-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/hexo/</loc>
+    <lastmod>2022-03-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/blog-test/</loc>
+    <lastmod>2022-03-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/blog-tips/</loc>
     <lastmod>2022-03-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

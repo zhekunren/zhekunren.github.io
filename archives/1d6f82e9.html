@@ -15,12 +15,10 @@
   
     <meta name="keywords" content="DMA, stm32, 嵌入式" />
   
-  <meta name="description" content="0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓存区。具体实现请看代码： 2018 NXP national college student smart car competition 最近在stm32上编写DMA">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="【STM32】STM32CubeMX HAL库 DMA[1]初探">
 <meta property="og:url" content="https://zhekunren.github.io/archives/1d6f82e9.html">
 <meta property="og:site_name" content="zhekunのblog">
-<meta property="og:description" content="0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓存区。具体实现请看代码： 2018 NXP national college student smart car competition 最近在stm32上编写DMA">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhekunren.github.io/archives/1d6f82e9.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_1.jpg">
 <meta property="article:published_time" content="2021-11-30T15:25:33.000Z">
@@ -635,7 +633,7 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://zhekunren.github.io/archives/1d6f82e9.html";
             const title         = "「【STM32】STM32CubeMX HAL库 DMA[1]初探」";
-            const excerpt       = `0 引言记得第一次使用DMA是在大三参加“恩智浦”智能车比赛时，当时使用的OV7725摄像头采用“场中断+DMA”方式进行图像数据的采集。为了保证有足够的时间来处理数据，在场中断函数“PORTC_IRQHandler”中切换DMA双缓...`;
+            const excerpt       = ``;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;

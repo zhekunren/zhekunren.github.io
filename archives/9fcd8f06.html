@@ -15,12 +15,10 @@
   
     <meta name="keywords" content="DMA, FIFO, stm32, 嵌入式, 数据结构" />
   
-  <meta name="description" content="1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。 顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区">
 <meta property="og:url" content="https://zhekunren.github.io/archives/9fcd8f06.html">
 <meta property="og:site_name" content="zhekunのblog">
-<meta property="og:description" content="1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。 顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhekunren.github.io/archives/9fcd8f06.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_4.jpg">
 <meta property="article:published_time" content="2021-12-09T08:37:51.000Z">
@@ -493,8 +491,7 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://zhekunren.github.io/archives/9fcd8f06.html";
             const title         = "「【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区」";
-            const excerpt       = `1 引言队列的基础知识和介绍参考求职笔记之数据结构与算法04_栈和队列、STM32进阶之串口环形缓冲区实现。
-顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间...`;
+            const excerpt       = ``;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;

@@ -28,7 +28,7 @@
     
     
     
-    <category term="技术积类" scheme="https://zhekunren.github.io/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B1%BB/"/>
+    <category term="技术积累" scheme="https://zhekunren.github.io/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/"/>
     
     
     <category term="Mysql" scheme="https://zhekunren.github.io/tags/Mysql/"/>
@@ -36,6 +36,8 @@
     <category term="QT" scheme="https://zhekunren.github.io/tags/QT/"/>
     
     <category term="Matlab" scheme="https://zhekunren.github.io/tags/Matlab/"/>
+    
+    <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
     
   </entry>
   
@@ -65,7 +67,7 @@
     <link href="https://zhekunren.github.io/archives/480d45c2.html"/>
     <id>https://zhekunren.github.io/archives/480d45c2.html</id>
     <published>2022-02-19T17:05:07.494Z</published>
-    <updated>2022-02-18T10:41:22.891Z</updated>
+    <updated>2022-03-09T10:39:25.744Z</updated>
     
     
       
@@ -496,9 +498,9 @@
     <category term="安装破解" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/"/>
     
     
-    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
-    
     <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
     
   </entry>
   

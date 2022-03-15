@@ -4,7 +4,7 @@
   <!-- 元数据 -->
   <meta charset="utf-8">
   <link rel="icon" href="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
-  <title>Mysql安装与基础使用（QT、Matlab） | zhekunのblog</title>
+  <title>图书管理系统（QT、Mysql） | zhekunのblog</title>
   <meta name="author" content="zhekun" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -13,23 +13,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="format-detection" content="telphone=no, email=no" />
   
-    <meta name="keywords" content="Matlab, Mysql, QT, install" />
+    <meta name="keywords" content="C&Cpp, Mysql, QT" />
   
   <meta property="og:type" content="article">
-<meta property="og:title" content="Mysql安装与基础使用（QT、Matlab）">
+<meta property="og:title" content="图书管理系统（QT、Mysql）">
 <meta property="og:url" content="https://zhekunren.github.io/archives/4fd3c7f0.html">
 <meta property="og:site_name" content="zhekunのblog">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://zhekunren.github.io/archives/4fd3c7f0.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0304_1.jpg">
+<meta property="og:image" content="https://zhekunren.github.io/archives/4fd3c7f0.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0314_1.jpg">
 <meta property="article:published_time" content="2022-03-05T02:00:00.000Z">
 <meta property="article:modified_time" content="2022-03-05T02:00:00.000Z">
 <meta property="article:author" content="zhekun">
+<meta property="article:tag" content="C&amp;Cpp">
 <meta property="article:tag" content="Mysql">
 <meta property="article:tag" content="QT">
-<meta property="article:tag" content="Matlab">
-<meta property="article:tag" content="install">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zhekunren.github.io/archives/4fd3c7f0.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0304_1.jpg">
+<meta name="twitter:image" content="https://zhekunren.github.io/archives/4fd3c7f0.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0314_1.jpg">
 <meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
@@ -188,7 +187,7 @@
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Mysql安装与基础使用（QT、Matlab）</h1>
+                <h1 class="kratos-entry-title text-center">图书管理系统（QT、Mysql）</h1>
             
             
             <ul class="kratos-post-meta text-center">
@@ -198,7 +197,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~4.82K
+                        100
                     
                     字
                 </li>
@@ -212,73 +211,13 @@
             </div>
             
                 <div class="kratos-post-inner-toc">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6%E4%BB%A5%E5%8F%8ANavicat-for-MySQL"><span class="toc-text">1 Win10下安装MySQL5.6以及Navicat for MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6"><span class="toc-text">1.1 Win10下安装MySQL5.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85Navicat-for-MySQL"><span class="toc-text">1.2 安装Navicat for MySQL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Mysql%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%B8%B8%E7%94%A8%E7%9A%84%E2%80%9D%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E2%80%9D%EF%BC%89"><span class="toc-text">2 Mysql基本操作（常用的”增删改查”）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mysql-QT5-5-1"><span class="toc-text">3 Mysql + QT5.5.1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-QT5-5-1%E5%AE%89%E8%A3%85"><span class="toc-text">3.1 QT5.5.1安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="toc-text">3.2 简单测试程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Mysql-Matlab2017b"><span class="toc-text">4 Mysql + Matlab2017b</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%A1%B9%E7%9B%AE%E7%A8%8B%E5%BA%8F%E6%95%B4%E7%90%86"><span class="toc-text">5 项目程序整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%8E%9F%E7%90%86"><span class="toc-text">项目原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
                 </div>
             
             <hr />
-            <h2 id="1-Win10下安装MySQL5-6以及Navicat-for-MySQL"><a href="#1-Win10下安装MySQL5-6以及Navicat-for-MySQL" class="headerlink" title="1 Win10下安装MySQL5.6以及Navicat for MySQL"></a>1 Win10下安装MySQL5.6以及Navicat for MySQL</h2><p>MySQL和Navicat的安装包下载。值得注意的是，<strong>QT版本要和MYSQL的位数相同</strong>，本文MySQL采用的是32位的，后面QT也要是32位。</p>
-
-<style type="text/css">
-.heimu { color: #000; background-color: #000; }
-.heimu:hover { color: #fff; }
-</style>
-
-<p>百度云链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1RmkcwAavLGxF_HeV3PdwgA">https://pan.baidu.com/s/1RmkcwAavLGxF_HeV3PdwgA</a><br>提取码哟：<span class="heimu">lla0</span></p>
-<h3 id="1-1-Win10下安装MySQL5-6"><a href="#1-1-Win10下安装MySQL5-6" class="headerlink" title="1.1 Win10下安装MySQL5.6"></a>1.1 Win10下安装MySQL5.6</h3><p>1.将 mysql-5.6.39-win32.zip 解压到自己的安装路径下，我的为<code>D:\Software\mysql-5.6</code>，解压后如下图；<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/Mysql%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A821.PNG"></p>
-<p>2.修改my-default.ini文件如下图<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/Mysql%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A822.PNG"></p>
-<p>3.需要配置Mysql环境变量。<br><code>Windows+R</code>打开运行，输入<code>sysdm.cpl</code>，回车后，点高级，点环境变量，在PATH中添加Mysql安装路劲下bin文件夹的路劲，我的为<code>D:\Software\mysql-5.6\bin</code>。具体操作如下图；<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/Mysql%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A823.PNG"></p>
-<p>4.以<strong>管理员的身份</strong>打开 cmd ，依次执行下面命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d:</span><br><span class="line"><span class="built_in">cd</span> D:\Software\mysql-5.6\bin</span><br><span class="line">mysqld -initalize -user=mysql -console</span><br></pre></td></tr></table></figure>
-<p>继续输入指令<code>mysqld -install</code>，会打印<code>Service successfully installed</code>；<br>继续输入指令<code>  net start mysql</code>，会打印提示MySQL服务已经启动成功。到这里，MYSQL5.6已经安装成功，并且已运行</p>
-<p>5.MYSQL登陆与修改密码<br>① 在cmd中，输入 <code>mysql -u root -p</code> ，输入该指令后出现 <code>Enter password:</code> ，第一次登陆直接回车，进入mysql软件；<br>② 输入<code>set password for root@localhost=password(&#39;root&#39;);</code> ，此时将root的密码设置为root；<br>③ 输入<code>exit</code>，退出mysql软件；<br>④ 再次输入<code>mysql -u root -p</code> 时，需要输入密码root后才能正常进入mysql软件。</p>
-<p>6.为了方便后面QT5.5.1和Mysql的测试程序编写，新建一个mydatabase数据库，用于后面的程序操作。<br>① 在cmd中，输入 <code>mysql -u root -p</code>，登录成功后，输入<code>create database mydatabase;</code>；<br>② 输入<code>show databases;</code>，即可看到我们新建的mydatabase数据库。</p>
-<h3 id="1-2-安装Navicat-for-MySQL"><a href="#1-2-安装Navicat-for-MySQL" class="headerlink" title="1.2 安装Navicat for MySQL"></a>1.2 安装Navicat for MySQL</h3><p>Navicat for MySQL 是管理和开发 MySQL 或 MariaDB 的理想解决方案，为数据库管理、开发和维护提供了一款直观而强大的图形界面。</p>
-<p>1.下载前面百度云中的文件，双击安装 navicat110_mysql_cs_x64.exe，一路安装完成就好。</p>
-<p>2.根据 readme.txt 中的提示，进行破解。</p>
-<p>3.测试MySQL是否成功。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/Mysql%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A814.PNG"></p>
-<p>如果点击确认，可以可视化的看到数据库的具体情况，很直观。</p>
-<h2 id="2-Mysql基本操作（常用的”增删改查”）"><a href="#2-Mysql基本操作（常用的”增删改查”）" class="headerlink" title="2 Mysql基本操作（常用的”增删改查”）"></a>2 Mysql基本操作（常用的”增删改查”）</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.runoob.com/mysql/mysql-select-query.html">MySQL 教程</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1177760294764384">SQL教程</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/baidu_37895884/article/details/77248245">通过SQL语句(alter table)来增加、删除、修改字段</a></li>
-</ul>
-<p>平时可以打开cmd，通过<code>mysql -u root -p</code>后输入密码，连接上MySQL Server后，即可管理数据库。</p>
-<h2 id="3-Mysql-QT5-5-1"><a href="#3-Mysql-QT5-5-1" class="headerlink" title="3 Mysql + QT5.5.1"></a>3 Mysql + QT5.5.1</h2><h3 id="3-1-QT5-5-1安装"><a href="#3-1-QT5-5-1安装" class="headerlink" title="3.1 QT5.5.1安装"></a>3.1 QT5.5.1安装</h3><p>QT5.5.1的安装包下载。</p>
-
-<style type="text/css">
-.heimu { color: #000; background-color: #000; }
-.heimu:hover { color: #fff; }
-</style>
-
-<p>百度云链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1RmkcwAavLGxF_HeV3PdwgA">https://pan.baidu.com/s/1RmkcwAavLGxF_HeV3PdwgA</a><br>提取码哟：<span class="heimu">lla0</span></p>
-<p>双击后一路安装即可，其中设置安装路径为<code>D:\Software\Qt</code>，安装结束后将QT安装路劲下的<code>D:\Software\Qt\Qt5.5.1\5.5\mingw492_32\bin</code>加入环境变量，以自己的实际路劲为准。</p>
-<p>注意，安装qt后编译程序时出现了<code>Error while building/deploying project untitled</code>错误提示，此时需要选择菜单栏 “工具”–》“选项”–》“构建和运行”， 在“概要”选项卡下面找到”Default build directory” 点击后面的“reset”按钮.  之后关闭QT，再重新打开就好了。</p>
-<h3 id="3-2-简单测试程序"><a href="#3-2-简单测试程序" class="headerlink" title="3.2 简单测试程序"></a>3.2 简单测试程序</h3><p>1.将mysql-5.6文件lib目录下的libmysql.dll和libmysqld.dll复制到Qt5.5中的mingw493_32的bin文件下，如下图。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/Mysql%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A824.PNG"></p>
-<p>2.新建项目工程，选择QT Widget Application，新建成功后，<code>.pro</code>文件中添加 <code>QT +=sql</code>；<br>3.将<code>mainwindow.cpp</code>代码修改如下：</p>
-<div class="xControl active">
-    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开/关闭</span></div>
-    <div class="xContent pre-open"><div class="inner">
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mainwindow.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ui_mainwindow.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QSqlDatabase&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QSqlQuery&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QtDebug&gt;</span></span></span><br><span class="line"></span><br><span class="line">MainWindow::<span class="built_in">MainWindow</span>(QWidget *parent) :</span><br><span class="line">    <span class="built_in">QMainWindow</span>(parent),</span><br><span class="line">    <span class="built_in">ui</span>(<span class="keyword">new</span> Ui::MainWindow)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;<span class="built_in">setupUi</span>(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建立连接</span></span><br><span class="line">    QSqlDatabase db = QSqlDatabase::<span class="built_in">addDatabase</span>(<span class="string">&quot;QMYSQL&quot;</span>);</span><br><span class="line">    db.<span class="built_in">setHostName</span>(<span class="string">&quot;localhost&quot;</span>);</span><br><span class="line">    db.<span class="built_in">setPort</span>(<span class="number">3306</span>);</span><br><span class="line">    db.<span class="built_in">setDatabaseName</span>(<span class="string">&quot;mydatabase&quot;</span>);       <span class="comment">//这里输入你的数据库名</span></span><br><span class="line">    db.<span class="built_in">setUserName</span>(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">    db.<span class="built_in">setPassword</span>(<span class="string">&quot;root&quot;</span>);   <span class="comment">//这里输入你的密码</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!db.<span class="built_in">open</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">qDebug</span>() &lt;&lt; <span class="string">&quot;无法创建数据库连接！ &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">QSqlQuery <span class="title">query</span><span class="params">(db)</span></span>;</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;drop table if exists student;&quot;</span>);</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;create table student (id int(20) primary key not null, name varchar(20) not null);&quot;</span>);</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;insert into student values (0,&#x27;pitter&#x27;);&quot;</span>);</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;insert into student values (1,&#x27;jime&#x27;);&quot;</span>);</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;select * from student;&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(query.<span class="built_in">next</span>())&#123;</span><br><span class="line">        <span class="built_in">qDebug</span>()&lt;&lt;query.<span class="built_in">value</span>(<span class="string">&quot;name&quot;</span>).<span class="built_in">toString</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    query.<span class="built_in">exec</span>(<span class="string">&quot;drop table student;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MainWindow::~<span class="built_in">MainWindow</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
- 
-    </div></div>
-    </div>
-
-<p>修改后，点击运行，可以看到应用程序输出界面打印出”pitter”、 “jime”即可。</p>
-<h2 id="4-Mysql-Matlab2017b"><a href="#4-Mysql-Matlab2017b" class="headerlink" title="4 Mysql + Matlab2017b"></a>4 Mysql + Matlab2017b</h2><p>Matlab自行安装，我使用的是Matlab2017b。</p>
-<p>1.建立MySQL和MATLAB连接。<br>① 下载MySQL的jdbc驱动，点击下载<a target="_blank" rel="noopener" href="http://ftp.jaist.ac.jp/pub/mysql/Downloads/Connector-J">链接</a>或者前面百度云中下载；<br>② 这里我下载的是mysql-connector-java-8.0.27.zip，解压后将mysql-connector-java-8.0.27.jar复制到MATLAB安路径下的<code>java/jar/toolbox</code>中；<br>③ 打开MATLAB安路径下的<code>toolbox\local</code>，找到classpath.txt文件，末尾添加<code>$matlabroot/java/jar/toolbox/mysql-connector-java-8.0.27.jar</code>,之后重启MATLAB。</p>
-<p>2.编写脚本程序如下：</p>
-<div class="xControl active">
-    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>点我展开/关闭</span></div>
-    <div class="xContent pre-open"><div class="inner">
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">conn = database(<span class="string">&#x27;mydatabase&#x27;</span>, <span class="string">&#x27;root&#x27;</span>, <span class="string">&#x27;root&#x27;</span>, <span class="string">&#x27;com.mysql.jdbc.Driver&#x27;</span>, <span class="string">&#x27;jdbc:mysql://localhost:3306/mydatabase&#x27;</span>);</span><br><span class="line"><span class="built_in">exec</span>(conn, <span class="string">&quot;drop table if exists student;&quot;</span>);</span><br><span class="line"><span class="built_in">exec</span>(conn, <span class="string">&quot;create table student (id int(20) primary key not null, name varchar(20) not null);&quot;</span>);</span><br><span class="line"><span class="built_in">exec</span>(conn, <span class="string">&quot;insert into student values (0,&#x27;pitter&#x27;);&quot;</span>);</span><br><span class="line"><span class="built_in">exec</span>(conn, <span class="string">&quot;insert into student values (1,&#x27;jime&#x27;);&quot;</span>);</span><br><span class="line">curs = <span class="built_in">exec</span>(conn, <span class="string">&quot;select * from student;&quot;</span>);</span><br><span class="line">curs = fetch(curs);  </span><br><span class="line">ress = curs.Data</span><br><span class="line"><span class="built_in">exec</span>(conn, <span class="string">&quot;drop table student;&quot;</span>);</span><br></pre></td></tr></table></figure>
- 
-    </div></div>
-    </div>
-
-<p>修改后，点击运行，可以看到应用程序输出界面打印出”pitter”、 “jime”即可。</p>
-<p>上述代码中，<code>database</code>函数的第1个参数是数据库名称，第2个参数是user名，第3个是数据库密码，第4个是MySql的驱动，最后是jdbc的连接对数据库进行连接是否成功进行检查。</p>
-<h2 id="5-项目程序整理"><a href="#5-项目程序整理" class="headerlink" title="5 项目程序整理"></a>5 项目程序整理</h2><p>Preparing……</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>1.<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xtu-wlf1212/p/8764015.html">QT5.5与MYSQL5.6数据库连接的具体方法与实现</a><br>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/myshinelove/article/details/81176662">Error while building&#x2F;deploying project untitled(永久解决办法)</a><br>3.<a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15064656/2602276">MATLAB连接MySQL数据库</a></p>
+            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>还差点点功能，最近慢慢加。。。<br>项目仓库地址：<a target="_blank" rel="noopener" href="https://github.com/zhekunren/library-manage-by-mysql-qt.git">library-manage-by-mysql-qt</a></p>
+<h2 id="项目原理"><a href="#项目原理" class="headerlink" title="项目原理"></a>项目原理</h2><p>。。。。。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>1.<a target="_blank" rel="noopener" href="https://blog.csdn.net/zju_fish1996/article/details/51218532">[mysql+qt] 图书管理系统</a><br>2.<a target="_blank" rel="noopener" href="https://github.com/Uyouii/LibraryManage">LibraryManage</a></p>
 
         </div>
         
@@ -347,7 +286,7 @@
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "https://zhekunren.github.io/archives/4fd3c7f0.html";
-            const title         = "「Mysql安装与基础使用（QT、Matlab）」";
+            const title         = "「图书管理系统（QT、Mysql）」";
             const excerpt       = ``;
             let _URL;
             switch (dest) {
@@ -367,7 +306,7 @@
             <div class="footer-tag clearfix">
                 <div class="pull-left">
                 <i class="fa fa-tags"></i>
-                    <a class="tag-none-link" href="/tags/Matlab/" rel="tag">Matlab</a>, <a class="tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>, <a class="tag-none-link" href="/tags/QT/" rel="tag">QT</a>, <a class="tag-none-link" href="/tags/install/" rel="tag">install</a>
+                    <a class="tag-none-link" href="/tags/C-Cpp/" rel="tag">C&Cpp</a>, <a class="tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>, <a class="tag-none-link" href="/tags/QT/" rel="tag">QT</a>
                 </div>
                 <div class="pull-date">
                 <span>最后编辑：2022-03-05</span>
@@ -382,6 +321,10 @@
                 <a title=" 求职笔记--专栏索引" href="/archives/e1e589cc.html">&lt; 上一篇</a>
             </div>
             
+            
+            <div class="nav-next clearfix">
+                <a title=" Mysql安装与基础使用（QT、Matlab）" href="/archives/4fd3c7f0.html">下一篇 &gt;</a>
+            </div>
             
         </nav>
     
@@ -449,7 +392,7 @@
                 文章
             </span>
             <span class="count">
-                54
+                55
             </span>
         </a>
         <a class="meta-item" href="/categories/">
@@ -481,14 +424,14 @@
         <span class="toc-progress-bar"></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6%E4%BB%A5%E5%8F%8ANavicat-for-MySQL"><span class="toc-text">1 Win10下安装MySQL5.6以及Navicat for MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6"><span class="toc-text">1.1 Win10下安装MySQL5.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85Navicat-for-MySQL"><span class="toc-text">1.2 安装Navicat for MySQL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Mysql%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%B8%B8%E7%94%A8%E7%9A%84%E2%80%9D%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E2%80%9D%EF%BC%89"><span class="toc-text">2 Mysql基本操作（常用的”增删改查”）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mysql-QT5-5-1"><span class="toc-text">3 Mysql + QT5.5.1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-QT5-5-1%E5%AE%89%E8%A3%85"><span class="toc-text">3.1 QT5.5.1安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="toc-text">3.2 简单测试程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Mysql-Matlab2017b"><span class="toc-text">4 Mysql + Matlab2017b</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%A1%B9%E7%9B%AE%E7%A8%8B%E5%BA%8F%E6%95%B4%E7%90%86"><span class="toc-text">5 项目程序整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%8E%9F%E7%90%86"><span class="toc-text">项目原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>
     </div>
 </aside>
                 
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/">EOS-RTOS</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/FreeRTOS/">FreeRTOS</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/RTX/">RTX</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/">技术积累</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/">求职笔记</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/">生活日常</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/">影音美图</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/">软件工具</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/">Hexo</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/">安装破解</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/">EOS-RTOS</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/FreeRTOS/">FreeRTOS</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/RTX/">RTX</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/">技术积累</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/">求职笔记</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/">生活日常</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/">影音美图</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/">软件工具</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/">Hexo</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/">安装破解</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a><span class="category-list-count">1</span></li></ul></li></ul>
   </aside>
 
 
@@ -497,7 +440,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/tags/C-Cpp/" style="font-size: 0.63em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.66em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.63em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.77em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/Matlab/" style="font-size: 0.6em;">Matlab</a> <a href="/tags/Mysql/" style="font-size: 0.6em;">Mysql</a> <a href="/tags/QT/" style="font-size: 0.6em;">QT</a> <a href="/tags/RTOS/" style="font-size: 0.8em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.66em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.71em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.66em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.74em;">hexo</a> <a href="/tags/install/" style="font-size: 0.69em;">install</a> <a href="/tags/life/" style="font-size: 0.63em;">life</a> <a href="/tags/movies/" style="font-size: 0.63em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a>
+        <a href="/tags/C-Cpp/" style="font-size: 0.66em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.66em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.63em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.77em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/Matlab/" style="font-size: 0.6em;">Matlab</a> <a href="/tags/Mysql/" style="font-size: 0.63em;">Mysql</a> <a href="/tags/QT/" style="font-size: 0.63em;">QT</a> <a href="/tags/RTOS/" style="font-size: 0.8em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.66em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.71em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.66em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.74em;">hexo</a> <a href="/tags/install/" style="font-size: 0.69em;">install</a> <a href="/tags/life/" style="font-size: 0.63em;">life</a> <a href="/tags/movies/" style="font-size: 0.63em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a>
       </div>
   </aside>
 
@@ -512,6 +455,12 @@
           
           
             <a class="list-group-item" href="/archives/4fd3c7f0.html"><i class="fa  fa-book"></i> Mysql安装与基础使用（QT、Matlab）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/4fd3c7f0.html"><i class="fa  fa-book"></i> 图书管理系统（QT、Mysql）</a>
             
           
         
@@ -537,11 +486,7 @@
           
         
           
-          
-            <a class="list-group-item" href="/archives/fb0c4ff4.html"><i class="fa  fa-book"></i> 影音美图畅享（不定期更新）</a>
             
-          
-        
           
             
           

@@ -42,6 +42,29 @@
   </entry>
   
   <entry>
+    <title>图书管理系统（QT、Mysql）</title>
+    <link href="https://zhekunren.github.io/archives/4fd3c7f0.html"/>
+    <id>https://zhekunren.github.io/archives/4fd3c7f0.html</id>
+    <published>2022-03-05T02:00:00.000Z</published>
+    <updated>2022-03-05T02:00:00.000Z</updated>
+    
+    
+    <summary type="html"> </summary>
+    
+    
+    
+    <category term="技术积累" scheme="https://zhekunren.github.io/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/"/>
+    
+    
+    <category term="C&amp;Cpp" scheme="https://zhekunren.github.io/tags/C-Cpp/"/>
+    
+    <category term="Mysql" scheme="https://zhekunren.github.io/tags/Mysql/"/>
+    
+    <category term="QT" scheme="https://zhekunren.github.io/tags/QT/"/>
+    
+  </entry>
+  
+  <entry>
     <title>求职笔记--专栏索引</title>
     <link href="https://zhekunren.github.io/archives/e1e589cc.html"/>
     <id>https://zhekunren.github.io/archives/e1e589cc.html</id>
@@ -56,9 +79,9 @@
     <category term="求职笔记" scheme="https://zhekunren.github.io/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/"/>
     
     
-    <category term="notes" scheme="https://zhekunren.github.io/tags/notes/"/>
-    
     <category term="嵌入式" scheme="https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/"/>
+    
+    <category term="notes" scheme="https://zhekunren.github.io/tags/notes/"/>
     
   </entry>
   
@@ -144,13 +167,13 @@
     <category term="影音美图" scheme="https://zhekunren.github.io/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/"/>
     
     
-    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
-    
     <category term="movies" scheme="https://zhekunren.github.io/tags/movies/"/>
     
     <category term="muisc" scheme="https://zhekunren.github.io/tags/muisc/"/>
     
     <category term="life" scheme="https://zhekunren.github.io/tags/life/"/>
+    
+    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
     
   </entry>
   
@@ -396,9 +419,9 @@
     <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
     
     
-    <category term="数据结构" scheme="https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
     <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="数据结构" scheme="https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
     <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
     
@@ -478,29 +501,6 @@
     <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
     
     <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>u盘内的歌曲文件排序软件</title>
-    <link href="https://zhekunren.github.io/archives/5c656d31.html"/>
-    <id>https://zhekunren.github.io/archives/5c656d31.html</id>
-    <published>2022-02-09T12:30:12.000Z</published>
-    <updated>2022-02-09T12:30:12.000Z</updated>
-    
-    
-    <summary type="html">这篇文章介绍了两个u盘内的歌曲文件排序软件：shancunshiMP3、小优优。</summary>
-    
-    
-    
-    <category term="软件工具" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/"/>
-    
-    <category term="安装破解" scheme="https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/"/>
-    
-    
-    <category term="install" scheme="https://zhekunren.github.io/tags/install/"/>
-    
-    <category term="tools" scheme="https://zhekunren.github.io/tags/tools/"/>
     
   </entry>
   

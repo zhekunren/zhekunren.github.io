@@ -197,7 +197,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~5.60K
+                        ~6.04K
                     
                     字
                 </li>
@@ -246,6 +246,7 @@
 <p><strong>5.书籍添加&#x2F;更新界面</strong><br>“书籍管理页面”界面左侧，点击“添加书籍”按钮后，弹出“书籍添加&#x2F;更新界面”。<br>界面的上侧信息填写完成后，用于添加&#x2F;更新单册书籍，当书籍编号在数据库中不存在时为添加，否则存在时为更新，且更新时需要保证更新后的数量大于等于已借出的数量。<br>界面下侧为批量添加多本书籍，既可以直接在表格中填写，也可以利用txt文件脚本来批量添加。其中，文件脚本的格式为 不同书籍信息需要通过换行（即”\n”）隔开，每个书籍中数据的顺序按照表格顺序，且通过一个空格分割开，书籍数据也需要完整。此外，可以通过“清空”按钮来清除表格数据，通过“添加&#x2F;更新书籍”按钮来更新多个书籍。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/%E5%9B%BE%E4%B9%A6%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F10.PNG"></p>
 <h3 id="2-3-代码结构简要介绍"><a href="#2-3-代码结构简要介绍" class="headerlink" title="2.3 代码结构简要介绍"></a>2.3 代码结构简要介绍</h3><p>项目代码中，每个界面都是一个类，共有10个界面类。此外，将所使用到的数据封装在<code>datastructure.h</code>中。具体实现过程，请详细看代码。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Tech-Accumulation/%E5%9B%BE%E4%B9%A6%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F11.PNG"></p>
+<p>指针的操作需要特别注意，因为常常在写程序时会容易出现内存泄漏或操作野指针的情况。<br>在本工程中，所有类的构造函数中会对类中指针进行初始化为NULL，在析构函数中会判断指针是否指向了开辟的内存，从而进行delete操作。在“MainWindow界面”中，除了分配类中变量的内存外，还会分配“window界面”和“widget页面”的内存空间。为了方便管理，对于“window界面”，通过关闭事件触发的函数“void closeEvent(QCloseEvent *event)”来向“MainWindow界面”发送信号，从而在相应槽函数中自动delete对应“window界面”内存，删除后设置为NULL，避免野指针；而对于“widget页面”，则是手动delete和赋值NULL，操作同类中其他指针一样；此外，在“MainWindow界面”的关闭事件触发函数“void closeEvent(QCloseEvent *event)”中会对类中的指针多指向的内存进行清理，防止内存泄漏。</p>
 <h3 id="2-4-补充QT打包生成exe的方法"><a href="#2-4-补充QT打包生成exe的方法" class="headerlink" title="2.4 补充QT打包生成exe的方法"></a>2.4 补充QT打包生成exe的方法</h3><p>首先需要两个工具。一个是QT5自带的windeployqt（这个大家不需要下载安装），另外一个是需要安装<code>Engima Virtual Box</code>，这是下载链接<a target="_blank" rel="noopener" href="https://enigmaprotector.com/en/downloads.html">Engima Virtual Box</a>。接下来介绍详细步骤：<br>1.Qt采用Release的方式生成一次，找到生成后的文件夹，我的在工程目录下<code>LibraryManageByMysqlQt\release</code>。打开后，复制release目录下的.exe程序到一个新建的文件夹，例如我的新建的文件夹为<code>F:\03\NormalStudy\TechAcc\Mysql\library-manage-by-mysql-qt\EXE\Compass</code>。<br>2.windows搜索中，搜索QT，找到<code>Qt 5.5 for Desktop (MinGW 4.9.2 32 bit)</code>，打开命令窗口。切换路径到前面复制有.exe程序的新建文件夹。接着，输入打包命令<code>windeployqt 程序名</code>。以我的为例，执行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f:</span><br><span class="line"><span class="built_in">cd</span> F:\03\NormalStudy\TechAcc\Mysql\library-manage-by-mysql-qt\EXE\Compass</span><br><span class="line">windeployqt LibraryManageByMysqlQt.exe</span><br></pre></td></tr></table></figure>
 <p>待运行结束，点击新建目录下的exe程序就可以运行了。<br>3.打开运行Enigma Virtual Box，在<code>Enter Input File Name</code>处选择打包程序的文件，即前面新建目录中的.exe文件。接着，点击<code>Add...</code>按钮–&gt;<code>Add Folder Recursive</code>，然后选择新建目录，即.exe所在目录。最后配置<code>File Options</code>中将<code>Compress Files</code>选中后，点击<code>Process</code>，等待结束，即可看到生成的打包好的文件<code>LibraryManageByMysqlQt_boxed.exe</code>。</p>

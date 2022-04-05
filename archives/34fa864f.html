@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
+  <title>FreeRTOS之13-事件标志组 | zhekunのblog</title>
+  <meta name="author" content="zhekun" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="FreeRTOS, RTOS, stm32" />
+  
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeRTOS之13-事件标志组">
+<meta property="og:url" content="https://zhekunren.github.io/archives/34fa864f.html">
+<meta property="og:site_name" content="zhekunのblog">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhekunren.github.io/archives/34fa864f.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/wallhaven-e7q85w.png">
+<meta property="article:published_time" content="2022-02-16T10:42:00.000Z">
+<meta property="article:modified_time" content="2022-04-02T07:19:00.000Z">
+<meta property="article:author" content="zhekun">
+<meta property="article:tag" content="stm32">
+<meta property="article:tag" content="RTOS">
+<meta property="article:tag" content="FreeRTOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhekunren.github.io/archives/34fa864f.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/wallhaven-e7q85w.png">
+<meta name="twitter:site" content="@null">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+      <meta name="google-site-verification" content="3MUjsxLLUvsNMRZFuKgKTuODWqF7iUJhcAaKhiMrfGc" />
+    
+    
+      <meta name="baidu-site-verification" content="code-xZCR5R9r7E" />
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner_1.jpg');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg_1.webp');
+        }
+      }
+    
+  </style>
+  
+  <!-- Google adsense -->
+  
+  <meta name="generator" content="Hexo 6.0.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-archive"></i>归档</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/categories/"><i class="fa fa-folder-open"></i>分类</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/about"><i class="fa fa-user"></i>关于</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>更多</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="/friends"><i class="fa fa-paw"></i>友链</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://new.cnzz.com/v1/login.php?siteid=1280860084"><i class="fa fa-bar-chart"></i>访客</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://travellings.link"><i class="fa fa-subway"></i>开往</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">zhekunのblog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <!-- <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>zhekunのblog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div> --> 
+            <!-- 
+                删除banner图片，delete by zhekun，此外替换以下文件中的"320px"为"50px"，共8处。
+                themes\kratos-rebirth\source\css\kratosr.min.css,
+                themes\kratos-rebirth\source\maps\kratosr.min.css.map,
+                themes\kratos-rebirth\src\scss\kratosr.scss
+            -->
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">FreeRTOS之13-事件标志组</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2022-02-16</li>
+                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~5.52K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1648883940000"></time> 前，其中的内容可能需要更新。</p></div>   
+            </div>
+            
+            <hr />
+            <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="Oh, these decrypted content cannot be verified, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="67aa0bfd2a550b9ed993adc9a0b852099f659b7572b21487eb4208bb3df7900d">ae28f2999f1d18404b258144573c0b54e69ab3cdaaadc4af6db426b46802b3f0decfd49a09bf33a3e704e1c5e6c6e034bdd5e73e56611e623a5fd5e00221f3fb554a6246ea1af26dbc77ec9b1f3b75fc47d778b03d475f4fbe3bb1ba54a27385c234b662a7113b42cdba93b9b0657654fc2da9537947c94e2d4b7f435d8d80a834ad6131776b4769765975adca0522456f87abd37be78d81aed1866b1cf3bc2df50976bf2c313872f0a76cbc55dd14a4e4dccdefb7d45bc546c9a1694000cf89b248d176acb6b412a4359f73071289e01ac981f5289f9d42261c26525facff86edd793d7550273dc228c901a008485f0e712546db54009db290cc02d93e0ca131f50bad3292b75c936d7151035bb91ec48d01009d90615f9d7249501bbf3c5c7219debc672996fe0c6d0befbed3b4fe1c845c5feb6741df45c584d866a27aa32ad90234fc57f0f738c93a0472eaa84a548dc21b0ed24c01a803a630e762e34332cdda3c7de5bad7fbc249a1a9031f6e87d90fd639b9f459a175fd49f8c1aa1d4d4b2e2623d8a74e777b6ea9639231d0ceb0f34c4805e0b09839d93e7bdfea3150404a528f1a5178634da3d804aae516b7ccddddf039b4d09cd669eec8ba2eb3a897f5c960cd787204a48e12f0c7ec7bca810d78d621b194f20da1eca616682c2f0d1b455c1709c959725a05164df6824487b9d0153500048deef72887afb3dd628bc5d209d91c532adc90198b41f6de363c4ac52785a498e7684383c025a80bb37c8dc058e4607a8564cebfdbe021a46dbab19e996fc852f59d24aa14036604a910e71f7ba4fd8ef706bbefc633e98e8f9e8f4b942a6bd826fd51ad5f46409d45bd12993ee5be752e9365ee11b70dd040c35dda5c628c5e264430afaa37b4de0a16aa5dc89d4c5a0dee3b73b18e5645701fa9f0b21c8043822e377d1a60a856d4afeff9a42e1df0abb4c4aec126fd905b333a1e4d57e45204631a09c58d1f961a819066250810e016ffda8eca4a204820347c59259a32d7bb775b0618f7c9df1e459b01e0d30cf84fd71fb70519ac719cf26cb7b6252937607ee241e583f94ac13f96ce75892a583755da7602c5a114cd61eec293de761960b3229294738bb137432d3d7f28c2d500731bdc963f77aa99a36dacd8a0e59cba742a3a385d9cec4bf5784db35475645ea478444061016de9fb2de56da31f766a277e4bebe59ed03dd912fe6f5ccdf0e70dfed09d62947279fecf38693e6e19a7de1e9c9e1ddfea0565747fd8155d01a45e4fd5f47468ab62fcf4d16d331075a6dabe197478f0df90046aa9cce2088ced82a8ef276802920e559440bcbb11aafde2dfba951f775158f354f8e84a3799475a8b1efbab0cdd2027ceae0bdbcae35f760b17b694a7b9e5f347ccbe6324916eede7039e95d3427331352f849a39ef75c572cfa7bae7fabaa1a6f7f49f41c7cb8cb2ed0f45bfc8deadabccc6b9142db331fd343fb7463cfbf25e8af5d80883c87565e490d48c3aa21cb22e56f9914509e565b679ccf33e11afa242de164886adf6548ccdd0a455d75c57f600292f26d96630ad2ca1994e825c60e6d88b8d7cfa44b3412614bd6470ad8da952d4e318df96bd7f2d751874da6250abdbcc306c8f514eedc9b8b7e48e091ef88961e0b868142adebaa429b8ee5350cf8b531104555f9a8eefb0e3a377fba784ec96c9d46dbf4047825940bddc40f33d21451fe41397856d3f33c1aafff20d4ccc583a2192b2b3faed0c2a706312ed72674e91bf98532cae3a746bc63df7b1abe0f279da5ac1138a0b51fc7a994858f42b5aeb8accdfe88f2a76a052b046c37cf0c22ddf8b89aad32445ffb5339c3b7758da31215d6c27c709274ede18bf384e5f5737a1ca8ad905e81f235a43f1311f460318e3510bd60f448a5b83d791ba6fadf9d7d89642351a9060961df62da6cc05e71b35694fdb6448f1a5325bfd9c17e0b2a1495c161dc8d38e1794d7aa97ce87df2329ec71288e8b249706d7fe78245c77416ddc8aa14785bcaa0dc3bb0b6749a7388f4c775213d5c6ff58a7dd2aed276db24d73c24285748b2cfde6f3ef4fa18656f2e12db2d8b05804cd95543dbcc9262511efbebc9c41512e577e99692d9d7b56f0679bdcc0d7fcf3e1664c5e2d4250159b52b4ac0266ff08b096962379dbb8a0b6de89e787e043c997a1e4a889fe2a1e4daa2586f64af64755439e0eeb1820fdcde0a36bd8d4ebed5ac68d95d607c613ddb33e1431978b564039c7f3c8fac32c5954d8b07ed4740686b27379921525de269a77436c49a18453e0d7530cb4ceaf17d4326a29939f1eb3bf310da607d158c6847431c439921a489ec0ddea4ac7f121ee230503de3f0ea0bfcceb9b794ca2fa2224a65e1f42db9468cc0d1046115655291ed7a3bfd923e6646c179897fe5baaac511a1603dfe78d60b2a5d2442e3a20fe8bf4e0630c7f0965162c5ac272c9329e58d09a2492e5e8c7c5ffa6fae19086226df454fee8bdc764089596c0bbf0f7bb33971033f8bcb3ca428f58416abaa2fae0a6340c537e4a9a9833a1c4f94fe27523cbd5520bce9a7e986c0a4cf703c1615edd6f3262f556de855c4b265b68b3d4571420cfbe537b556ebf2d09004273fb868f089b126adac9fc49358b65deea0afbc2e568ac0ba2ef41c3d2e59af38b9d5a56fae5691a1e795105d337cc0f34780d84ebe04c6dc9fe819c99192b2d8097efb0fd88a020968ff62820030e7d95075c3d57abcac9c0e0f0b22d6594094f6738cd710d7435ab715229c986ce5e1834f578468f9c9851f3c71d03bc743dbb8bab8dc2c9f4ca53063bf150c933261be4394d7a01fa0142707cfda27683616cb685fab0161737dc7ea370ea9e125cbdd0455f28253f99c9b209c8fc3648755bf9449575636e322c2acafbcc639d278d11ab8d766caaa0effda5eaf3b57c6813df41490889e83b6f10a340017bbaa5329c7a27444a61caeacab6ac550fb8070c5323176d24afdb1846e3f4912b23ad91481a1c63f3acca002ef1c71e147f76cc62412fb2d30d1948b724dd2ba73bae2fd6c98fd121c458a2a82f16c57edbe0fabbd892b437b67be18cb3128b1bcbec21b07e935a7ec3a9efb04a637ce86d4e9ebc7ba8c49efee37318a6e8efa69ab3ec4324dd1a7aa4ca0b764a4245141dd4c69c795260b6ac4586cfb3e683b8184cbf5c60464d328393288f3f0ae8705a26b984c3bde49d0aac5a496e72ff872527d31e6d3fb5fb986dc19c01b583de187a5d2ea9674a48fa9d416a0c36520fe3509252f91ea0d1b310dbbb7e0c73af3cc15ba4ce22bbec9507d19c032eb8aa4ba9898cdeff9d82832fb4a78255b1ec2a379591aa831964bee5ae633e31df284a54229581d138b647425c4d0aec4532e556336383a720e6e64cb4e4926e7031152c6ea25526fe056649083c59ccd9920e6b88747751c31a3551e1394c3b66fd6ebf2ded1c85aa7494b052580de205b5cfb8d6df87f571a962ea556bb7472322163ff9125e3d24a68cc51ba6cb7187ca39aa59c150abee3527da4c98a12ea7304161b974675b891a8c5a81db9bd025e08d30ca2099c7ec33ada88df250a2c054bcd39a71961b4056288db4d49df6731df1fc827ed79291903ee805795546d03254add98146db922d4e0184d72ba232d1a1419e1b299d81d476c97e8f8168917fcc152a734568f43ee97514edbacf3b0295d21390d6e1b4e7500ea7d5b49f663c1f66c08d80ea07d684ba55f81a8202856fbda9afeca5da281bc4b088432927728dffc8217f948db5da9e0f230d874ccc7a26e5f357ba5d0b3865ff3aaf47a92fd78cd429a99a042e6979545</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-blink">
+      <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-blink" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-blink" data-content="Hey, password is required here.">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                    <a class="donate" href="javascript:;"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://zhekunren.github.io/archives/34fa864f.html",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://zhekunren.github.io/archives/34fa864f.html";
+            const title         = "「FreeRTOS之13-事件标志组」";
+            const excerpt       = `Here's something encrypted, password is required to continue reading.`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/FreeRTOS/" rel="tag">FreeRTOS</a>, <a class="tag-none-link" href="/tags/RTOS/" rel="tag">RTOS</a>, <a class="tag-none-link" href="/tags/stm32/" rel="tag">stm32</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-04-02</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" FreeRTOS之14-内存管理" href="/archives/c0791387.html">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" FreeRTOS之15-任务通知" href="/archives/c0791387.html">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="disqus_thread" class="post-comments lazy-load"></div>
+
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://zhekunren.github.io/archives/34fa864f.html';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'archives/34fa864f.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    var load_comm = () => {
+        if (typeof DISQUS === 'undefined') {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://zhekunblog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        } else {
+            DISQUS.reset({
+                reload: true,
+                config: function () {  
+                    this.page.url = 'https://zhekunren.github.io/archives/34fa864f.html';  // Replace PAGE_URL with your page's canonical URL variable
+                    this.page.identifier = 'archives/34fa864f.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                }
+            });
+        }
+    };
+    
+</script>
+<script async id="dsq-count-scr" src="//zhekunblog.disqus.com/count.js"></script>
+
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <!-- <div class="photo-background"></div> --> <!-- 删除头像处banner图片，将这行代码替换成下一行 delete by zhekun-->
+    <div style="height: 75px;"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/avatar2.jpg" />
+        </div>
+    </div>
+    <!-- <div class="textwidget">
+        <p class="text-center">与其向往，不如出发</p> 
+    </div> -->
+    <!-- 重定义about界面，将这行代码替换成下一行 delete by zhekun-->
+    <div><p style="margin-top:10px;margin-bottom:0;text-align:center;font-weight:400;font-size:25px;line-height:1.5;">zhekunのblog</p><p style="margin-top:0;margin-bottom:0;text-align:center;font-size:15px;line-height:1.5;">与其向往，不如出发</p><p style="margin-top:0;margin-bottom:0;text-align:center;font-size:15px;line-height:1.5;"><i class="fa fa-map-marker"></i><span>中国●四川</span></p></div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                58
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                12
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                23
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/">EOS-RTOS</a><span class="category-list-count">18</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/FreeRTOS/">FreeRTOS</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/EOS-RTOS/RTX/">RTX</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%BC%80%E5%8F%91/">嵌入式开发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/">技术积累</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E7%AC%94%E8%AE%B0/">求职笔记</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/">生活日常</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/%E5%BD%B1%E9%9F%B3%E7%BE%8E%E5%9B%BE/">影音美图</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/">软件工具</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/Hexo/">Hexo</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/">安装破解</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/">实用工具</a><span class="category-list-count">1</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/C-Cpp/" style="font-size: 0.66em;">C&Cpp</a> <a href="/tags/DMA/" style="font-size: 0.63em;">DMA</a> <a href="/tags/FIFO/" style="font-size: 0.6em;">FIFO</a> <a href="/tags/FreeRTOS/" style="font-size: 0.77em;">FreeRTOS</a> <a href="/tags/MathType/" style="font-size: 0.6em;">MathType</a> <a href="/tags/Matlab/" style="font-size: 0.6em;">Matlab</a> <a href="/tags/Mysql/" style="font-size: 0.63em;">Mysql</a> <a href="/tags/QT/" style="font-size: 0.63em;">QT</a> <a href="/tags/RTOS/" style="font-size: 0.8em;">RTOS</a> <a href="/tags/RTX/" style="font-size: 0.66em;">RTX</a> <a href="/tags/XMind/" style="font-size: 0.6em;">XMind</a> <a href="/tags/blog-test/" style="font-size: 0.71em;">blog-test</a> <a href="/tags/blog-tips/" style="font-size: 0.66em;">blog-tips</a> <a href="/tags/hexo/" style="font-size: 0.74em;">hexo</a> <a href="/tags/install/" style="font-size: 0.69em;">install</a> <a href="/tags/life/" style="font-size: 0.63em;">life</a> <a href="/tags/movies/" style="font-size: 0.63em;">movies</a> <a href="/tags/muisc/" style="font-size: 0.6em;">muisc</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/archives/2ce88c53.html"><i class="fa  fa-book"></i> 图书管理系统（QT、Mysql）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/4fd3c7f0.html"><i class="fa  fa-book"></i> Mysql安装与基础使用（QT、Matlab）</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/e1e589cc.html"><i class="fa  fa-book"></i> 求职笔记--专栏索引</a>
+            
+          
+        
+          
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/c0791387.html"><i class="fa  fa-book"></i> FreeRTOS之15-任务通知</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/archives/34fa864f.html"><i class="fa  fa-book"></i> FreeRTOS之13-事件标志组</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a title="mail" href="mailto:zhekunren@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a title="github" target="_blank" rel="nofollow" href="https://github.com/zhekunren"><i class="fa fa-github"></i></a></li>
+                        <li><a title="gitee" target="_blank" rel="nofollow" href="https://gitee.com/zhekunren"><i class="fa fa-github-alt"></i></a></li>
+                        <li><a title="rss" target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 zhekunのblog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <!-- <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by zhekun.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div> -->
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="7230595307"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+    <script defer src="https://unpkg.com/layui-src@2.5.5/dist/layui.all.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+<script type="text/javascript">document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1280860084'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280860084' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

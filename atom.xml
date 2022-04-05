@@ -107,6 +107,81 @@
   </entry>
   
   <entry>
+    <title>FreeRTOS之15-任务通知</title>
+    <link href="https://zhekunren.github.io/archives/c0791387.html"/>
+    <id>https://zhekunren.github.io/archives/c0791387.html</id>
+    <published>2022-02-17T10:42:00.000Z</published>
+    <updated>2022-04-03T10:19:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之13-事件标志组</title>
+    <link href="https://zhekunren.github.io/archives/34fa864f.html"/>
+    <id>https://zhekunren.github.io/archives/34fa864f.html</id>
+    <published>2022-02-16T10:42:00.000Z</published>
+    <updated>2022-04-02T07:19:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之14-内存管理</title>
+    <link href="https://zhekunren.github.io/archives/c0791387.html"/>
+    <id>https://zhekunren.github.io/archives/c0791387.html</id>
+    <published>2022-02-16T10:42:00.000Z</published>
+    <updated>2022-04-03T05:19:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hexo blog custom record</title>
     <link href="https://zhekunren.github.io/archives/428d3437.html"/>
     <id>https://zhekunren.github.io/archives/428d3437.html</id>
@@ -126,6 +201,31 @@
     <category term="hexo" scheme="https://zhekunren.github.io/tags/hexo/"/>
     
     <category term="blog-tips" scheme="https://zhekunren.github.io/tags/blog-tips/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FreeRTOS之12-软件定时器</title>
+    <link href="https://zhekunren.github.io/archives/33e89c2f.html"/>
+    <id>https://zhekunren.github.io/archives/33e89c2f.html</id>
+    <published>2022-02-15T10:42:00.000Z</published>
+    <updated>2022-04-01T06:19:00.000Z</updated>
+    
+    
+    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
+    
+    
+    
+    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
+    
+    
+    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
+    
+    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
+    
+    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
     
   </entry>
   
@@ -383,108 +483,6 @@
     <id>https://zhekunren.github.io/archives/329da6e4.html</id>
     <published>2022-02-12T10:42:00.000Z</published>
     <updated>2022-03-29T06:19:00.000Z</updated>
-    
-    
-    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
-    
-    
-    
-    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
-    
-    
-    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
-    
-    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FreeRTOS之10-队列</title>
-    <link href="https://zhekunren.github.io/archives/ba24e303.html"/>
-    <id>https://zhekunren.github.io/archives/ba24e303.html</id>
-    <published>2022-02-12T10:37:00.000Z</published>
-    <updated>2022-02-12T10:37:00.000Z</updated>
-    
-    
-    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
-    
-    
-    
-    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
-    
-    
-    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
-    
-    <category term="数据结构" scheme="https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FreeRTOS之09-时间管理</title>
-    <link href="https://zhekunren.github.io/archives/af7ea7bd.html"/>
-    <id>https://zhekunren.github.io/archives/af7ea7bd.html</id>
-    <published>2022-02-12T10:29:00.000Z</published>
-    <updated>2022-02-12T10:29:00.000Z</updated>
-    
-    
-    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
-    
-    
-    
-    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
-    
-    
-    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
-    
-    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FreeRTOS之08-FreeRTOS其他任务API函数</title>
-    <link href="https://zhekunren.github.io/archives/7abe9be9.html"/>
-    <id>https://zhekunren.github.io/archives/7abe9be9.html</id>
-    <published>2022-02-12T07:21:00.000Z</published>
-    <updated>2022-02-12T07:21:00.000Z</updated>
-    
-    
-    <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>
-    
-    
-    
-    <category term="EOS-RTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/"/>
-    
-    
-    <category term="stm32" scheme="https://zhekunren.github.io/tags/stm32/"/>
-    
-    <category term="RTOS" scheme="https://zhekunren.github.io/tags/RTOS/"/>
-    
-    <category term="FreeRTOS" scheme="https://zhekunren.github.io/tags/FreeRTOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>FreeRTOS之07-任务切换分析</title>
-    <link href="https://zhekunren.github.io/archives/a9f4629d.html"/>
-    <id>https://zhekunren.github.io/archives/a9f4629d.html</id>
-    <published>2022-02-11T06:10:00.000Z</published>
-    <updated>2022-02-11T06:10:00.000Z</updated>
     
     
     <summary type="html">Here&#39;s something encrypted, password is required to continue reading.</summary>

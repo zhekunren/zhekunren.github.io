@@ -15,12 +15,12 @@
   
     <meta name="keywords" content="zhekun, 哲昆, 任哲昆, 个人博客, 经验分享, c, c++, 嵌入式, Embedded, 操作系统, linux, rtos, hexo, Kratos-Rebirth" />
   
-  <meta name="description" content="小伙伴们🥳  小站刚刚成立，欢迎大家交换友链成为小伙伴哦 ~ 注： 下方友链次序每次刷新页面随机排列。          {     const flist &#x3D; JSON.parse(&#96;[{&quot;name&quot;:&quot;zhekunのblog&quot;,&quot;bio&quot;:&quot;与其向往，不如出发&quot;,&quot;avatar&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;zhekunren&#x2F;blog_image&#x2F;img&#x2F;t">
+  <meta name="description" content="小伙伴们🥳  小站刚刚成立，欢迎大家交换友链成为小伙伴哦 ~ 注： 下方友链次序每次刷新页面随机排列。          {     const flist &#x3D; [{&quot;name&quot;:&quot;zhekunのblog&quot;,&quot;link&quot;:&quot;https:&#x2F;&#x2F;zhekunren.github.io&quot;,&quot;avatar&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;zhekunren&#x2F;blog_imag">
 <meta property="og:type" content="website">
 <meta property="og:title" content="zhekunのblog">
 <meta property="og:url" content="https://zhekunren.github.io/friends.html">
 <meta property="og:site_name" content="zhekunのblog">
-<meta property="og:description" content="小伙伴们🥳  小站刚刚成立，欢迎大家交换友链成为小伙伴哦 ~ 注： 下方友链次序每次刷新页面随机排列。          {     const flist &#x3D; JSON.parse(&#96;[{&quot;name&quot;:&quot;zhekunのblog&quot;,&quot;bio&quot;:&quot;与其向往，不如出发&quot;,&quot;avatar&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;zhekunren&#x2F;blog_image&#x2F;img&#x2F;t">
+<meta property="og:description" content="小伙伴们🥳  小站刚刚成立，欢迎大家交换友链成为小伙伴哦 ~ 注： 下方友链次序每次刷新页面随机排列。          {     const flist &#x3D; [{&quot;name&quot;:&quot;zhekunのblog&quot;,&quot;link&quot;:&quot;https:&#x2F;&#x2F;zhekunren.github.io&quot;,&quot;avatar&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;zhekunren&#x2F;blog_imag">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
 <meta property="article:published_time" content="2022-01-02T13:15:03.000Z">
@@ -44,6 +44,10 @@
   <!-- 样式表文件 -->
   <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
   
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" type="text/css" media="(prefers-color-scheme: dark)">
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
     <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
   
   
@@ -55,9 +59,6 @@
   
   
     <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
-  
-  
-    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
   
   <!-- 不得不预先加载的一些JS文件 -->
   <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -82,7 +83,7 @@
   
   <!-- Google adsense -->
   
-  <meta name="generator" content="Hexo 6.0.0"></head>
+<meta name="generator" content="Hexo 6.0.0"></head>
 
 
     <body class="custom-background">
@@ -198,11 +199,11 @@
 
 <script type="text/javascript">
 {
-    const flist = JSON.parse(`[{"name":"zhekunのblog","bio":"与其向往，不如出发","avatar":"https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/avatar2.jpg","link":"https://zhekunren.github.io"},{"name":"糖菓·部落","bio":"Never drown the flame of hope","avatar":"https://cdn.jsdelivr.net/gh/Candinya/Candinya/img/candinya.webp","link":"https://candinya.com"}]`);
+    const flist = [{"name":"zhekunのblog","link":"https://zhekunren.github.io","avatar":"https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/avatar2.jpg","bio":"与其向往，不如出发"},{"name":"糖菓·部落","link":"https://candinya.com","avatar":"https://cdn.jsdelivr.net/gh/Candinya/Candinya/img/candinya.webp","bio":"Never drown the flame of hope"}];
     let friendNodes = '';
     while (flist.length > 0) {
         const rndNum = Math.floor(Math.random()*flist.length);
-        friendNodes += `<li><a target="_blank" href="${flist[rndNum].link}"><img src="${flist[rndNum].avatar || '<%- url_cdn("images/avatar.webp") %>'}"><h4>${flist[rndNum].name}</h4><p>${flist[rndNum].bio || ''}</p></a></li>`;
+        friendNodes += `<li><a target="_blank" href="${flist[rndNum].link}"><img src="${flist[rndNum].avatar}" onerror="this.src='/images/avatar.webp'"><h4>${flist[rndNum].name}</h4><p>${flist[rndNum].bio}</p></a></li>`;
         flist.splice(rndNum, 1);
     }
     document.getElementById("friendsList").innerHTML = friendNodes;
@@ -235,6 +236,7 @@
             </div>
         </footer>
     </div>
+    
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
 
@@ -517,14 +519,14 @@
                             <li>&copy; 2022 zhekunのblog 版权所有.</li>
                             <li>本站已运行<span id="span_dt">Loading...</span></li>
                         </div>
-                        <!-- <div>
+                        <div>
                             <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
                             <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by zhekun.</li>
                         </div>
                         <div>
                             <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
                             <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
-                        </div> -->
+                        </div>
                         <div>
                             
                             
@@ -601,10 +603,6 @@
     <script defer src="https://unpkg.com/layui-src@2.5.5/dist/layui.all.js"></script>
 
 
-    <script defer src="/js/kr-dark.min.js"></script>
-
-
-<script type="text/javascript">document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1280860084'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280860084' type='text/javascript'%3E%3C/script%3E"));</script>
 
 <!-- Extra support for third-party plguins  -->
 

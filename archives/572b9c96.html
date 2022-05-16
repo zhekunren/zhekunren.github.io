@@ -29,7 +29,6 @@
 <meta property="article:tag" content="RTX">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/572b9c96.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_5.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -53,6 +52,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -184,16 +184,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/572b9c96.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">RTX_RTOS之00-STM32CUBMX创建MDK工程移植RTX5源码</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">RTX_RTOS之00-STM32CUBMX创建MDK工程移植RTX5源码</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-10-30</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2021-10-30T03:21:01.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-10-30</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -216,7 +220,7 @@
                 </div>
             
             <hr />
-            <h2 id="1-开发环境"><a href="#1-开发环境" class="headerlink" title="1 开发环境"></a>1 开发环境</h2><ul>
+            <div itemprop="articleBody"><h2 id="1-开发环境"><a href="#1-开发环境" class="headerlink" title="1 开发环境"></a>1 开发环境</h2><ul>
 <li>德飞莱开发板。芯片为stm32f103zet6；LED2、LED3的引脚为PE5、PB5；外部晶振为8MHZ和32.768KHZ。</li>
 <li>软件：STM32CUBMX、KEIL</li>
 </ul>
@@ -278,11 +282,11 @@
 </ul>
 <h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/metersun/article/details/79766241?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522163482362716780269842958%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=163482362716780269842958&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-79766241.first_rank_v2_pc_rank_v29&utm_term=cubmx+rtx&spm=1018.2226.3001.4187">在STM32CubeMX生成的工程中增加并编译RTX5源码</a><br>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/jxls378816/article/details/114964307">CUBE_MX创建工程移植RTX5过程</a><br>3、<a target="_blank" rel="noopener" href="https://blog.csdn.net/QQ286615275/article/details/106865222/?ops_request_misc=&request_id=&biz_id=102&utm_term=HAL%20RTX&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-106865222.first_rank_v2_pc_rank_v29&spm=1018.2226.3001.4187">如何使用STM32CubeMX创建工程并加入Keil RTX操作系统</a></p>
 <p>That’s all.Check it.</p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -369,7 +373,7 @@
                     <a class="tag-none-link" href="/tags/RTOS/" rel="tag">RTOS</a>, <a class="tag-none-link" href="/tags/RTX/" rel="tag">RTX</a>, <a class="tag-none-link" href="/tags/stm32/" rel="tag">stm32</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-01-23</span>
+                    <time datetime="2022-01-23T10:18:33.000Z" itemprop="dateModified">最后编辑：2022-01-23</time>
                 </div>
             </div>
         </footer>
@@ -387,7 +391,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -482,7 +485,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-text">1 开发环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="toc-text">2 具体步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-STM32CUBMX%E5%88%9B%E5%BB%BAMDK%E8%A3%B8%E6%9C%BA%E5%B7%A5%E7%A8%8B"><span class="toc-text">2.1 STM32CUBMX创建MDK裸机工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Keil%E7%A7%BB%E6%A4%8DRTX5"><span class="toc-text">2.2 Keil移植RTX5</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-text">相关参考</span></a></li></ol>

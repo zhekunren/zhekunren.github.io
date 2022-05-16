@@ -30,7 +30,6 @@
 <meta property="article:tag" content="install">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/4fd3c7f0.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0304_1.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -54,6 +53,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -185,16 +185,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/4fd3c7f0.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Mysql安装与基础使用（QT、Matlab）</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Mysql安装与基础使用（QT、Matlab）</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-03-05</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2022-03-05T02:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-03-05</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -217,7 +221,7 @@
                 </div>
             
             <hr />
-            <h2 id="1-Win10下安装MySQL5-6以及Navicat-for-MySQL"><a href="#1-Win10下安装MySQL5-6以及Navicat-for-MySQL" class="headerlink" title="1 Win10下安装MySQL5.6以及Navicat for MySQL"></a>1 Win10下安装MySQL5.6以及Navicat for MySQL</h2><p>MySQL和Navicat的安装包下载。值得注意的是，<strong>QT版本要和MYSQL的位数相同</strong>，本文MySQL采用的是32位的，后面QT也要是32位。</p>
+            <div itemprop="articleBody"><h2 id="1-Win10下安装MySQL5-6以及Navicat-for-MySQL"><a href="#1-Win10下安装MySQL5-6以及Navicat-for-MySQL" class="headerlink" title="1 Win10下安装MySQL5.6以及Navicat for MySQL"></a>1 Win10下安装MySQL5.6以及Navicat for MySQL</h2><p>MySQL和Navicat的安装包下载。值得注意的是，<strong>QT版本要和MYSQL的位数相同</strong>，本文MySQL采用的是32位的，后面QT也要是32位。</p>
 
 <style type="text/css">
 .heimu { color: #000; background-color: #000; }
@@ -280,11 +284,11 @@
 <p>修改后，点击运行，可以看到应用程序输出界面打印出”pitter”、 “jime”即可。</p>
 <p>上述代码中，<code>database</code>函数的第1个参数是数据库名称，第2个参数是user名，第3个是数据库密码，第4个是MySql的驱动，最后是jdbc的连接对数据库进行连接是否成功进行检查。</p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>1.<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xtu-wlf1212/p/8764015.html">QT5.5与MYSQL5.6数据库连接的具体方法与实现</a><br>2.<a target="_blank" rel="noopener" href="https://blog.csdn.net/myshinelove/article/details/81176662">Error while building&#x2F;deploying project untitled(永久解决办法)</a><br>3.<a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15064656/2602276">MATLAB连接MySQL数据库</a><br>4.<a target="_blank" rel="noopener" href="https://www.cnblogs.com/memory9770/p/11524315.html">关于MySQL5.6配置文件my-default.ini不生效问题</a></p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -371,7 +375,7 @@
                     <a class="tag-none-link" href="/tags/Matlab/" rel="tag">Matlab</a>, <a class="tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>, <a class="tag-none-link" href="/tags/QT/" rel="tag">QT</a>, <a class="tag-none-link" href="/tags/install/" rel="tag">install</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-03-05</span>
+                    <time datetime="2022-03-05T02:00:00.000Z" itemprop="dateModified">最后编辑：2022-03-05</time>
                 </div>
             </div>
         </footer>
@@ -389,7 +393,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -484,7 +487,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6%E4%BB%A5%E5%8F%8ANavicat-for-MySQL"><span class="toc-text">1 Win10下安装MySQL5.6以及Navicat for MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Win10%E4%B8%8B%E5%AE%89%E8%A3%85MySQL5-6"><span class="toc-text">1.1 Win10下安装MySQL5.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85Navicat-for-MySQL"><span class="toc-text">1.2 安装Navicat for MySQL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Mysql%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%B8%B8%E7%94%A8%E7%9A%84%E2%80%9D%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E2%80%9D%EF%BC%89"><span class="toc-text">2 Mysql基本操作（常用的”增删改查”）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mysql-QT5-5-1"><span class="toc-text">3 Mysql + QT5.5.1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-QT5-5-1%E5%AE%89%E8%A3%85"><span class="toc-text">3.1 QT5.5.1安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="toc-text">3.2 简单测试程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Mysql-Matlab2017b"><span class="toc-text">4 Mysql + Matlab2017b</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>

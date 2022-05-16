@@ -28,7 +28,6 @@
 <meta property="article:tag" content="RTX">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/3b27166f.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_6.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -52,6 +51,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -183,16 +183,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/3b27166f.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">RTX_RTOS之01-CMSIS_RTOS2_Tutorial自译中文版</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">RTX_RTOS之01-CMSIS_RTOS2_Tutorial自译中文版</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-10-30</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2021-10-30T03:25:17.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-10-30</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -215,7 +219,7 @@
                 </div>
             
             <hr />
-            <h2 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h2><p>本教程介绍了在 Arm Cortex-M 微控制器上使用占用空间小的实时操作系统。如果您习惯于在小型 8 位&#x2F;16 位微控制器上编写基于过程的“C”代码，您可能会怀疑是否需要这样的操作系统。如果您不熟悉在实时嵌入式系统中使用 RTOS，您应该在放弃这个想法之前阅读本章。RTOS 的使用代表了一种更复杂的设计方法，从本质上促进了由 RTOS 应用程序编程接口 (API) 强制执行的结构化代码开发。</p>
+            <div itemprop="articleBody"><h2 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h2><p>本教程介绍了在 Arm Cortex-M 微控制器上使用占用空间小的实时操作系统。如果您习惯于在小型 8 位&#x2F;16 位微控制器上编写基于过程的“C”代码，您可能会怀疑是否需要这样的操作系统。如果您不熟悉在实时嵌入式系统中使用 RTOS，您应该在放弃这个想法之前阅读本章。RTOS 的使用代表了一种更复杂的设计方法，从本质上促进了由 RTOS 应用程序编程接口 (API) 强制执行的结构化代码开发。</p>
 <p>RTOS 结构允许您采用更加面向对象的设计方法，同时仍然使用“C”进行编程。RTOS 还在小型微控制器上为您提供多线程支持。这两个功能实际上在设计理念上产生了相当大的转变，使我们不再考虑程序化的“C”代码和流程图。相反，我们考虑基本的程序线程和它们之间的数据流。使用实时操作系统还有一些额外的好处，这些好处可能不会立即显现出来。由于基于 RTOS 的项目由定义明确的线程组成，因此有助于改进项目管理、代码重用和软件测试。</p>
 <p>这样做的代价是 RTOS 具有额外的内存要求和增加的中断延迟。通常，Keil RTX5 RTOS 需要 500 字节的 RAM 和 5k 字节的代码，但请记住，某些 RTOS 代码无论如何都会复制到您的程序中。我们现在有一代小型低成本微控制器，它们具有足够的片上存储器和处理能力来支持 RTOS 的使用。因此，使用这种方法进行开发更容易。</p>
 <p>我们将首先看看为基于 Cortex-M 的微控制器设置一个介绍性的 RTOS 项目。接下来，我们将介绍每个 RTOS 原语以及它们如何影响我们应用程序代码的设计。最后，当我们对 RTOS 的特性有了清晰的了解后，我们再仔细看看 RTOS 的配置选项。如果您习惯于在不使用 RTOS（即裸机）的情况下对微控制器进行编程，那么在您完成本教程的过程中需要了解两件重要的事情。<strong>在第一部分中，我们将专注于创建和管理线程。这里的关键概念是将它们视为并行并发对象运行。在第二部分，我们将看看如何在线程之间进行通信。在本节中，关键概念是并发线程的同步。</strong></p>
@@ -425,11 +429,11 @@
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>在本教程中，我们已经完成了 CMSIS-RTOS2 API，并介绍了一些与使用 RTOS 相关的关键概念。<strong>学习如何使用 RTOS 进行开发的唯一真正方法是在实际项目中实际使用它</strong>。</p>
 <h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p><a target="_blank" rel="noopener" href="https://arm-software.github.io/CMSIS_5/RTOS2/html/rtos2_tutorial.html">CMSIS_RTOS2_Tutorial</a></p>
 <p>That’s all.Check it.</p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -516,7 +520,7 @@
                     <a class="tag-none-link" href="/tags/RTOS/" rel="tag">RTOS</a>, <a class="tag-none-link" href="/tags/RTX/" rel="tag">RTX</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-01-23</span>
+                    <time datetime="2022-01-23T10:25:17.000Z" itemprop="dateModified">最后编辑：2022-01-23</time>
                 </div>
             </div>
         </footer>
@@ -534,7 +538,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -629,7 +632,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%99%E7%A8%8B"><span class="toc-text">教程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Keil-RTX5-%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-text">使用 Keil RTX5 的第一步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE-CMSIS-RTOS2-API"><span class="toc-text">访问 CMSIS-RTOS2 API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%9E%E6%97%B6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-text">启动实时操作系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="toc-text">创建线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E5%92%8C%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">线程管理和优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">内存管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E5%AE%9E%E4%BE%8B"><span class="toc-text">多个实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%BA%BF%E7%A8%8B"><span class="toc-text">可连接的线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86"><span class="toc-text">时间管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%BB%B6%E8%BF%9F"><span class="toc-text">时间延迟</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9D%E5%AF%B9%E6%97%B6%E9%97%B4%E5%BB%B6%E8%BF%9F"><span class="toc-text">绝对时间延迟</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-text">虚拟定时器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E9%97%B2%E7%BA%BF%E7%A8%8B"><span class="toc-text">空闲线程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="toc-text">线程间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%A0%87%E5%BF%97"><span class="toc-text">线程标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%A0%87%E5%BF%97"><span class="toc-text">事件标志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-text">信号量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-text">使用信号量</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E7%BA%BF%E7%A8%8B"><span class="toc-text">同步线程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">多路复用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BC%9A%E5%90%88-%E9%9B%86%E5%90%88"><span class="toc-text">会合(集合)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B1%8F%E9%9A%9C"><span class="toc-text">屏障</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%AD%A6%E5%91%8A"><span class="toc-text">信号量警告</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%92%E6%96%A5%E4%BD%93"><span class="toc-text">互斥体</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%92%E6%96%A5%E8%AD%A6%E5%91%8A"><span class="toc-text">互斥警告</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="toc-text">数据交换</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">消息队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-text">扩展消息队列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B1%A0"><span class="toc-text">内存池</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%85%8D%E7%BD%AE"><span class="toc-text">线程配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%AE%9A%E6%97%B6%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-text">系统定时器配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-text">相关参考</span></a></li></ol>

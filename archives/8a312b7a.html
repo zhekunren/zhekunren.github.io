@@ -28,7 +28,6 @@
 <meta property="article:tag" content="notes">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/8a312b7a.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_12.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -52,6 +51,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -183,16 +183,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/8a312b7a.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">求职笔记--数据结构与算法00_数据结构介绍及时间复杂度分析</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">求职笔记--数据结构与算法00_数据结构介绍及时间复杂度分析</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-09-28</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2021-09-28T13:11:15.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-09-28</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -215,7 +219,7 @@
                 </div>
             
             <hr />
-            <h2 id="1-数据结构和算法介绍"><a href="#1-数据结构和算法介绍" class="headerlink" title="1 数据结构和算法介绍"></a>1 数据结构和算法介绍</h2><h3 id="1-1-什么是数据结构？什么是算法？"><a href="#1-1-什么是数据结构？什么是算法？" class="headerlink" title="1.1 什么是数据结构？什么是算法？"></a>1.1 什么是数据结构？什么是算法？</h3><p>程序 &#x3D; 数据结构 + 算法。<br>数据结构是计算机存储、组织数据的方式。算法是实现特定任务的计算步骤。</p>
+            <div itemprop="articleBody"><h2 id="1-数据结构和算法介绍"><a href="#1-数据结构和算法介绍" class="headerlink" title="1 数据结构和算法介绍"></a>1 数据结构和算法介绍</h2><h3 id="1-1-什么是数据结构？什么是算法？"><a href="#1-1-什么是数据结构？什么是算法？" class="headerlink" title="1.1 什么是数据结构？什么是算法？"></a>1.1 什么是数据结构？什么是算法？</h3><p>程序 &#x3D; 数据结构 + 算法。<br>数据结构是计算机存储、组织数据的方式。算法是实现特定任务的计算步骤。</p>
 <h2 id="2-时间和空间复杂度"><a href="#2-时间和空间复杂度" class="headerlink" title="2 时间和空间复杂度"></a>2 时间和空间复杂度</h2><h3 id="2-1-时间复杂度"><a href="#2-1-时间复杂度" class="headerlink" title="2.1 时间复杂度"></a>2.1 时间复杂度</h3><p>常用计算时间复杂度计算方法：<strong>大O符号表示法(BigO)</strong> ，即 <code>T(n) = O(f(n))</code>，它表示一个算法的渐进时间复杂度。其中，f(n) 表示代码执行次数之和，O表示正比例关系。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/JobHuntingNotes/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%9500_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D%E5%8F%8A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%901.png"></p>
 <p>当 n 增大时，<code>O(1) &lt; O(logn) &lt; O(n) &lt; O(nlogn) &lt; O(n^2) &lt; O(n^3) &lt; O(2^n)</code></p>
@@ -223,11 +227,11 @@
 <p>分析：<br>假设循环次数为 t，则循环条件满足 2^t &lt; n。执行次数t &#x3D; log(2)(n)，即 T(n) &#x3D; log(2)(n)，可见时间复杂度为 O(log(2)(n))，即 O(log n)。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">long</span> <span class="title">aFunc</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">aFunc</span>(n - <span class="number">1</span>) + <span class="built_in">aFunc</span>(n - <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>分析：<br>显然运行次数，T(0) &#x3D; T(1) &#x3D; 1，同时 T(n) &#x3D; T(n - 1) + T(n - 2) + 1，这里的 1 是其中的加法算一次执行。<br>显然 T(n) &#x3D; T(n - 1) + T(n - 2) 是一个斐波那契数列，通过归纳证明法可以证明，当 n &gt;&#x3D; 1 时 T(n) &lt; (5&#x2F;3)^n，同时当 n &gt; 4 时 T(n) &gt;&#x3D; (3&#x2F;2)^n。所以该方法的时间复杂度可以表示为 O((5&#x2F;3)^n)，简化后为 O(2^n)。</p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -314,7 +318,7 @@
                     <a class="tag-none-link" href="/tags/notes/" rel="tag">notes</a>, <a class="tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-01-23</span>
+                    <time datetime="2022-01-23T05:26:02.000Z" itemprop="dateModified">最后编辑：2022-01-23</time>
                 </div>
             </div>
         </footer>
@@ -332,7 +336,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -427,7 +430,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-text">1 数据结构和算法介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E7%AE%97%E6%B3%95%EF%BC%9F"><span class="toc-text">1.1 什么是数据结构？什么是算法？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">2 时间和空间复杂度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">2.1 时间复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%B1%82%E8%A7%A3%E4%B8%BE%E4%BE%8B"><span class="toc-text">2.2 时间复杂度求解举例</span></a></li></ol></li></ol>

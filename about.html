@@ -29,7 +29,6 @@
 <meta property="article:tag" content="zhekun, 哲昆, 任哲昆, 个人博客, 经验分享, c, c++, 嵌入式, Embedded, 操作系统, linux, rtos, hexo, Kratos-Rebirth">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/favicon.png">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -53,6 +52,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -184,11 +184,12 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/about.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <div class="kratos-post-content">
-            <h2 class="title-h2 text-center"></h2>
-            <blockquote>
+            <h2 class="title-h2 text-center" itemprop="name headline"></h2>
+            <div itemprop="articleBody"><blockquote>
 <h2 class= "text-center">你好哇~ 欢迎来访🥳</h2>
 </blockquote>
 <img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/theme/about_gif1.gif" width = "200" align=center />
@@ -216,12 +217,12 @@
 </p>
  
     </div></div>
-    </div>
+    </div></div>
         </div>
         <footer class="kratos-entry-footer clearfix">
             <div class="footer-tag clearfix">
                 <div class="pull-date">
-                <span>最后编辑：2022-02-14</span>
+                    <time datetime="2022-02-14T04:30:00.000Z" itemprop="dateModified">最后编辑：2022-02-14</time>
                 </div>
             </div>
         </footer>

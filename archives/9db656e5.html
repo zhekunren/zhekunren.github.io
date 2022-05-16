@@ -30,7 +30,6 @@
 <meta property="article:tag" content="blog-test">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/9db656e5.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0214_1.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -54,6 +53,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -185,16 +185,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/9db656e5.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Code Highlight Style test</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Code Highlight Style test</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-02-14</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2022-02-14T02:30:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-02-14</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -217,7 +221,7 @@
                 </div>
             
             <hr />
-            <p>Make sure all the code blocks highlighted correctly. All the code samples are come from the demo of <a target="_blank" rel="noopener" href="https://highlightjs.org/">https://highlightjs.org</a></p>
+            <div itemprop="articleBody"><p>Make sure all the code blocks highlighted correctly. All the code samples are come from the demo of <a target="_blank" rel="noopener" href="https://highlightjs.org/">https://highlightjs.org</a></p>
 <h2 id="no-highlight"><a href="#no-highlight" class="headerlink" title="no-highlight"></a>no-highlight</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span><br></pre></td></tr></table></figure>
 
 <h2 id="HTML-XML"><a href="#HTML-XML" class="headerlink" title="HTML, XML"></a>HTML, XML</h2><figure class="highlight plaintext"><figcaption><span>XML</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;title&gt;Title&lt;/title&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;body &#123;width: 500px;&#125;&lt;/style&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;application/javascript&quot;&gt;</span><br><span class="line">  function $init() &#123;return true;&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;p checked class=&quot;title&quot; id=&#x27;title&#x27;&gt;Title&lt;/p&gt;</span><br><span class="line">  &lt;!-- here goes the rest of the page --&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
@@ -245,11 +249,11 @@
 <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@requires_authorization(<span class="params">roles=[<span class="string">&quot;ADMIN&quot;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">somefunc</span>(<span class="params">param1=<span class="string">&#x27;&#x27;</span>, param2=<span class="number">0</span></span>):</span><br><span class="line">    <span class="string">r&#x27;&#x27;&#x27;A docstring&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> param1 &gt; param2: <span class="comment"># interesting</span></span><br><span class="line">        <span class="built_in">print</span> <span class="string">&#x27;Gre\&#x27;ater&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> (param2 - param1 + <span class="number">1</span> + <span class="number">0b10l</span>) <span class="keyword">or</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>message = <span class="string">&#x27;&#x27;&#x27;interpreter</span></span><br><span class="line"><span class="string"><span class="meta">... </span>prompt&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">REATE <span class="keyword">TABLE</span> &quot;topic&quot; (</span><br><span class="line">    &quot;id&quot; <span class="type">integer</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    &quot;forum_id&quot; <span class="type">integer</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    &quot;subject&quot; <span class="type">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> &quot;topic&quot;</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> forum_id <span class="keyword">FOREIGN</span> KEY (&quot;forum_id&quot;)</span><br><span class="line"><span class="keyword">REFERENCES</span> &quot;forum&quot; (&quot;id&quot;);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Initials</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> &quot;topic&quot; (&quot;forum_id&quot;, &quot;subject&quot;)</span><br><span class="line"><span class="keyword">values</span> (<span class="number">2</span>, <span class="string">&#x27;D&#x27;&#x27;artagnian&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -336,7 +340,7 @@
                     <a class="tag-none-link" href="/tags/blog-test/" rel="tag">blog-test</a>, <a class="tag-none-link" href="/tags/hexo/" rel="tag">hexo</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-02-14</span>
+                    <time datetime="2022-02-14T02:30:00.000Z" itemprop="dateModified">最后编辑：2022-02-14</time>
                 </div>
             </div>
         </footer>
@@ -354,7 +358,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -449,7 +452,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#no-highlight"><span class="toc-text">no-highlight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-XML"><span class="toc-text">HTML, XML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bash"><span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C"><span class="toc-text">C++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-1"><span class="toc-text">C#</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS"><span class="toc-text">CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Diff"><span class="toc-text">Diff</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java"><span class="toc-text">Java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript"><span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON"><span class="toc-text">JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Makefile"><span class="toc-text">Makefile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python"><span class="toc-text">Python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-text">SQL</span></a></li></ol>

@@ -31,7 +31,6 @@
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/9fcd8f06.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_4.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -55,6 +54,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -186,16 +186,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/9fcd8f06.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【STM32】STM32CubeMX HAL库 DMA[2]环形FIFO缓冲区</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2021-12-09</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2021-12-09T08:37:51.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-12-09</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -218,7 +222,7 @@
                 </div>
             
             <hr />
-            <h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>队列的基础知识和介绍参考<a href="/archives/48b41a64.html">求职笔记之数据结构与算法04_栈和队列</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiejiemcu/article/details/80563422">STM32进阶之串口环形缓冲区实现</a>。</p>
+            <div itemprop="articleBody"><h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>队列的基础知识和介绍参考<a href="/archives/48b41a64.html">求职笔记之数据结构与算法04_栈和队列</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/jiejiemcu/article/details/80563422">STM32进阶之串口环形缓冲区实现</a>。</p>
 <p>顺序FIFO缓冲区存在“假上溢”现象，由于入队和出队操作使头尾指针只增不减导致被删元素的空间无法利用，队尾指针超过缓冲区空间的上界而不能入队为克服“假上溢”现象。如果将缓冲区空间的首尾相连，当指针访问到内存最后一个位置时，再折回第一个内存位置，此时就形成了一个环形FIFO缓存区。其中，头指针指向环形缓冲区中可读的数据，尾指针指向环形缓冲区中可写的缓冲空间。</p>
 <p>环形FIFO缓冲区本质是“生产者消费者”模型，生产者以某一速度存入数据，消费者以某一速度取出数据，为了保证两者的同步，需要使用环形缓冲区。比如在stm32串口接收数据的速度大于数据的处理速度，来不及处理的数据会被覆盖，造成数据丢包现象，此时可以引入环形缓冲区缓存未来得及处理的数据。此外，当需要接收数据量较大时，不能存储所有数据，也可以采用环形缓冲区。</p>
 <p>注意：生产者和消费者的速度不用时刻一致，但总体的平均速度必须相等；如果消费（数据处理）效率过低，导致生产（数据接收）过剩，从而覆盖未读出的数据，导致出错，此时需增加环形缓冲区内存大小或者优化代码效率；在多线程访问时，需要采用互斥机制保证数据安全。</p>
@@ -421,11 +425,11 @@
 <p>对应工程文件：<code>dma/UART_LWRB</code>，仓库地址为<code>xxx</code>（后面补充）。</p>
 <h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/liigo/article/details/100993236">无锁环形缓冲区队列 kfifo</a><br>2、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/suozhang/p/6373510.html">STM32 &amp; FreeRTOS &amp; KFIFO （巧夺天工）</a><br>3、<a target="_blank" rel="noopener" href="https://mculover666.blog.csdn.net/article/details/106445879?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link">ringbuff | 通用FIFO环形缓冲区实现库</a><br>4、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36075612/article/details/116144349?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase">STM32HAL 移植一款通用FIFO轻量级环形缓冲管理器开源库lwrb(裸机开发)</a></p>
 <p>That’s all.Check it.</p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -512,7 +516,7 @@
                     <a class="tag-none-link" href="/tags/DMA/" rel="tag">DMA</a>, <a class="tag-none-link" href="/tags/FIFO/" rel="tag">FIFO</a>, <a class="tag-none-link" href="/tags/stm32/" rel="tag">stm32</a>, <a class="tag-none-link" href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a>, <a class="tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-01-23</span>
+                    <time datetime="2022-01-23T04:25:33.000Z" itemprop="dateModified">最后编辑：2022-01-23</time>
                 </div>
             </div>
         </footer>
@@ -530,7 +534,6 @@
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -625,7 +628,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-KFIFO"><span class="toc-text">2 KFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-KFIFO%E7%A7%BB%E6%A4%8D"><span class="toc-text">2.1 KFIFO移植</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-KFIFO%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3%E5%8F%8A%E8%A1%A5%E5%85%85"><span class="toc-text">2.2 KFIFO代码的一些理解及补充</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%95%B4%E6%95%B0%E7%9A%84%E7%8E%AF%E5%9B%9E%E7%89%B9%E6%80%A7"><span class="toc-text">2.2.1 整数的环回特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-min%E5%AE%8F%E6%88%96%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%E7%9A%84%E8%AE%A8%E8%AE%BA"><span class="toc-text">2.2.2 min宏或内联函数的讨论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-%E5%BC%80%E5%85%B3%E5%85%A8%E5%B1%80%E4%B8%AD%E6%96%AD%E3%80%81BUG-ON%E5%AE%8F"><span class="toc-text">2.2.3 开关全局中断、BUG_ON宏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-4-kfifo%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">2.2.4 kfifo源码分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%A7%BB%E6%A4%8Dstm32%E6%B5%8B%E8%AF%95"><span class="toc-text">2.3 移植stm32测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-LWRB"><span class="toc-text">3 LWRB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%A7%BB%E6%A4%8Dstm32%E5%8F%8A%E6%B5%8B%E8%AF%95"><span class="toc-text">3.1 移植stm32及测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-text">相关参考</span></a></li></ol>

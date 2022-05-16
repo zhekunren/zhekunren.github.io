@@ -29,7 +29,6 @@
 <meta property="article:tag" content="blog-tips">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/89757140.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0214_2.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -53,6 +52,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -184,16 +184,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/89757140.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">Markdown Style test</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Markdown Style test</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-02-14</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2022-02-14T02:35:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-02-14</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -216,7 +220,7 @@
                 </div>
             
             <hr />
-            <p>This post is originated from <a target="_blank" rel="noopener" href="https://gist.github.com/apackeer/4159268">here</a> and is used for testing markdown style.</p>
+            <div itemprop="articleBody"><p>This post is originated from <a target="_blank" rel="noopener" href="https://gist.github.com/apackeer/4159268">here</a> and is used for testing markdown style.</p>
 <h2 id="Emphasis"><a href="#Emphasis" class="headerlink" title="Emphasis"></a>Emphasis</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Emphasis, aka italics, with *asterisks* or _underscores_.</span><br><span class="line"></span><br><span class="line">Strong emphasis, aka bold, with **asterisks** or __underscores__.</span><br><span class="line"></span><br><span class="line">Combined emphasis with **asterisks and _underscores_**.</span><br></pre></td></tr></table></figure>
 
 <p>Emphasis, aka italics, with <em>asterisks</em> or <em>underscores</em>.</p>
@@ -312,11 +316,11 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a></p>
 <p>Vimeo（需要tz）</p>
 <div class="video-container">
     <iframe src="https://player.vimeo.com/video/82090131" frameborder="0" loading="lazy" allowfullscreen=""></iframe>
-</div>
+</div></div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -403,7 +407,7 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a></p>
                     <a class="tag-none-link" href="/tags/blog-test/" rel="tag">blog-test</a>, <a class="tag-none-link" href="/tags/blog-tips/" rel="tag">blog-tips</a>, <a class="tag-none-link" href="/tags/hexo/" rel="tag">hexo</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-02-14</span>
+                    <time datetime="2022-02-14T02:35:00.000Z" itemprop="dateModified">最后编辑：2022-02-14</time>
                 </div>
             </div>
         </footer>
@@ -421,7 +425,6 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a></p>
             </div>
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -516,7 +519,7 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a></p>
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Emphasis"><span class="toc-text">Emphasis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lists"><span class="toc-text">Lists</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inline-HTML"><span class="toc-text">Inline HTML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Links"><span class="toc-text">Links</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Images"><span class="toc-text">Images</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blockquotes"><span class="toc-text">Blockquotes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Horizontal-Rule"><span class="toc-text">Horizontal Rule</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Videos"><span class="toc-text">Videos</span></a></li></ol>

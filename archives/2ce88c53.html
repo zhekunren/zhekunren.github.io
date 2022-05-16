@@ -29,7 +29,6 @@
 <meta property="article:tag" content="QT">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/2ce88c53.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0314_1.jpg">
-<meta name="twitter:site" content="@null">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
   <!-- 站点验证相关 -->
   
@@ -53,6 +52,7 @@
   
   <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
   <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
   
   
     <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
@@ -184,16 +184,20 @@
 
         
 
-            <article>
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://zhekunren.github.io/archives/2ce88c53.html">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center">图书管理系统（QT、Mysql）</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">图书管理系统（QT、Mysql）</h1>
             
             
             <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-03-15</li>
-                <li><i class="fa fa-user"></i> 作者 zhekun</li>
+                <li><time datetime="2022-03-15T08:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-03-15</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">zhekun</span>
+                </li>
                 <li>
                     <i class="fa fa-edit"></i> 
                     
@@ -216,7 +220,7 @@
                 </div>
             
             <hr />
-            <h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>前几天，在”Mysql安装与基础使用（QT、Matlab）”中备分了Mysql和Qt的配置，觉得还是需要写一个demo-project。</p>
+            <div itemprop="articleBody"><h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>前几天，在”Mysql安装与基础使用（QT、Matlab）”中备分了Mysql和Qt的配置，觉得还是需要写一个demo-project。</p>
 <h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>本项目设计并实现了一个精简的多用户图书管理系统，应用后端通过与 mysql 进行连接实现对数据的管理，数据存储在本地。游客可以查阅图书信息；用户可以登陆、注册、查看图书，借书、还书等操作；管理员可以通过登陆界面实现对用户和书籍的管理，具有添加&#x2F;删除用户&#x2F;书籍等权限。</p>
 <h3 id="1-2-仓库地址"><a href="#1-2-仓库地址" class="headerlink" title="1.2 仓库地址"></a>1.2 仓库地址</h3><p><a target="_blank" rel="noopener" href="https://github.com/zhekunren/library-manage-by-mysql-qt.git">library-manage-by-mysql-qt</a></p>
 <h3 id="1-3-运行环境介绍、配置及测试"><a href="#1-3-运行环境介绍、配置及测试" class="headerlink" title="1.3 运行环境介绍、配置及测试"></a>1.3 运行环境介绍、配置及测试</h3><p>开发平台： Windows &#x2F; QT5.5.1 &#x2F; MySQL5.6<br>上述QT和Mysql软件的安装可以参考<a href="/archives/4fd3c7f0.html">Mysql安装与基础使用（QT、Matlab）</a>。<br>软件安装后，需要配置Mysql环境如下：</p>
@@ -253,11 +257,11 @@
 <p>待运行结束，点击新建目录下的exe程序就可以运行了。<br>3.打开运行Enigma Virtual Box，在<code>Enter Input File Name</code>处选择打包程序的文件，即前面新建目录中的.exe文件。接着，点击<code>Add...</code>按钮–&gt;<code>Add Folder Recursive</code>，然后选择新建目录，即.exe所在目录。最后配置<code>File Options</code>中将<code>Compress Files</code>选中后，点击<code>Process</code>，等待结束，即可看到生成的打包好的文件<code>LibraryManageByMysqlQt_boxed.exe</code>。</p>
 <p>That’s all. Thanks. </p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>1.<a target="_blank" rel="noopener" href="https://blog.csdn.net/zju_fish1996/article/details/51218532">[mysql+qt] 图书管理系统</a><br>2.<a target="_blank" rel="noopener" href="https://github.com/Uyouii/LibraryManage">LibraryManage</a><br>3.<a target="_blank" rel="noopener" href="https://blog.csdn.net/lvxiong2007/article/details/80449392?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0.pc_relevant_antiscanv2&spm=1001.2101.3001.4242.1&utm_relevant_index=3">QT5的程序打包发布（将QT5的工程项目打包成一个exe程序）</a></p>
-
+</div>
         </div>
         
             <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
             </div>
         
         <footer class="kratos-entry-footer clearfix">
@@ -344,7 +348,7 @@
                     <a class="tag-none-link" href="/tags/C-Cpp/" rel="tag">C&Cpp</a>, <a class="tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>, <a class="tag-none-link" href="/tags/QT/" rel="tag">QT</a>
                 </div>
                 <div class="pull-date">
-                <span>最后编辑：2022-03-15</span>
+                    <time datetime="2022-03-15T08:00:00.000Z" itemprop="dateModified">最后编辑：2022-03-15</time>
                 </div>
             </div>
         </footer>
@@ -358,7 +362,6 @@
             
             
         </nav>
-    
     
     
         <div id="disqus_thread" class="post-comments lazy-load"></div>
@@ -453,7 +456,7 @@
     <h4 class="widget-title no-after">
         <i class="fa fa-compass"></i>
         文章目录
-        <span class="toc-progress-bar"></span>
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.1 概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="toc-text">1.2 仓库地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E4%BB%8B%E7%BB%8D%E3%80%81%E9%85%8D%E7%BD%AE%E5%8F%8A%E6%B5%8B%E8%AF%95"><span class="toc-text">1.3 运行环境介绍、配置及测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-text">2 项目介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%95%B4%E4%BD%93%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="toc-text">2.1 整体功能描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%8A%9F%E8%83%BD%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="toc-text">2.2 功能详细介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E6%B8%B8%E5%AE%A2"><span class="toc-text">2.2.1 游客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E7%94%A8%E6%88%B7"><span class="toc-text">2.2.2 用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3-%E7%AE%A1%E7%90%86%E5%91%98"><span class="toc-text">2.2.3 管理员</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D"><span class="toc-text">2.3 代码结构简要介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%A1%A5%E5%85%85QT%E6%89%93%E5%8C%85%E7%94%9F%E6%88%90exe%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 补充QT打包生成exe的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-text">参考链接</span></a></li></ol>

@@ -24,11 +24,11 @@
 <meta property="article:published_time" content="2021-12-09T08:37:51.000Z">
 <meta property="article:modified_time" content="2022-01-23T04:25:33.000Z">
 <meta property="article:author" content="zhekun">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="stm32">
 <meta property="article:tag" content="DMA">
-<meta property="article:tag" content="嵌入式">
 <meta property="article:tag" content="FIFO">
-<meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://zhekunren.github.io/archives/9fcd8f06.htmlhttps:/cdn.jsdelivr.net/gh/zhekunren/blog_image/img/posts_covers/2022/covers_0123_4.jpg">
   <link rel="alternate" href="atom.xml" type="application/atom+xml">
@@ -204,7 +204,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~27.26K
+                        ~27.29K
                     
                     字
                 </li>
@@ -349,7 +349,7 @@
     </div></li>
 </ul>
 <p><strong>运行结果</strong><br>    MCU下载程序，连接串口，设置发送参数和数据，选择定时发送模式，定时10ms发送“3F 05 01 02 03 04 05”。下面两图分别为数据帧发送一次和多次测试的结果。<br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C1.png"><br><img src="https://cdn.jsdelivr.net/gh/zhekunren/blog_image/img/post/2022/Embedded/dmafifo-%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C2.png"><br><strong>注意</strong>：虽然上面简单测试时，62&#x2F;7&#x3D;373426&#x2F;42161&#x3D;8.857142857142857，没有测试出来丢帧的情况，但是时存在这个隐患的，因为<code>while((len = kfifo_get(kifo_buffer, (uint8_t*)&amp;read_data, sizeof(read_data))) &gt; 0)</code>这种直接获取帧头的方式，会丢弃帧头前的数据。</p>
-<p>对应工程文件：<code>dma/UART_KFIFO</code>，仓库地址为<code>xxx</code>（后面补充）。</p>
+<p>对应工程文件：<code>Bara Project/dma/UART_KFIFO</code>，仓库地址为<a target="_blank" rel="noopener" href="https://github.com/zhekunren/Code-Backup">Code-Backup</a>。</p>
 <h2 id="3-LWRB"><a href="#3-LWRB" class="headerlink" title="3 LWRB"></a>3 LWRB</h2><p>LWRB是是一种轻量级FIFO环形缓冲区实现的开源库，遵循 MIT 开源许可协议。具有如下特点：</p>
 <ul>
 <li>用ANSI C99编写，与大小数据类型兼容size_t；</li>
@@ -422,7 +422,7 @@
     </div></li>
 </ul>
 <p><strong>运行结果</strong><br>这部分和本文<code>2.3</code>节相同。</p>
-<p>对应工程文件：<code>dma/UART_LWRB</code>，仓库地址为<code>xxx</code>（后面补充）。</p>
+<p>对应工程文件：<code>Bara Project/dma/UART_LWRB</code>，仓库地址为<a target="_blank" rel="noopener" href="https://github.com/zhekunren/Code-Backup">Code-Backup</a>。</p>
 <h2 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h2><p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/liigo/article/details/100993236">无锁环形缓冲区队列 kfifo</a><br>2、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/suozhang/p/6373510.html">STM32 &amp; FreeRTOS &amp; KFIFO （巧夺天工）</a><br>3、<a target="_blank" rel="noopener" href="https://mculover666.blog.csdn.net/article/details/106445879?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.no_search_link">ringbuff | 通用FIFO环形缓冲区实现库</a><br>4、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36075612/article/details/116144349?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-2.opensearchhbase">STM32HAL 移植一款通用FIFO轻量级环形缓冲管理器开源库lwrb(裸机开发)</a></p>
 <p>That’s all.Check it.</p>
 </div>
@@ -661,6 +661,9 @@
         
           
           
+        
+          
+          
             <a class="list-group-item" href="/archives/2ce88c53.html"><i class="fa  fa-book"></i> 图书管理系统（QT、Mysql）</a>
             
           
@@ -675,9 +678,6 @@
           
             <a class="list-group-item" href="/archives/e1e589cc.html"><i class="fa  fa-book"></i> 求职笔记--专栏索引</a>
             
-          
-        
-          
           
         
           

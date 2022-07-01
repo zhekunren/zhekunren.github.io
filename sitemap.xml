@@ -565,13 +565,6 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
-    <lastmod>2022-07-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zhekunren.github.io/tags/FIFO/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -580,6 +573,13 @@
   
   <url>
     <loc>https://zhekunren.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2022-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhekunren.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -698,14 +698,14 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/FreeRTOS/</loc>
+    <loc>https://zhekunren.github.io/tags/RTX/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/tags/RTX/</loc>
+    <loc>https://zhekunren.github.io/tags/FreeRTOS/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -763,14 +763,14 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/</loc>
+    <loc>https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7/</loc>
+    <loc>https://zhekunren.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7/%E5%AE%89%E8%A3%85%E7%A0%B4%E8%A7%A3/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -784,14 +784,14 @@
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/</loc>
+    <loc>https://zhekunren.github.io/categories/EOS-RTOS/RTX/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zhekunren.github.io/categories/EOS-RTOS/RTX/</loc>
+    <loc>https://zhekunren.github.io/categories/EOS-RTOS/FreeRTOS/</loc>
     <lastmod>2022-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
